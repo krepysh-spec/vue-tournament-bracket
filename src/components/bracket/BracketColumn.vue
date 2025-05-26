@@ -1,7 +1,7 @@
 <template>
   <div class="flex-1 px-5 pb-2.5 grid grid-cols-[min-content_auto]">
     <template v-for="(item, index) in column.items" :key="item.number">
-      <div class="text-[0.7em] flex justify-end items-center opacity-50">{{item.number}}</div>
+      <div class="text-[0.7em] text-gray-900 dark:text-white flex justify-end items-center opacity-50">{{item.number}}</div>
       <BracketMatch 
         :match="item"
         :index="index"

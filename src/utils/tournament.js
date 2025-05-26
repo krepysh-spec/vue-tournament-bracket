@@ -35,30 +35,4 @@ export const createTournamentState = (size, defaultBestOf = 3) => {
   }
 
   return rounds;
-};
-
-export const saveTournamentState = (state) => {
-  try {
-    const stateToSave = JSON.stringify(state);
-    console.log('Saving tournament state:', stateToSave);
-    localStorage.setItem('tournamentState', stateToSave);
-  } catch (error) {
-    console.error('Error saving tournament state:', error);
-  }
-};
-
-export const loadTournamentState = () => {
-  try {
-    const savedState = localStorage.getItem('tournamentState');
-    console.log('Loading tournament state:', savedState);
-    if (savedState) {
-      const parsedState = JSON.parse(savedState);
-      console.log('Parsed tournament state:', parsedState);
-      return parsedState;
-    }
-    return null;
-  } catch (error) {
-    console.error('Error loading tournament state:', error);
-    return null;
-  }
 }; 

@@ -53,9 +53,9 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import TournamentBracket from './components/TournamentBracket.vue';
-import { createTournamentState, saveTournamentState, loadTournamentState } from './utils/tournament';
+import { createTournamentState } from './utils/tournament';
 
 const sizes = [2, 4, 8, 16, 32, 64];
 const bestOfValues = [1, 3, 5, 7, 9];
@@ -64,25 +64,25 @@ const defaultBestOf = ref(3);
 const isDark = ref(localStorage.getItem('theme') === 'dark');
 
 const teams = ref([
-  {id: 1, name: 'Alpha', logo: 'https://www.gravatar.com/avatar/alpha?d=identicon&s=32'},
-  {id: 2, name: 'Beta', logo: 'https://www.gravatar.com/avatar/beta?d=identicon&s=32'},
-  {id: 3, name: 'Gamma', logo: 'https://www.gravatar.com/avatar/gamma?d=identicon&s=32'},
-  {id: 4, name: 'Delta', logo: 'https://www.gravatar.com/avatar/delta?d=identicon&s=32'},
-  {id: 5, name: 'Epsilon', logo: 'https://www.gravatar.com/avatar/epsilon?d=identicon&s=32'},
-  {id: 6, name: 'Zeta', logo: 'https://www.gravatar.com/avatar/zeta?d=identicon&s=32'},
-  {id: 7, name: 'Eta', logo: 'https://www.gravatar.com/avatar/eta?d=identicon&s=32'},
-  {id: 8, name: 'Theta', logo: 'https://www.gravatar.com/avatar/theta?d=identicon&s=32'},
-  {id: 9, name: 'Iota', logo: 'https://www.gravatar.com/avatar/iota?d=identicon&s=32'},
-  {id: 10, name: 'Kappa', logo: 'https://www.gravatar.com/avatar/kappa?d=identicon&s=32'},
-  {id: 11, name: 'Lambda', logo: 'https://www.gravatar.com/avatar/lambda?d=identicon&s=32'},
-  {id: 12, name: 'Mu', logo: 'https://www.gravatar.com/avatar/mu?d=identicon&s=32'},
-  {id: 13, name: 'Nu', logo: 'https://www.gravatar.com/avatar/nu?d=identicon&s=32'},
-  {id: 14, name: 'Xi', logo: 'https://www.gravatar.com/avatar/xi?d=identicon&s=32'},
-  {id: 15, name: 'Omicron', logo: 'https://www.gravatar.com/avatar/omicron?d=identicon&s=32'},
-  {id: 16, name: 'Pi', logo: 'https://www.gravatar.com/avatar/pi?d=identicon&s=32'},
+  {id: 1, name: 'Alpha', logo: 'https://www.gravatar.com/avatar/1?d=identicon&s=32'},
+  {id: 2, name: 'Beta', logo: 'https://www.gravatar.com/avatar/2?d=identicon&s=32'},
+  {id: 3, name: 'Gamma', logo: 'https://www.gravatar.com/avatar/3?d=identicon&s=32'},
+  {id: 4, name: 'Delta', logo: 'https://www.gravatar.com/avatar/4?d=identicon&s=32'},
+  {id: 5, name: 'Epsilon', logo: 'https://www.gravatar.com/avatar/5?d=identicon&s=32'},
+  {id: 6, name: 'Zeta', logo: 'https://www.gravatar.com/avatar/6?d=identicon&s=32'},
+  {id: 7, name: 'Eta', logo: 'https://www.gravatar.com/avatar/7?d=identicon&s=32'},
+  {id: 8, name: 'Theta', logo: 'https://www.gravatar.com/avatar/8?d=identicon&s=32'},
+  {id: 9, name: 'Iota', logo: 'https://www.gravatar.com/avatar/9?d=identicon&s=32'},
+  {id: 10, name: 'Kappa', logo: 'https://www.gravatar.com/avatar/10?d=identicon&s=32'},
+  {id: 11, name: 'Lambda', logo: 'https://www.gravatar.com/avatar/11?d=identicon&s=32'},
+  {id: 12, name: 'Mu', logo: 'https://www.gravatar.com/avatar/12?d=identicon&s=32'},
+  {id: 13, name: 'Nu', logo: 'https://www.gravatar.com/avatar/13?d=identicon&s=32'},
+  {id: 14, name: 'Xi', logo: 'https://www.gravatar.com/avatar/14?d=identicon&s=32'},
+  {id: 15, name: 'Omicron', logo: 'https://www.gravatar.com/avatar/15?d=identicon&s=32'},
+  {id: 16, name: 'Pi', logo: 'https://www.gravatar.com/avatar/16?d=identicon&s=32'},
 ]);
 
-const tournamentState = ref(loadTournamentState() || createTournamentState(selectedSize.value, defaultBestOf.value));
+const tournamentState = ref(createTournamentState(selectedSize.value, defaultBestOf.value));
 
 const totalMatches = computed(() => {
   if (!tournamentState.value) return 0;
@@ -108,16 +108,24 @@ updateTheme();
 
 watch([selectedSize, defaultBestOf], () => {
   tournamentState.value = createTournamentState(selectedSize.value, defaultBestOf.value);
-  saveTournamentState(tournamentState.value);
+  localStorage.setItem('tournamentState', JSON.stringify(tournamentState.value));
 });
 
 const updateTournamentState = (newState) => {
   tournamentState.value = newState;
-  saveTournamentState(newState);
+  localStorage.setItem('tournamentState', JSON.stringify(tournamentState.value));
 };
 
 const clearState = () => {
   localStorage.removeItem('tournamentState');
   tournamentState.value = createTournamentState(selectedSize.value, defaultBestOf.value);
 };
+
+// Завантажуємо стан при ініціалізації
+onMounted(() => {
+  const savedState = localStorage.getItem('tournamentState');
+  if (savedState) {
+    tournamentState.value = JSON.parse(savedState);
+  }
+});
 </script>

@@ -11,21 +11,21 @@
     @mouseleave="unhighlightTeam"
   >
     <div v-if="canEdit" class="relative">
-      <select 
-        v-model="selectedTeam"
+    <select 
+      v-model="selectedTeam"
         class="w-full cursor-pointer bg-transparent text-gray-900 dark:text-white pl-8"
-        @change="updateTeam"
+      @change="updateTeam"
+    >
+      <option value="TBD">TBD</option>
+      <option 
+        v-for="team in availableTeamsForSelection" 
+        :key="team.id" 
+        :value="team.name"
+        :disabled="isTeamSelected(team.name)"
       >
-        <option value="TBD">TBD</option>
-        <option 
-          v-for="team in availableTeamsForSelection" 
-          :key="team.id" 
-          :value="team.name"
-          :disabled="isTeamSelected(team.name)"
-        >
-          {{ team.name }}
-        </option>
-      </select>
+        {{ team.name }}
+      </option>
+    </select>
       <img 
         v-if="selectedTeamLogo"
         :src="selectedTeamLogo"

@@ -44,7 +44,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import TeamRow from './team/TeamRow.vue';
+import TeamRow from '../team/TeamRow.vue';
 
 const props = defineProps({
   match: {

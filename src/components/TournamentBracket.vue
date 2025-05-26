@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <RoundHeaders 
+    <BracketRoundHeaders 
       :columns="columns" 
       @update:columns="updateColumns"
     />
@@ -23,8 +23,8 @@
 
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue';
-import BracketColumn from './BracketColumn.vue';
-import RoundHeaders from './RoundHeaders.vue';
+import BracketColumn from './bracket/BracketColumn.vue';
+import BracketRoundHeaders from './bracket/BracketRoundHeaders.vue';
 
 const emit = defineEmits(['update:state']);
 
