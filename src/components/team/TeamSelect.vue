@@ -13,7 +13,7 @@
     <select 
       v-if="canEdit"
       v-model="selectedTeam"
-      class="w-full cursor-pointer bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+      class="w-full cursor-pointer bg-transparent text-gray-900 dark:text-white"
       @change="updateTeam"
     >
       <option value="TBD">TBD</option>
