@@ -113,13 +113,3 @@ const clearState = () => {
   tournamentState.value = createTournamentState(selectedSize.value, defaultBestOf.value);
 };
 </script>
-
-<style>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  color-scheme: light dark;
-}
-</style>
