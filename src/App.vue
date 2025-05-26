@@ -52,7 +52,7 @@
       </div>
       <div class="text-gray-700 dark:text-gray-300 mb-4">
         Total Matches: {{ totalMatches }}
-      </div>
+    </div>
       <TournamentBracket 
         :initial-state="tournamentState" 
         :available-teams="teams"
@@ -151,7 +151,7 @@ onMounted(() => {
     } catch (error) {
       console.error('Error parsing saved tournament state:', error);
       clearState();
-    }
-  }
+          }
+        }
 });
 </script>

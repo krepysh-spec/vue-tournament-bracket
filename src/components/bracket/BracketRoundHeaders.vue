@@ -3,7 +3,7 @@
     <div 
       v-for="(column, index) in columns" 
       :key="column.name"
-      class="flex-1 text-center text-sm text-gray-400 min-w-[200px]"
+      class="flex-1 text-center text-sm text-gray-400"
     >
       <div class="flex flex-col items-center gap-2">
         <input 

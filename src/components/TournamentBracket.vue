@@ -2,23 +2,27 @@
   <div class="flex flex-col">
     <div class="text-xl font-bold text-gray-800 dark:text-white mb-4 px-5">Upper Bracket</div>
     <div class="flex flex-col">
-      <BracketRoundHeaders 
-        :columns="upperColumns" 
-        @update:columns="updateUpperColumns"
-      />
-      <div class="flex flex-1 p-5">
-        <BracketColumn 
-          v-for="(column, index) in upperColumns" 
-          :key="column.name"
-          :column="column"
-          :column-index="index"
-          :available-teams="availableTeams"
-          :selected-teams="selectedTeams"
-          :highlighted-team="highlightedTeam"
-          @update:match="updateUpperMatch"
-          @highlight-team="highlightTeam"
-          @unhighlight-team="unhighlightTeam"
-        />
+      <div class="overflow-x-auto">
+        <div class="min-w-max">
+          <BracketRoundHeaders 
+            :columns="upperColumns" 
+            @update:columns="updateUpperColumns"
+          />
+          <div class="flex flex-1 p-5">
+            <BracketColumn 
+              v-for="(column, index) in upperColumns" 
+              :key="column.name"
+              :column="column"
+              :column-index="index"
+              :available-teams="availableTeams"
+              :selected-teams="selectedTeams"
+              :highlighted-team="highlightedTeam"
+              @update:match="updateUpperMatch"
+              @highlight-team="highlightTeam"
+              @unhighlight-team="unhighlightTeam"
+            />
+          </div>
+        </div>
       </div>
     </div>
 
@@ -229,4 +233,41 @@ watch(() => props.isDoubleElimination, (newValue) => {
 onMounted(() => {
   initializeTournament();
 });
-</script> 
+</script>
+
+<style scoped>
+.overflow-x-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.dark .overflow-x-auto::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark .overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #4B5563;
+}
+
+.dark .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #6B7280;
+}
+</style> 

@@ -2,23 +2,27 @@
   <div class="flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8">
     <div class="text-xl font-bold text-gray-800 dark:text-white mb-4 px-5">Lower Bracket</div>
     <div class="flex flex-col">
-      <BracketRoundHeaders 
-        :columns="columns" 
-        @update:columns="updateColumns"
-      />
-      <div class="flex flex-1 p-5">
-        <BracketColumn 
-          v-for="(column, index) in columns" 
-          :key="column.name"
-          :column="column"
-          :column-index="index"
-          :available-teams="availableTeams"
-          :selected-teams="selectedTeams"
-          :highlighted-team="highlightedTeam"
-          @update:match="updateMatch"
-          @highlight-team="highlightTeam"
-          @unhighlight-team="unhighlightTeam"
-        />
+      <div class="overflow-x-auto">
+        <div class="min-w-max">
+          <BracketRoundHeaders 
+            :columns="columns" 
+            @update:columns="updateColumns"
+          />
+          <div class="flex flex-1 p-5">
+            <BracketColumn 
+              v-for="(column, index) in columns" 
+              :key="column.name"
+              :column="column"
+              :column-index="index"
+              :available-teams="availableTeams"
+              :selected-teams="selectedTeams"
+              :highlighted-team="highlightedTeam"
+              @update:match="updateMatch"
+              @highlight-team="highlightTeam"
+              @unhighlight-team="unhighlightTeam"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -125,4 +129,41 @@ watch(() => props.initialState, () => {
 onMounted(() => {
   initializeTournament();
 });
-</script> 
+</script>
+
+<style scoped>
+.overflow-x-auto {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.dark .overflow-x-auto::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark .overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #4B5563;
+}
+
+.dark .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #6B7280;
+}
+</style> 
