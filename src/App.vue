@@ -64,14 +64,22 @@ const defaultBestOf = ref(3);
 const isDark = ref(localStorage.getItem('theme') === 'dark');
 
 const teams = ref([
-  {id: 1, name: 'Alpha'},{id: 2, name: 'Beta'},
-  {id: 3, name: 'Gamma'},{id: 4, name: 'Delta'},
-  {id: 5, name: 'Epsilon'},{id: 6, name: 'Zeta'},
-  {id: 7, name: 'Eta'},{id: 8, name: 'Theta'},
-  {id: 9, name: 'Iota'},{id: 10, name: 'Kappa'},
-  {id: 11, name: 'Lambda'},{id: 12, name: 'Mu'},
-  {id: 13, name: 'Nu'},{id: 14, name: 'Xi'},
-  {id: 15, name: 'Omicron'},{id: 16, name: 'Pi'},
+  {id: 1, name: 'Alpha', logo: 'https://www.gravatar.com/avatar/alpha?d=identicon&s=32'},
+  {id: 2, name: 'Beta', logo: 'https://www.gravatar.com/avatar/beta?d=identicon&s=32'},
+  {id: 3, name: 'Gamma', logo: 'https://www.gravatar.com/avatar/gamma?d=identicon&s=32'},
+  {id: 4, name: 'Delta', logo: 'https://www.gravatar.com/avatar/delta?d=identicon&s=32'},
+  {id: 5, name: 'Epsilon', logo: 'https://www.gravatar.com/avatar/epsilon?d=identicon&s=32'},
+  {id: 6, name: 'Zeta', logo: 'https://www.gravatar.com/avatar/zeta?d=identicon&s=32'},
+  {id: 7, name: 'Eta', logo: 'https://www.gravatar.com/avatar/eta?d=identicon&s=32'},
+  {id: 8, name: 'Theta', logo: 'https://www.gravatar.com/avatar/theta?d=identicon&s=32'},
+  {id: 9, name: 'Iota', logo: 'https://www.gravatar.com/avatar/iota?d=identicon&s=32'},
+  {id: 10, name: 'Kappa', logo: 'https://www.gravatar.com/avatar/kappa?d=identicon&s=32'},
+  {id: 11, name: 'Lambda', logo: 'https://www.gravatar.com/avatar/lambda?d=identicon&s=32'},
+  {id: 12, name: 'Mu', logo: 'https://www.gravatar.com/avatar/mu?d=identicon&s=32'},
+  {id: 13, name: 'Nu', logo: 'https://www.gravatar.com/avatar/nu?d=identicon&s=32'},
+  {id: 14, name: 'Xi', logo: 'https://www.gravatar.com/avatar/xi?d=identicon&s=32'},
+  {id: 15, name: 'Omicron', logo: 'https://www.gravatar.com/avatar/omicron?d=identicon&s=32'},
+  {id: 16, name: 'Pi', logo: 'https://www.gravatar.com/avatar/pi?d=identicon&s=32'},
 ]);
 
 const tournamentState = ref(loadTournamentState() || createTournamentState(selectedSize.value, defaultBestOf.value));

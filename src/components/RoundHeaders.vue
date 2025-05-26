@@ -9,12 +9,12 @@
         <input 
           :value="column.name"
           @input="updateColumnName(index, $event.target.value)"
-          class="bg-[#444444] px-2 py-1 rounded text-center w-32"
+          class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded text-center w-32 text-gray-900 dark:text-white"
         />
         <select 
           :value="column.bestOf"
           @change="updateColumnBestOf(index, $event.target.value)"
-          class="bg-[#444444] px-2 py-1 rounded text-center w-32"
+          class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded text-center w-32 text-gray-900 dark:text-white"
         >
           <option v-for="value in bestOfValues" :key="value" :value="value">
             Best of {{ value }}

@@ -79,12 +79,14 @@ const updateMatch = (roundIndex, matchIndex, updatedMatch) => {
       if (columns.value[nextRoundIndex] && columns.value[nextRoundIndex].items[nextMatchIndex]) {
         const nextMatch = columns.value[nextRoundIndex].items[nextMatchIndex];
         const teamPosition = matchIndex % 2 === 0 ? 'teamOne' : 'teamTwo';
+        const winningTeam = updatedMatch[updatedMatch.winner];
         
         columns.value[nextRoundIndex].items[nextMatchIndex] = {
           ...nextMatch,
           [teamPosition]: {
-            id: updatedMatch[updatedMatch.winner].id,
-            name: updatedMatch[updatedMatch.winner].name,
+            id: winningTeam.id,
+            name: winningTeam.name,
+            logo: winningTeam.logo,
             score: 0
           }
         };

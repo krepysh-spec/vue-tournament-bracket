@@ -10,30 +10,45 @@
     @mouseenter="highlightTeam"
     @mouseleave="unhighlightTeam"
   >
-    <select 
-      v-if="canEdit"
-      v-model="selectedTeam"
-      class="w-full cursor-pointer bg-transparent text-gray-900 dark:text-white"
-      @change="updateTeam"
-    >
-      <option value="TBD">TBD</option>
-      <option 
-        v-for="team in availableTeamsForSelection" 
-        :key="team.id" 
-        :value="team.name"
-        :disabled="isTeamSelected(team.name)"
+    <div v-if="canEdit" class="relative">
+      <select 
+        v-model="selectedTeam"
+        class="w-full cursor-pointer bg-transparent text-gray-900 dark:text-white pl-8"
+        @change="updateTeam"
       >
-        {{ team.name }}
-      </option>
-    </select>
+        <option value="TBD">TBD</option>
+        <option 
+          v-for="team in availableTeamsForSelection" 
+          :key="team.id" 
+          :value="team.name"
+          :disabled="isTeamSelected(team.name)"
+        >
+          {{ team.name }}
+        </option>
+      </select>
+      <img 
+        v-if="selectedTeamLogo"
+        :src="selectedTeamLogo"
+        :alt="selectedTeam"
+        class="absolute left-1 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full"
+      />
+    </div>
     <template v-else>
-      <span class="text-gray-900 dark:text-white">{{team.name}}</span>
+      <div class="flex items-center gap-2">
+        <img 
+          v-if="team.logo" 
+          :src="team.logo" 
+          :alt="team.name"
+          class="w-6 h-6 rounded-full"
+        />
+        <span class="text-gray-900 dark:text-white">{{team.name}}</span>
+      </div>
     </template>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 
 const props = defineProps({
   team: {
@@ -73,6 +88,21 @@ const props = defineProps({
 const emit = defineEmits(['update:team', 'highlight-team', 'unhighlight-team']);
 
 const selectedTeam = ref(props.team.name);
+const selectedTeamLogo = computed(() => {
+  if (selectedTeam.value === 'TBD') return null;
+  return props.availableTeams.find(t => t.name === selectedTeam.value)?.logo || null;
+});
+
+watch(() => props.team, (newTeam) => {
+  selectedTeam.value = newTeam.name;
+}, { immediate: true });
+
+onMounted(() => {
+  console.log('TeamSelect mounted:', {
+    team: props.team,
+    availableTeams: props.availableTeams
+  });
+});
 
 const isTeamSelected = (teamName) => {
   if (teamName === 'TBD') return false;
@@ -103,11 +133,14 @@ const unhighlightTeam = () => {
 };
 
 const updateTeam = () => {
+  const selectedTeamData = props.availableTeams.find(t => t.name === selectedTeam.value);
+  console.log('Updating team:', { selectedTeam: selectedTeam.value, selectedTeamData });
   emit('update:team', {
     position: props.teamPosition,
     team: {
-      id: props.availableTeams.find(t => t.name === selectedTeam.value)?.id || null,
+      id: selectedTeamData?.id || null,
       name: selectedTeam.value,
+      logo: selectedTeamData?.logo || null,
       score: 0
     }
   });

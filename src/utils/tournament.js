@@ -1,6 +1,7 @@
 export const createEmptyTeam = () => ({
   id: null,
   name: 'TBD',
+  logo: null,
   score: 0
 });
 
