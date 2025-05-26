@@ -133,11 +133,13 @@ watch([selectedSize, defaultBestOf], () => {
 });
 
 const updateTournamentState = (newState) => {
+  console.log('Saving tournament state:', newState);
   tournamentState.value = newState;
   localStorage.setItem('tournamentState', JSON.stringify(tournamentState.value));
 };
 
 const clearState = () => {
+  console.log('Clearing tournament state');
   localStorage.removeItem('tournamentState');
   tournamentState.value = createTournamentState(selectedSize.value, defaultBestOf.value);
 };
@@ -147,11 +149,22 @@ onMounted(() => {
   const savedState = localStorage.getItem('tournamentState');
   if (savedState) {
     try {
-      tournamentState.value = JSON.parse(savedState);
+      const parsedState = JSON.parse(savedState);
+      console.log('Loading saved state:', parsedState);
+      
+      // Якщо це старий формат (масив), конвертуємо в новий
+      if (Array.isArray(parsedState)) {
+        tournamentState.value = {
+          upper: parsedState,
+          lower: isDoubleElimination.value ? createLowerBracketStructure(parsedState.length, defaultBestOf.value) : null
+        };
+      } else {
+        tournamentState.value = parsedState;
+      }
     } catch (error) {
       console.error('Error parsing saved tournament state:', error);
       clearState();
-          }
-        }
+    }
+  }
 });
 </script>

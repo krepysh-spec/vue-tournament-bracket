@@ -41,6 +41,7 @@ import { ref, onMounted, watch, computed } from 'vue';
 import BracketColumn from './bracket/BracketColumn.vue';
 import BracketRoundHeaders from './bracket/BracketRoundHeaders.vue';
 import BracketLower from './bracket/BracketLower.vue';
+import { createLowerBracketStructure } from '../utils/tournament';
 
 const emit = defineEmits(['update:state']);
 
@@ -182,7 +183,7 @@ const initializeTournament = () => {
       upperColumns.value = JSON.parse(JSON.stringify(props.initialState));
       if (props.isDoubleElimination) {
         // Створюємо початкову структуру для нижньої сітки
-        lowerColumns.value = createLowerBracketStructure(upperColumns.value.length);
+        lowerColumns.value = createLowerBracketStructure(upperColumns.value.length, props.defaultBestOf);
       }
     } else {
       // Новий формат (верхня і нижня сітки)
@@ -192,40 +193,13 @@ const initializeTournament = () => {
   }
 };
 
-const createLowerBracketStructure = (upperRounds) => {
-  const lowerRounds = Math.ceil(upperRounds / 2);
-  const columns = [];
-  
-  for (let i = 0; i < lowerRounds; i++) {
-    const matchesInRound = Math.pow(2, lowerRounds - i - 1);
-    const items = [];
-    
-    for (let j = 0; j < matchesInRound; j++) {
-      items.push({
-        number: j + 1,
-        teamOne: { id: null, name: 'TBD', logo: null, score: 0 },
-        teamTwo: { id: null, name: 'TBD', logo: null, score: 0 },
-        winner: null
-      });
-    }
-    
-    columns.push({
-      name: `Round ${i + 1}`,
-      bestOf: props.defaultBestOf,
-      items
-    });
-  }
-  
-  return columns;
-};
-
 watch(() => props.initialState, () => {
   initializeTournament();
 }, { deep: true });
 
 watch(() => props.isDoubleElimination, (newValue) => {
   if (newValue && (!lowerColumns.value || lowerColumns.value.length === 0)) {
-    lowerColumns.value = createLowerBracketStructure(upperColumns.value.length);
+    lowerColumns.value = createLowerBracketStructure(upperColumns.value.length, props.defaultBestOf);
     emitTournamentState();
   }
 });
@@ -236,38 +210,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.overflow-x-auto {
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f1f1f1;
-}
 
-.overflow-x-auto::-webkit-scrollbar {
-  height: 8px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-.dark .overflow-x-auto::-webkit-scrollbar-track {
-  background: #374151;
-}
-
-.dark .overflow-x-auto::-webkit-scrollbar-thumb {
-  background: #4B5563;
-}
-
-.dark .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: #6B7280;
-}
 </style> 

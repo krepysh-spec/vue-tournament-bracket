@@ -14,46 +14,51 @@ export const createEmptyMatch = (number) => ({
 
 export const createTournamentState = (size, defaultBestOf = 3) => {
   const rounds = [];
-  let currentSize = size;
-  let roundNumber = 1;
+  const totalRounds = Math.log2(size);
   let matchNumber = 1;
 
-  while (currentSize > 1) {
+  // Створюємо раунди від першого до фіналу
+  for (let round = 0; round < totalRounds; round++) {
+    const matchesInRound = Math.pow(2, totalRounds - round - 1);
     const matches = [];
-    for (let i = 0; i < currentSize / 2; i++) {
+
+    for (let i = 0; i < matchesInRound; i++) {
       matches.push(createEmptyMatch(matchNumber++));
     }
 
     rounds.push({
-      name: `Round ${roundNumber}`,
+      name: `Round ${round + 1}`,
       items: matches,
       bestOf: defaultBestOf
     });
-
-    currentSize = currentSize / 2;
-    roundNumber++;
   }
 
   return rounds;
 };
 
 export const createLowerBracketStructure = (upperRounds, defaultBestOf) => {
-  const lowerRounds = Math.ceil(upperRounds / 2);
   const columns = [];
   let matchNumber = 1;
 
-  for (let i = 0; i < lowerRounds; i++) {
-    const matchesInRound = Math.pow(2, lowerRounds - i - 1);
-    const items = [];
+  // Для 16 команд: 4 раунди в верхній сітці
+  // Нижня сітка має 3 раунди з такою кількістю матчів:
+  // Round 1: 4 матчі
+  // Round 2: 2 матчі
+  // Round 3: 1 матч
 
-    for (let j = 0; j < matchesInRound; j++) {
-      items.push(createEmptyMatch(matchNumber++));
+  // Створюємо раунди нижньої сітки
+  for (let round = 0; round < upperRounds - 1; round++) {
+    const matchesInRound = Math.pow(2, upperRounds - round - 2);
+    const matches = [];
+
+    for (let i = 0; i < matchesInRound; i++) {
+      matches.push(createEmptyMatch(matchNumber++));
     }
 
     columns.push({
-      name: `Lower Round ${i + 1}`,
+      name: `Lower Round ${round + 1}`,
       bestOf: defaultBestOf,
-      items
+      items: matches
     });
   }
 
