@@ -1,20 +1,20 @@
 <template>
   <div 
-    class="p-2.5 bg-[#d66f00] cursor-pointer min-w-10 text-center"
-    :class="{'border-b border-[#c35824]': isFirstTeam}"
+    class="p-2.5 bg-orange-500 dark:bg-orange-600 cursor-pointer min-w-10 text-center"
+    :class="{'border-b border-orange-600 dark:border-orange-700': isFirstTeam}"
     @click="selectScore"
   >
     <input 
       v-if="isEditing"
       type="number"
       v-model="score"
-      class="w-12 bg-[#d66f00] text-center"
+      class="w-12 bg-orange-500 dark:bg-orange-600 text-center text-white"
       min="0"
       @change="updateScore"
       @blur="isEditing = false"
     />
     <template v-else>
-      {{team.score}}
+      <span class="text-white">{{team.score}}</span>
     </template>
   </div>
 </template>

@@ -26,7 +26,7 @@ import { ref, onMounted, watch, computed } from 'vue';
 import BracketColumn from './BracketColumn.vue';
 import RoundHeaders from './RoundHeaders.vue';
 
-const emit = defineEmits(['update:tournament-state']);
+const emit = defineEmits(['update:state']);
 
 const props = defineProps({
   initialState: {
@@ -96,13 +96,14 @@ const updateMatch = (roundIndex, matchIndex, updatedMatch) => {
 };
 
 const updateColumns = (updatedColumns) => {
+  console.log('Updating columns:', updatedColumns);
   columns.value = updatedColumns;
   emitTournamentState();
 };
 
 const emitTournamentState = () => {
   console.log('Emitting tournament state:', columns.value);
-  emit('update:tournament-state', columns.value);
+  emit('update:state', columns.value);
 };
 
 const initializeTournament = () => {

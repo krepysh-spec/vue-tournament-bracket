@@ -1,11 +1,11 @@
 <template>
   <div 
-    class="flex-grow p-2.5 hover:bg-[#5a5a5a]"
+    class="flex-grow p-2.5 hover:bg-gray-200 dark:hover:bg-gray-700"
     :class="{
-      'hover:bg-green-900/30': isWinner,
-      'hover:bg-red-900/30': isLoser,
-      'bg-green-900/30': shouldHighlight && isWinner,
-      'bg-red-900/30': shouldHighlight && isLoser
+      'hover:bg-green-900/30 dark:hover:bg-green-900/30': isWinner,
+      'hover:bg-red-900/30 dark:hover:bg-red-900/30': isLoser,
+      'bg-green-900/30 dark:bg-green-900/30': shouldHighlight && isWinner,
+      'bg-red-900/30 dark:bg-red-900/30': shouldHighlight && isLoser
     }"
     @mouseenter="highlightTeam"
     @mouseleave="unhighlightTeam"
@@ -13,7 +13,7 @@
     <select 
       v-if="canEdit"
       v-model="selectedTeam"
-      class="bg-[#444444] w-full cursor-pointer"
+      class="w-full cursor-pointer bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
       @change="updateTeam"
     >
       <option value="TBD">TBD</option>
@@ -27,7 +27,7 @@
       </option>
     </select>
     <template v-else>
-      {{team.name}}
+      <span class="text-gray-900 dark:text-white">{{team.name}}</span>
     </template>
   </div>
 </template>
@@ -82,6 +82,7 @@ const isTeamSelected = (teamName) => {
 };
 
 const availableTeamsForSelection = computed(() => {
+  if (!props.availableTeams) return [];
   return props.availableTeams.filter(team => {
     if (team.name === 'TBD') return true;
     if (team.name === props.team.name) {

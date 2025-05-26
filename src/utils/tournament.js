@@ -38,7 +38,9 @@ export const createTournamentState = (size, defaultBestOf = 3) => {
 
 export const saveTournamentState = (state) => {
   try {
-    localStorage.setItem('tournamentState', JSON.stringify(state));
+    const stateToSave = JSON.stringify(state);
+    console.log('Saving tournament state:', stateToSave);
+    localStorage.setItem('tournamentState', stateToSave);
   } catch (error) {
     console.error('Error saving tournament state:', error);
   }
@@ -47,7 +49,13 @@ export const saveTournamentState = (state) => {
 export const loadTournamentState = () => {
   try {
     const savedState = localStorage.getItem('tournamentState');
-    return savedState ? JSON.parse(savedState) : null;
+    console.log('Loading tournament state:', savedState);
+    if (savedState) {
+      const parsedState = JSON.parse(savedState);
+      console.log('Parsed tournament state:', parsedState);
+      return parsedState;
+    }
+    return null;
   } catch (error) {
     console.error('Error loading tournament state:', error);
     return null;

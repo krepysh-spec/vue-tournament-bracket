@@ -1,6 +1,6 @@
 <template>
   <div class="relative text-[0.8em] flex items-center" :class="{'group': index % 2 == 0 && totalMatches > 1}">
-    <div class="my-1.5 ml-2.5 bg-[#444444] rounded overflow-hidden w-full min-w-[200px]">
+    <div class="my-1.5 ml-2.5 bg-white dark:bg-gray-800 rounded overflow-hidden w-full min-w-[200px] shadow">
       <TeamRow
         :team="match.teamOne"
         team-position="teamOne"
@@ -35,9 +35,9 @@
     </div>
     <div 
       v-if="index % 2 == 0 && totalMatches > 1" 
-      class="absolute top-1/2 left-full w-2.5 h-[calc(100%+2px)] border-2 border-white border-l-0 rounded-r flex items-center z-10 -mt-[1px] mx-2 transition-colors duration-200"
+      class="absolute top-1/2 left-full w-2.5 h-[calc(100%+2px)] border-2 border-gray-300 dark:border-gray-600 border-l-0 rounded-r flex items-center z-10 -mt-[1px] mx-2 transition-colors duration-200"
     >
-      <span class="w-2.5 h-0.5 bg-white translate-x-full block"></span>
+      <span class="w-2.5 h-0.5 bg-gray-300 dark:bg-gray-600 translate-x-full block"></span>
     </div>
   </div>
 </template>
