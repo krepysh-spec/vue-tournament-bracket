@@ -35,4 +35,49 @@ export const createTournamentState = (size, defaultBestOf = 3) => {
   }
 
   return rounds;
+};
+
+export const createLowerBracketStructure = (upperRounds, defaultBestOf) => {
+  const lowerRounds = Math.ceil(upperRounds / 2);
+  const columns = [];
+  let matchNumber = 1;
+
+  for (let i = 0; i < lowerRounds; i++) {
+    const matchesInRound = Math.pow(2, lowerRounds - i - 1);
+    const items = [];
+
+    for (let j = 0; j < matchesInRound; j++) {
+      items.push(createEmptyMatch(matchNumber++));
+    }
+
+    columns.push({
+      name: `Lower Round ${i + 1}`,
+      bestOf: defaultBestOf,
+      items
+    });
+  }
+
+  return columns;
+};
+
+export const getNextMatchIndex = (currentMatchIndex, isUpperBracket = true) => {
+  if (isUpperBracket) {
+    return Math.floor(currentMatchIndex / 2);
+  }
+  return Math.floor(currentMatchIndex / 2);
+};
+
+export const getNextRoundIndex = (currentRoundIndex, isUpperBracket = true) => {
+  if (isUpperBracket) {
+    return currentRoundIndex + 1;
+  }
+  return currentRoundIndex + 1;
+};
+
+export const getLowerBracketMatchIndex = (upperRoundIndex, upperMatchIndex) => {
+  return Math.floor(upperMatchIndex / 2);
+};
+
+export const getLowerBracketRoundIndex = (upperRoundIndex) => {
+  return Math.floor(upperRoundIndex / 2);
 }; 

@@ -1,23 +1,34 @@
 <template>
   <div class="flex flex-col">
-    <BracketRoundHeaders 
-      :columns="columns" 
-      @update:columns="updateColumns"
-    />
-    <div class="flex flex-1 p-5">
-      <BracketColumn 
-        v-for="(column, index) in columns" 
-        :key="column.name"
-        :column="column"
-        :column-index="index"
-        :available-teams="availableTeams"
-        :selected-teams="selectedTeams"
-        :highlighted-team="highlightedTeam"
-        @update:match="updateMatch"
-        @highlight-team="highlightTeam"
-        @unhighlight-team="unhighlightTeam"
+    <div class="text-xl font-bold text-gray-800 dark:text-white mb-4 px-5">Upper Bracket</div>
+    <div class="flex flex-col">
+      <BracketRoundHeaders 
+        :columns="upperColumns" 
+        @update:columns="updateUpperColumns"
       />
+      <div class="flex flex-1 p-5">
+        <BracketColumn 
+          v-for="(column, index) in upperColumns" 
+          :key="column.name"
+          :column="column"
+          :column-index="index"
+          :available-teams="availableTeams"
+          :selected-teams="selectedTeams"
+          :highlighted-team="highlightedTeam"
+          @update:match="updateUpperMatch"
+          @highlight-team="highlightTeam"
+          @unhighlight-team="unhighlightTeam"
+        />
+      </div>
     </div>
+
+    <BracketLower
+      v-if="isDoubleElimination"
+      :initial-state="lowerColumns"
+      :available-teams="availableTeams"
+      :default-best-of="defaultBestOf"
+      @update:state="updateLowerState"
+    />
   </div>
 </template>
 
@@ -25,6 +36,7 @@
 import { ref, onMounted, watch, computed } from 'vue';
 import BracketColumn from './bracket/BracketColumn.vue';
 import BracketRoundHeaders from './bracket/BracketRoundHeaders.vue';
+import BracketLower from './bracket/BracketLower.vue';
 
 const emit = defineEmits(['update:state']);
 
@@ -41,20 +53,33 @@ const props = defineProps({
     type: Number,
     default: 3,
     validator: (value) => [1, 3, 5, 7, 9].includes(value)
+  },
+  isDoubleElimination: {
+    type: Boolean,
+    default: false
   }
 });
 
-const columns = ref([]);
+const upperColumns = ref([]);
+const lowerColumns = ref([]);
 const highlightedTeam = ref(null);
 
 const selectedTeams = computed(() => {
   const teams = new Set();
-  columns.value.forEach(round => {
+  upperColumns.value.forEach(round => {
     round.items.forEach(match => {
       if (match.teamOne.name !== 'TBD') teams.add(match.teamOne.name);
       if (match.teamTwo.name !== 'TBD') teams.add(match.teamTwo.name);
     });
   });
+  if (props.isDoubleElimination) {
+    lowerColumns.value.forEach(round => {
+      round.items.forEach(match => {
+        if (match.teamOne.name !== 'TBD') teams.add(match.teamOne.name);
+        if (match.teamTwo.name !== 'TBD') teams.add(match.teamTwo.name);
+      });
+    });
+  }
   return Array.from(teams);
 });
 
@@ -66,22 +91,22 @@ const unhighlightTeam = () => {
   highlightedTeam.value = null;
 };
 
-const updateMatch = (roundIndex, matchIndex, updatedMatch) => {
-  console.log('Updating match:', { roundIndex, matchIndex, updatedMatch });
-  if (columns.value[roundIndex] && columns.value[roundIndex].items) {
-    columns.value[roundIndex].items[matchIndex] = updatedMatch;
+const updateUpperMatch = (roundIndex, matchIndex, updatedMatch) => {
+  console.log('Updating upper match:', { roundIndex, matchIndex, updatedMatch });
+  if (upperColumns.value[roundIndex] && upperColumns.value[roundIndex].items) {
+    upperColumns.value[roundIndex].items[matchIndex] = updatedMatch;
     
     // Якщо є переможець, оновлюємо наступний раунд
-    if (updatedMatch.winner && roundIndex < columns.value.length - 1) {
+    if (updatedMatch.winner && roundIndex < upperColumns.value.length - 1) {
       const nextRoundIndex = roundIndex + 1;
       const nextMatchIndex = Math.floor(matchIndex / 2);
       
-      if (columns.value[nextRoundIndex] && columns.value[nextRoundIndex].items[nextMatchIndex]) {
-        const nextMatch = columns.value[nextRoundIndex].items[nextMatchIndex];
+      if (upperColumns.value[nextRoundIndex] && upperColumns.value[nextRoundIndex].items[nextMatchIndex]) {
+        const nextMatch = upperColumns.value[nextRoundIndex].items[nextMatchIndex];
         const teamPosition = matchIndex % 2 === 0 ? 'teamOne' : 'teamTwo';
         const winningTeam = updatedMatch[updatedMatch.winner];
         
-        columns.value[nextRoundIndex].items[nextMatchIndex] = {
+        upperColumns.value[nextRoundIndex].items[nextMatchIndex] = {
           ...nextMatch,
           [teamPosition]: {
             id: winningTeam.id,
@@ -92,32 +117,114 @@ const updateMatch = (roundIndex, matchIndex, updatedMatch) => {
         };
       }
     }
+
+    // Якщо це Double Elimination і команда програла, додаємо її в нижню сітку
+    if (props.isDoubleElimination && updatedMatch.winner) {
+      const losingTeam = updatedMatch[updatedMatch.winner === 'teamOne' ? 'teamTwo' : 'teamOne'];
+      if (losingTeam.name !== 'TBD') {
+        // Знаходимо відповідний матч в нижній сітці
+        const lowerRoundIndex = Math.floor(roundIndex / 2);
+        const lowerMatchIndex = Math.floor(matchIndex / 2);
+        
+        if (lowerColumns.value[lowerRoundIndex] && lowerColumns.value[lowerRoundIndex].items[lowerMatchIndex]) {
+          const lowerMatch = lowerColumns.value[lowerRoundIndex].items[lowerMatchIndex];
+          const teamPosition = matchIndex % 2 === 0 ? 'teamOne' : 'teamTwo';
+          
+          lowerColumns.value[lowerRoundIndex].items[lowerMatchIndex] = {
+            ...lowerMatch,
+            [teamPosition]: {
+              id: losingTeam.id,
+              name: losingTeam.name,
+              logo: losingTeam.logo,
+              score: 0
+            }
+          };
+        }
+      }
+    }
     
     emitTournamentState();
   }
 };
 
-const updateColumns = (updatedColumns) => {
-  console.log('Updating columns:', updatedColumns);
-  columns.value = updatedColumns;
+const updateUpperColumns = (updatedColumns) => {
+  console.log('Updating upper columns:', updatedColumns);
+  upperColumns.value = updatedColumns;
+  emitTournamentState();
+};
+
+const updateLowerState = (updatedColumns) => {
+  console.log('Updating lower state:', updatedColumns);
+  lowerColumns.value = updatedColumns;
   emitTournamentState();
 };
 
 const emitTournamentState = () => {
-  console.log('Emitting tournament state:', columns.value);
-  emit('update:state', columns.value);
+  console.log('Emitting tournament state:', {
+    upper: upperColumns.value,
+    lower: props.isDoubleElimination ? lowerColumns.value : null
+  });
+  emit('update:state', {
+    upper: upperColumns.value,
+    lower: props.isDoubleElimination ? lowerColumns.value : null
+  });
 };
 
 const initializeTournament = () => {
   console.log('Initializing tournament with state:', props.initialState);
-  if (props.initialState && props.initialState.length > 0) {
-    columns.value = JSON.parse(JSON.stringify(props.initialState));
+  if (props.initialState) {
+    if (Array.isArray(props.initialState)) {
+      // Старий формат (тільки верхня сітка)
+      upperColumns.value = JSON.parse(JSON.stringify(props.initialState));
+      if (props.isDoubleElimination) {
+        // Створюємо початкову структуру для нижньої сітки
+        lowerColumns.value = createLowerBracketStructure(upperColumns.value.length);
+      }
+    } else {
+      // Новий формат (верхня і нижня сітки)
+      upperColumns.value = JSON.parse(JSON.stringify(props.initialState.upper || []));
+      lowerColumns.value = JSON.parse(JSON.stringify(props.initialState.lower || []));
+    }
   }
+};
+
+const createLowerBracketStructure = (upperRounds) => {
+  const lowerRounds = Math.ceil(upperRounds / 2);
+  const columns = [];
+  
+  for (let i = 0; i < lowerRounds; i++) {
+    const matchesInRound = Math.pow(2, lowerRounds - i - 1);
+    const items = [];
+    
+    for (let j = 0; j < matchesInRound; j++) {
+      items.push({
+        number: j + 1,
+        teamOne: { id: null, name: 'TBD', logo: null, score: 0 },
+        teamTwo: { id: null, name: 'TBD', logo: null, score: 0 },
+        winner: null
+      });
+    }
+    
+    columns.push({
+      name: `Round ${i + 1}`,
+      bestOf: props.defaultBestOf,
+      items
+    });
+  }
+  
+  return columns;
 };
 
 watch(() => props.initialState, () => {
   initializeTournament();
 }, { deep: true });
+
+watch(() => props.isDoubleElimination, (newValue) => {
+  if (newValue && (!lowerColumns.value || lowerColumns.value.length === 0)) {
+    lowerColumns.value = createLowerBracketStructure(upperColumns.value.length);
+    emitTournamentState();
+  }
+});
 
 onMounted(() => {
   initializeTournament();

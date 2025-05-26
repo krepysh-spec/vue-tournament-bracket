@@ -15,7 +15,17 @@
             <select v-model="defaultBestOf" class="border rounded p-1 bg-white dark:bg-gray-800 dark:text-white">
               <option v-for="value in bestOfValues" :key="value" :value="value">{{ value }}</option>
             </select>
-          </div>
+            </div>
+          <div class="flex items-center gap-2">
+            <label class="text-gray-700 dark:text-gray-300">Format:</label>
+            <select 
+              v-model="isDoubleElimination" 
+              class="border rounded p-1 bg-white dark:bg-gray-800 dark:text-white"
+            >
+              <option :value="false">Single Elimination</option>
+              <option :value="true">Double Elimination</option>
+            </select>
+            </div>
           <div class="flex items-center gap-2">
             <label class="text-gray-700 dark:text-gray-300">Theme:</label>
             <button 
@@ -46,10 +56,12 @@
       <TournamentBracket 
         :initial-state="tournamentState" 
         :available-teams="teams"
+        :default-best-of="defaultBestOf"
+        :is-double-elimination="isDoubleElimination"
         @update:state="updateTournamentState"
       />
-    </div>
   </div>
+</div>
 </template>
 
 <script setup>
@@ -62,6 +74,7 @@ const bestOfValues = [1, 3, 5, 7, 9];
 const selectedSize = ref(16);
 const defaultBestOf = ref(3);
 const isDark = ref(localStorage.getItem('theme') === 'dark');
+const isDoubleElimination = ref(localStorage.getItem('doubleElimination') === 'true');
 
 const teams = ref([
   {id: 1, name: 'Alpha', logo: 'https://www.gravatar.com/avatar/1?d=identicon&s=32'},
@@ -86,7 +99,11 @@ const tournamentState = ref(createTournamentState(selectedSize.value, defaultBes
 
 const totalMatches = computed(() => {
   if (!tournamentState.value) return 0;
-  return tournamentState.value.reduce((total, round) => total + round.items.length, 0);
+  if (Array.isArray(tournamentState.value)) {
+    return tournamentState.value.reduce((total, round) => total + round.items.length, 0);
+  }
+  return (tournamentState.value.upper?.reduce((total, round) => total + round.items.length, 0) || 0) +
+         (tournamentState.value.lower?.reduce((total, round) => total + round.items.length, 0) || 0);
 });
 
 const toggleTheme = () => {
@@ -94,6 +111,11 @@ const toggleTheme = () => {
   updateTheme();
   localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
 };
+
+watch(isDoubleElimination, (newValue) => {
+  localStorage.setItem('doubleElimination', newValue);
+  clearState();
+});
 
 const updateTheme = () => {
   if (isDark.value) {
@@ -107,8 +129,7 @@ const updateTheme = () => {
 updateTheme();
 
 watch([selectedSize, defaultBestOf], () => {
-  tournamentState.value = createTournamentState(selectedSize.value, defaultBestOf.value);
-  localStorage.setItem('tournamentState', JSON.stringify(tournamentState.value));
+  clearState();
 });
 
 const updateTournamentState = (newState) => {
@@ -125,7 +146,12 @@ const clearState = () => {
 onMounted(() => {
   const savedState = localStorage.getItem('tournamentState');
   if (savedState) {
-    tournamentState.value = JSON.parse(savedState);
+    try {
+      tournamentState.value = JSON.parse(savedState);
+    } catch (error) {
+      console.error('Error parsing saved tournament state:', error);
+      clearState();
+    }
   }
 });
 </script>
