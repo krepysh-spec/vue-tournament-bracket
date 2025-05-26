@@ -46,20 +46,33 @@ export const createLowerBracketStructure = (upperRounds, defaultBestOf) => {
   // Round 2: 2 матчі
   // Round 3: 1 матч
 
-  // Створюємо раунди нижньої сітки
-  for (let round = 0; round < upperRounds - 1; round++) {
-    const matchesInRound = Math.pow(2, upperRounds - round - 2);
-    const matches = [];
+  // Перший раунд нижньої сітки
+  const firstRoundMatches = Math.pow(2, upperRounds - 2);
+  const firstRound = {
+    name: 'Lower Round 1',
+    bestOf: defaultBestOf,
+    items: Array(firstRoundMatches).fill(null).map(() => createEmptyMatch(matchNumber++))
+  };
+  columns.push(firstRound);
 
-    for (let i = 0; i < matchesInRound; i++) {
-      matches.push(createEmptyMatch(matchNumber++));
-    }
+  // Другий раунд нижньої сітки
+  const secondRoundMatches = Math.pow(2, upperRounds - 3);
+  const secondRound = {
+    name: 'Lower Round 2',
+    bestOf: defaultBestOf,
+    items: Array(secondRoundMatches).fill(null).map(() => createEmptyMatch(matchNumber++))
+  };
+  columns.push(secondRound);
 
-    columns.push({
-      name: `Lower Round ${round + 1}`,
+  // Третій раунд нижньої сітки (якщо потрібен)
+  if (upperRounds > 3) {
+    const thirdRoundMatches = Math.pow(2, upperRounds - 4);
+    const thirdRound = {
+      name: 'Lower Round 3',
       bestOf: defaultBestOf,
-      items: matches
-    });
+      items: Array(thirdRoundMatches).fill(null).map(() => createEmptyMatch(matchNumber++))
+    };
+    columns.push(thirdRound);
   }
 
   return columns;
