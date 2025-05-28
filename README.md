@@ -1,13 +1,90 @@
-# 🏆 Vue Tournament Bracket
+# Bracket Vue Tool
 
-**Vue Tournament Bracket** is a Vue 3 component for building, displaying, and saving interactive tournament brackets.
+A Vue 3 component for creating and managing tournament brackets with support for both Single and Double Elimination formats.
 
-It allows you to:
-✅ Select number of teams (2, 4, 8, 16, 32)  
-✅ Set up series as **Best of N**  
-✅ Add custom teams  
-✅ Save and load the tournament state via localStorage  
-✅ Automatically recalculate matches when settings change  
+## Installation
+
+```bash
+npm install bracket-vue-tool
+```
+
+## Usage
+
+### Global Registration
+
+```javascript
+import { createApp } from 'vue'
+import { install } from 'bracket-vue-tool'
+import 'bracket-vue-tool/dist/style.css'
+
+const app = createApp(App)
+app.use({ install })
+```
+
+### Component Registration
+
+```javascript
+import { TournamentBracket } from 'bracket-vue-tool'
+import 'bracket-vue-tool/dist/style.css'
+
+export default {
+  components: {
+    TournamentBracket
+  }
+}
+```
+
+### Basic Usage
+
+```vue
+<template>
+  <TournamentBracket
+    :size="8"
+    :is-double-elimination="true"
+    :default-best-of="3"
+    @update:teams="handleTeamsUpdate"
+    @update:scores="handleScoresUpdate"
+  />
+</template>
+
+<script setup>
+const handleTeamsUpdate = (teams) => {
+  console.log('Teams updated:', teams)
+}
+
+const handleScoresUpdate = (scores) => {
+  console.log('Scores updated:', scores)
+}
+</script>
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| size | Number | 8 | Number of teams in the tournament (must be a power of 2) |
+| isDoubleElimination | Boolean | false | Whether to use Double Elimination format |
+| defaultBestOf | Number | 1 | Default number of games in a match (1, 3, 5, 7, or 9) |
+
+## Events
+
+| Event | Payload | Description |
+|-------|---------|-------------|
+| update:teams | Array | Emitted when teams are updated |
+| update:scores | Array | Emitted when scores are updated |
+
+## Features
+
+- Single and Double Elimination formats
+- Customizable number of games per match
+- Team selection and score management
+- Responsive design
+- Dark mode support
+- State persistence
+
+## License
+
+MIT
 
 ---
 

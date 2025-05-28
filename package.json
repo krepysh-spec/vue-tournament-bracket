@@ -1,22 +1,30 @@
 {
   "name": "bracket-vue-tool",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "files": ["dist"],
+  "main": "./dist/bracket-vue-tool.umd.js",
+  "module": "./dist/bracket-vue-tool.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/bracket-vue-tool.es.js",
+      "require": "./dist/bracket-vue-tool.umd.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.7",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "tailwindcss": "^4.1.7"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.3",
     "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.7",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "@tailwindcss/vite": "^4.0.0",
+    "@vitejs/plugin-vue": "^5.2.4"
   }
 }
