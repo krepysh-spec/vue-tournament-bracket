@@ -92,11 +92,11 @@ const N = {
           key: 0,
           src: i.value,
           alt: a.value,
-          class: "w-5 h-5 rounded-full"
+          class: "w-6 h-6 rounded-full"
         }, null, 8, X)) : R("", !0),
         j(w("select", {
           "onUpdate:modelValue": g[0] || (g[0] = (o) => a.value = o),
-          class: "fi-select-input w-full border-none bg-transparent text-base text-gray-900 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900",
+          class: "fi-select-input p-0 w-full border-none bg-transparent text-base text-gray-900 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900",
           onChange: b
         }, [
           g[1] || (g[1] = w("option", { value: "TBD" }, "TBD", -1)),
