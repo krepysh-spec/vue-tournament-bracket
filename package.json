@@ -1,8 +1,10 @@
 {
   "name": "bracket-vue-tool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/bracket-vue-tool.umd.js",
   "module": "./dist/bracket-vue-tool.es.js",
   "exports": {
