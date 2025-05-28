@@ -3,14 +3,14 @@
     <div class="my-1.5 ml-2.5 bg-white dark:bg-gray-800 rounded overflow-hidden w-full min-w-[200px] shadow">
       <TeamRow
         :team="match.teamOne"
-        team-position="teamOne"
+        :team-position="TEAM_POSITION.ONE"
         :available-teams="availableTeams"
         :selected-teams="selectedTeams"
         :can-edit="canEdit"
         :can-edit-score="canEditScore"
-        :is-winner="isWinner('teamOne')"
-        :is-loser="isLoser('teamOne')"
-        :should-highlight="shouldHighlight('teamOne')"
+        :is-winner="isWinner(TEAM_POSITION.ONE)"
+        :is-loser="isLoser(TEAM_POSITION.ONE)"
+        :should-highlight="shouldHighlight(TEAM_POSITION.ONE)"
         :is-first-team="true"
         @update:team="updateTeam"
         @update:score="updateScore"
@@ -19,14 +19,14 @@
       />
       <TeamRow
         :team="match.teamTwo"
-        team-position="teamTwo"
+        :team-position="TEAM_POSITION.TWO"
         :available-teams="availableTeams"
         :selected-teams="selectedTeams"
         :can-edit="canEdit"
         :can-edit-score="canEditScore"
-        :is-winner="isWinner('teamTwo')"
-        :is-loser="isLoser('teamTwo')"
-        :should-highlight="shouldHighlight('teamTwo')"
+        :is-winner="isWinner(TEAM_POSITION.TWO)"
+        :is-loser="isLoser(TEAM_POSITION.TWO)"
+        :should-highlight="shouldHighlight(TEAM_POSITION.TWO)"
         @update:team="updateTeam"
         @update:score="updateScore"
         @highlight-team="highlightTeam"
@@ -45,6 +45,7 @@
 <script setup>
 import { computed } from 'vue';
 import TeamRow from '../team/TeamRow.vue';
+import { TBD, TEAM_POSITION } from '../../constants/tournament';
 
 const props = defineProps({
   match: {
@@ -84,7 +85,7 @@ const canEdit = computed(() => props.roundIndex === 0);
 
 // Перевіряємо, чи можна редагувати рахунок (коли обидві команди вибрані)
 const canEditScore = computed(() => {
-  return props.match.teamOne.name !== 'TBD' && props.match.teamTwo.name !== 'TBD';
+  return props.match[TEAM_POSITION.ONE].name !== TBD && props.match[TEAM_POSITION.TWO].name !== TBD;
 });
 
 const isWinner = (teamPosition) => {
@@ -127,7 +128,7 @@ const updateScore = ({ position, score }) => {
 
   // Визначаємо переможця на основі рахунку
   if (updatedMatch.teamOne.score > 0 || updatedMatch.teamTwo.score > 0) {
-    updatedMatch.winner = updatedMatch.teamOne.score > updatedMatch.teamTwo.score ? 'teamOne' : 'teamTwo';
+    updatedMatch.winner = updatedMatch.teamOne.score > updatedMatch.teamTwo.score ? TEAM_POSITION.ONE : TEAM_POSITION.TWO;
   } else {
     updatedMatch.winner = null;
   }

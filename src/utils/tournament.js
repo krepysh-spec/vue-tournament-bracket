@@ -1,14 +1,16 @@
+import { TBD, TEAM_POSITION } from '../constants/tournament';
+
 export const createEmptyTeam = () => ({
   id: null,
-  name: 'TBD',
+  name: TBD,
   logo: null,
   score: 0
 });
 
 export const createEmptyMatch = (number) => ({
   number,
-  teamOne: createEmptyTeam(),
-  teamTwo: createEmptyTeam(),
+  [TEAM_POSITION.ONE]: createEmptyTeam(),
+  [TEAM_POSITION.TWO]: createEmptyTeam(),
   winner: null
 });
 

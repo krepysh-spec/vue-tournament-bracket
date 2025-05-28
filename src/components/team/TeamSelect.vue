@@ -13,7 +13,7 @@
     <div v-if="canEdit" class="relative">
     <select 
       v-model="selectedTeam"
-        class="w-full cursor-pointer bg-transparent text-gray-900 dark:text-white pl-8"
+        class="fi-select-input pl-8 w-full border-none bg-transparent text-base text-gray-900 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900"
       @change="updateTeam"
     >
       <option value="TBD">TBD</option>
@@ -49,6 +49,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
+import { TBD } from '../../constants/tournament';
 
 const props = defineProps({
   team: {
@@ -89,7 +90,7 @@ const emit = defineEmits(['update:team', 'highlight-team', 'unhighlight-team']);
 
 const selectedTeam = ref(props.team.name);
 const selectedTeamLogo = computed(() => {
-  if (selectedTeam.value === 'TBD') return null;
+  if (selectedTeam.value === TBD) return null;
   return props.availableTeams.find(t => t.name === selectedTeam.value)?.logo || null;
 });
 
@@ -105,16 +106,16 @@ onMounted(() => {
 });
 
 const isTeamSelected = (teamName) => {
-  if (teamName === 'TBD') return false;
+  if (teamName === TBD) return false;
   return (props.selectedTeams.includes(teamName) && 
          teamName !== props.team.name) ||
-         (teamName === props.team.name && props.team.name !== 'TBD');
+         (teamName === props.team.name && props.team.name !== TBD);
 };
 
 const availableTeamsForSelection = computed(() => {
   if (!props.availableTeams) return [];
   return props.availableTeams.filter(team => {
-    if (team.name === 'TBD') return true;
+    if (team.name === TBD) return true;
     if (team.name === props.team.name) {
       return true;
     }
@@ -123,7 +124,7 @@ const availableTeamsForSelection = computed(() => {
 });
 
 const highlightTeam = () => {
-  if (props.team.name !== 'TBD') {
+  if (props.team.name !== TBD) {
     emit('highlight-team', props.team.name);
   }
 };

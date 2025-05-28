@@ -19,11 +19,11 @@
           <div class="flex items-center gap-2">
             <label class="text-gray-700 dark:text-gray-300">Format:</label>
             <select 
-              v-model="isDoubleElimination" 
+              v-model="tournamentFormat" 
               class="border rounded p-1 bg-white dark:bg-gray-800 dark:text-white"
             >
-              <option :value="false">Single Elimination</option>
-              <option :value="true">Double Elimination</option>
+              <option value="single_elimination">Single Elimination</option>
+              <option value="double_elimination">Double Elimination</option>
             </select>
             </div>
           <div class="flex items-center gap-2">
@@ -57,7 +57,7 @@
         :initial-state="tournamentState" 
         :available-teams="teams"
         :default-best-of="defaultBestOf"
-        :is-double-elimination="isDoubleElimination"
+        :format="tournamentFormat"
         @update:state="updateTournamentState"
       />
   </div>
@@ -74,7 +74,7 @@ const bestOfValues = [1, 3, 5, 7, 9];
 const selectedSize = ref(16);
 const defaultBestOf = ref(3);
 const isDark = ref(localStorage.getItem('theme') === 'dark');
-const isDoubleElimination = ref(localStorage.getItem('doubleElimination') === 'true');
+const tournamentFormat = ref(localStorage.getItem('tournamentFormat') || 'single_elimination');
 
 const teams = ref([
   {id: 1, name: 'Alpha', logo: 'https://www.gravatar.com/avatar/1?d=identicon&s=32'},
@@ -112,8 +112,8 @@ const toggleTheme = () => {
   localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
 };
 
-watch(isDoubleElimination, (newValue) => {
-  localStorage.setItem('doubleElimination', newValue);
+watch(tournamentFormat, (newValue) => {
+  localStorage.setItem('tournamentFormat', newValue);
   clearState();
 });
 
@@ -156,7 +156,7 @@ onMounted(() => {
       if (Array.isArray(parsedState)) {
         tournamentState.value = {
           upper: parsedState,
-          lower: isDoubleElimination.value ? createLowerBracketStructure(parsedState.length, defaultBestOf.value) : null
+          lower: tournamentFormat.value === 'double_elimination' ? createLowerBracketStructure(parsedState.length, defaultBestOf.value) : null
         };
       } else {
         tournamentState.value = parsedState;

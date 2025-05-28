@@ -32,6 +32,7 @@
 import { ref, onMounted, watch, computed } from 'vue';
 import BracketColumn from './BracketColumn.vue';
 import BracketRoundHeaders from './BracketRoundHeaders.vue';
+import { TBD, TEAM_POSITION } from '../../constants/tournament';
 
 const emit = defineEmits(['update:state']);
 
@@ -58,8 +59,8 @@ const selectedTeams = computed(() => {
   const teams = new Set();
   columns.value.forEach(round => {
     round.items.forEach(match => {
-      if (match.teamOne.name !== 'TBD') teams.add(match.teamOne.name);
-      if (match.teamTwo.name !== 'TBD') teams.add(match.teamTwo.name);
+      if (match[TEAM_POSITION.ONE].name !== TBD) teams.add(match[TEAM_POSITION.ONE].name);
+      if (match[TEAM_POSITION.TWO].name !== TBD) teams.add(match[TEAM_POSITION.TWO].name);
     });
   });
   return Array.from(teams);
@@ -85,7 +86,7 @@ const updateMatch = (roundIndex, matchIndex, updatedMatch) => {
       
       if (columns.value[nextRoundIndex] && columns.value[nextRoundIndex].items[nextMatchIndex]) {
         const nextMatch = columns.value[nextRoundIndex].items[nextMatchIndex];
-        const teamPosition = matchIndex % 2 === 0 ? 'teamOne' : 'teamTwo';
+        const teamPosition = matchIndex % 2 === 0 ? TEAM_POSITION.ONE : TEAM_POSITION.TWO;
         const winningTeam = updatedMatch[updatedMatch.winner];
         
         columns.value[nextRoundIndex].items[nextMatchIndex] = {
@@ -132,38 +133,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.overflow-x-auto {
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f1f1f1;
-}
 
-.overflow-x-auto::-webkit-scrollbar {
-  height: 8px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-.overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-.dark .overflow-x-auto::-webkit-scrollbar-track {
-  background: #374151;
-}
-
-.dark .overflow-x-auto::-webkit-scrollbar-thumb {
-  background: #4B5563;
-}
-
-.dark .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: #6B7280;
-}
 </style> 

@@ -27,7 +27,7 @@
     </div>
 
     <BracketLower
-      v-if="isDoubleElimination"
+      v-if="format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION"
       :initial-state="lowerColumns"
       :available-teams="availableTeams"
       :default-best-of="defaultBestOf"
@@ -42,6 +42,7 @@ import BracketColumn from './bracket/BracketColumn.vue';
 import BracketRoundHeaders from './bracket/BracketRoundHeaders.vue';
 import BracketLower from './bracket/BracketLower.vue';
 import { createLowerBracketStructure } from '../utils/tournament';
+import { TOURNAMENT_FORMAT, TBD, TEAM_POSITION } from '../constants/tournament';
 
 const emit = defineEmits(['update:state']);
 
@@ -59,9 +60,10 @@ const props = defineProps({
     default: 3,
     validator: (value) => [1, 3, 5, 7, 9].includes(value)
   },
-  isDoubleElimination: {
-    type: Boolean,
-    default: false
+  format: {
+    type: String,
+    default: TOURNAMENT_FORMAT.SINGLE_ELIMINATION,
+    validator: (value) => Object.values(TOURNAMENT_FORMAT).includes(value)
   }
 });
 
@@ -73,15 +75,15 @@ const selectedTeams = computed(() => {
   const teams = new Set();
   upperColumns.value.forEach(round => {
     round.items.forEach(match => {
-      if (match.teamOne.name !== 'TBD') teams.add(match.teamOne.name);
-      if (match.teamTwo.name !== 'TBD') teams.add(match.teamTwo.name);
+      if (match[TEAM_POSITION.ONE].name !== TBD) teams.add(match[TEAM_POSITION.ONE].name);
+      if (match[TEAM_POSITION.TWO].name !== TBD) teams.add(match[TEAM_POSITION.TWO].name);
     });
   });
-  if (props.isDoubleElimination) {
+  if (props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION) {
     lowerColumns.value.forEach(round => {
       round.items.forEach(match => {
-        if (match.teamOne.name !== 'TBD') teams.add(match.teamOne.name);
-        if (match.teamTwo.name !== 'TBD') teams.add(match.teamTwo.name);
+        if (match[TEAM_POSITION.ONE].name !== TBD) teams.add(match[TEAM_POSITION.ONE].name);
+        if (match[TEAM_POSITION.TWO].name !== TBD) teams.add(match[TEAM_POSITION.TWO].name);
       });
     });
   }
@@ -108,7 +110,7 @@ const updateUpperMatch = (roundIndex, matchIndex, updatedMatch) => {
       
       if (upperColumns.value[nextRoundIndex] && upperColumns.value[nextRoundIndex].items[nextMatchIndex]) {
         const nextMatch = upperColumns.value[nextRoundIndex].items[nextMatchIndex];
-        const teamPosition = matchIndex % 2 === 0 ? 'teamOne' : 'teamTwo';
+        const teamPosition = matchIndex % 2 === 0 ? TEAM_POSITION.ONE : TEAM_POSITION.TWO;
         const winningTeam = updatedMatch[updatedMatch.winner];
         
         upperColumns.value[nextRoundIndex].items[nextMatchIndex] = {
@@ -124,16 +126,16 @@ const updateUpperMatch = (roundIndex, matchIndex, updatedMatch) => {
     }
 
     // Якщо це Double Elimination і команда програла, додаємо її в нижню сітку
-    if (props.isDoubleElimination && updatedMatch.winner) {
-      const losingTeam = updatedMatch[updatedMatch.winner === 'teamOne' ? 'teamTwo' : 'teamOne'];
-      if (losingTeam.name !== 'TBD') {
+    if (props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION && updatedMatch.winner) {
+      const losingTeam = updatedMatch[updatedMatch.winner === TEAM_POSITION.ONE ? TEAM_POSITION.TWO : TEAM_POSITION.ONE];
+      if (losingTeam.name !== TBD) {
         // Знаходимо відповідний матч в нижній сітці
         const lowerRoundIndex = Math.floor(roundIndex / 2);
         const lowerMatchIndex = Math.floor(matchIndex / 2);
         
         if (lowerColumns.value[lowerRoundIndex] && lowerColumns.value[lowerRoundIndex].items[lowerMatchIndex]) {
           const lowerMatch = lowerColumns.value[lowerRoundIndex].items[lowerMatchIndex];
-          const teamPosition = matchIndex % 2 === 0 ? 'teamOne' : 'teamTwo';
+          const teamPosition = matchIndex % 2 === 0 ? TEAM_POSITION.ONE : TEAM_POSITION.TWO;
           
           lowerColumns.value[lowerRoundIndex].items[lowerMatchIndex] = {
             ...lowerMatch,
@@ -167,11 +169,11 @@ const updateLowerState = (updatedColumns) => {
 const emitTournamentState = () => {
   console.log('Emitting tournament state:', {
     upper: upperColumns.value,
-    lower: props.isDoubleElimination ? lowerColumns.value : null
+    lower: props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION ? lowerColumns.value : null
   });
   emit('update:state', {
     upper: upperColumns.value,
-    lower: props.isDoubleElimination ? lowerColumns.value : null
+    lower: props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION ? lowerColumns.value : null
   });
 };
 
@@ -181,7 +183,7 @@ const initializeTournament = () => {
     if (Array.isArray(props.initialState)) {
       // Старий формат (тільки верхня сітка)
       upperColumns.value = JSON.parse(JSON.stringify(props.initialState));
-      if (props.isDoubleElimination) {
+      if (props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION) {
         // Створюємо початкову структуру для нижньої сітки
         lowerColumns.value = createLowerBracketStructure(upperColumns.value.length, props.defaultBestOf);
       }
@@ -197,8 +199,8 @@ watch(() => props.initialState, () => {
   initializeTournament();
 }, { deep: true });
 
-watch(() => props.isDoubleElimination, (newValue) => {
-  if (newValue && (!lowerColumns.value || lowerColumns.value.length === 0)) {
+watch(() => props.format, (newValue) => {
+  if (newValue === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION && (!lowerColumns.value || lowerColumns.value.length === 0)) {
     lowerColumns.value = createLowerBracketStructure(upperColumns.value.length, props.defaultBestOf);
     emitTournamentState();
   }
