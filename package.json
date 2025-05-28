@@ -10,7 +10,7 @@
       "import": "./dist/bracket-vue-tool.es.js",
       "require": "./dist/bracket-vue-tool.umd.js"
     },
-    "./style.css": "./dist/style.css"
+    "./dist/bracket-vue-tool.css": "./dist/bracket-vue-tool.css"
   },
   "scripts": {
     "dev": "vite",
