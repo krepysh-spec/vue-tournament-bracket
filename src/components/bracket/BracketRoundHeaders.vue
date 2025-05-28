@@ -1,14 +1,14 @@
 <template>
-  <div class="flex justify-between px-5 ">
+  <div class="flex justify-between px-5">
     <div 
       v-for="(column, index) in columns" 
       :key="column.name"
-      class="flex-1 text-center text-sm text-gray-400 py-2 bg-white dark:bg-gray-800 rounded overflow-hidden shadow"
+      class="flex-1 text-center text-sm text-gray-400 py-2 rounded overflow-hidden"
     >
       <div class="flex flex-col items-center gap-2">
         <input 
-          :value="column.name"
-          @input="updateColumnName(index, $event.target.value)"
+          v-model="localColumnNames[index]"
+          @blur="updateColumnName(index, $event.target.value)"
           class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded text-center w-32 text-gray-900 dark:text-white"
         />
         <select 
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   columns: {
@@ -39,7 +39,14 @@ const emit = defineEmits(['update:columns']);
 
 const bestOfValues = [1, 3, 5, 7, 9];
 
+const localColumnNames = ref(props.columns.map(col => col.name));
+
+watch(() => props.columns, (newColumns) => {
+  localColumnNames.value = newColumns.map(col => col.name);
+}, { deep: true });
+
 const updateColumnName = (index, newName) => {
+  localColumnNames.value[index] = newName;
   const updatedColumns = [...props.columns];
   updatedColumns[index] = {
     ...updatedColumns[index],
