@@ -1,11 +1,11 @@
 <template>
   <div 
-    class="flex-grow p-2.5 hover:bg-gray-200 dark:hover:bg-gray-700"
+    class="flex-grow p-2.5 hover:bg-gray-200/30 dark:hover:bg-gray-950/20"
     :class="{
-      'hover:bg-green-900/30 dark:hover:bg-green-900/30': isWinner,
-      'hover:bg-red-900/30 dark:hover:bg-red-900/30': isLoser,
-      'bg-green-900/30 dark:bg-green-900/30': shouldHighlight && isWinner,
-      'bg-red-900/30 dark:bg-red-900/30': shouldHighlight && isLoser
+      'hover:bg-green-500/20 dark:hover:bg-green-500/20': isWinner,
+      'hover:bg-red-500/20 dark:hover:bg-red-500/20': isLoser,
+      'bg-green-500/20 dark:bg-green-500/20': shouldHighlight && isWinner,
+      'bg-red-500/20 dark:bg-red-500/20': shouldHighlight && isLoser
     }"
     @mouseenter="highlightTeam"
     @mouseleave="unhighlightTeam"
@@ -19,7 +19,7 @@
       />
     <select 
       v-model="selectedTeam"
-        class="fi-select-input p-0 w-full border-none bg-transparent text-base text-gray-900 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900"
+        class="fi-select-input p-0 w-full border-none bg-transparent text-base text-gray-900 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900 hover:cursor-pointer"
       @change="updateTeam"
     >
       <option value="TBD">TBD</option>

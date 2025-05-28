@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+  <div class="min-h-screen bg-white dark:bg-gray-900">
     <div class="container mx-auto p-4">
       <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Tournament Bracket</h1>
@@ -170,5 +170,5 @@ onMounted(() => {
 </script>
 
 <style>
-@import "tailwindcss";
+
 </style>

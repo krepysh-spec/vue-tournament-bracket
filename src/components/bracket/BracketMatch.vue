@@ -1,6 +1,6 @@
 <template>
   <div class="relative text-[0.8em] flex items-center" :class="{'group': index % 2 == 0 && totalMatches > 1}">
-    <div class="my-1.5 ml-2.5 bg-white dark:bg-gray-800 rounded overflow-hidden w-full min-w-[200px] shadow">
+    <div class="my-1.5 ml-2.5 bg-white dark:bg-gray-900 rounded overflow-hidden w-full min-w-[200px] shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
       <TeamRow
         :team="match.teamOne"
         :team-position="TEAM_POSITION.ONE"
