@@ -170,5 +170,5 @@ onMounted(() => {
 </script>
 
 <style>
-  @import "tailwindcss";
+@import "tailwindcss";
 </style>
