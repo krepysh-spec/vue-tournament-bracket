@@ -1,17 +1,19 @@
-import { ref as B, computed as N, watch as H, onMounted as C, createElementBlock as v, openBlock as c, normalizeClass as W, createCommentVNode as V, withDirectives as R, createElementVNode as e, Fragment as U, renderList as F, toDisplayString as L, vModelSelect as Q, vModelText as j, createVNode as E, unref as M, createTextVNode as z, createBlock as q } from "vue";
-const S = {
+import { ref as B, computed as N, watch as A, onMounted as W, createElementBlock as v, openBlock as c, normalizeClass as R, unref as S, createCommentVNode as I, withDirectives as G, createElementVNode as e, Fragment as z, renderList as F, toDisplayString as C, vModelSelect as X, vModelText as J, createVNode as U, createTextVNode as _, createBlock as q } from "vue";
+const E = {
   SINGLE_ELIMINATION: "single_elimination",
   DOUBLE_ELIMINATION: "double_elimination"
 }, k = "TBD", d = {
   ONE: "teamOne",
   TWO: "teamTwo"
-}, X = {
+}, H = {
+  CAN_SELECT_TEAM: "can-select-team"
+}, Y = {
   key: 0,
   class: "flex items-center gap-2"
-}, Y = ["src", "alt"], Z = ["value", "disabled"], ee = {
+}, Z = ["src", "alt"], ee = ["value", "disabled"], te = {
   key: 1,
   class: "flex items-center gap-2"
-}, te = ["src", "alt"], ae = { class: "text-gray-900 dark:text-white" }, le = {
+}, ae = ["src", "alt"], le = { class: "text-gray-900 dark:text-white" }, ie = {
   __name: "TeamSelect",
   props: {
     team: {
@@ -34,6 +36,17 @@ const S = {
       type: Boolean,
       required: !0
     },
+    highlightedTeam: {
+      type: Number,
+      default: null
+    },
+    permissions: {
+      type: Object,
+      required: !0,
+      default: () => ({
+        [H.CAN_SELECT_TEAM]: !0
+      })
+    },
     isWinner: {
       type: Boolean,
       default: !1
@@ -51,11 +64,11 @@ const S = {
   setup(t, { emit: p }) {
     const a = t, i = p, l = B(a.team.name), n = N(() => {
       var s;
-      return l.value === k ? null : ((s = a.availableTeams.find((f) => f.name === l.value)) == null ? void 0 : s.logo) || null;
+      return l.value === k ? null : ((s = a.availableTeams.find((g) => g.name === l.value)) == null ? void 0 : s.logo) || null;
     });
-    H(() => a.team, (s) => {
+    A(() => a.team, (s) => {
       l.value = s.name;
-    }, { immediate: !0 }), C(() => {
+    }, { immediate: !0 }), W(() => {
       console.log("TeamSelect mounted:", {
         team: a.team,
         availableTeams: a.availableTeams
@@ -66,7 +79,7 @@ const S = {
     }, m = () => {
       i("unhighlight-team");
     }, y = () => {
-      const s = a.availableTeams.find((f) => f.name === l.value);
+      const s = a.availableTeams.find((g) => g.name === l.value);
       console.log("Updating team:", { selectedTeam: l.value, selectedTeamData: s }), i("update:team", {
         position: a.teamPosition,
         team: {
@@ -77,8 +90,8 @@ const S = {
         }
       });
     };
-    return (s, f) => (c(), v("div", {
-      class: W(["flex-grow p-2.5 hover:bg-gray-200/30 dark:hover:bg-gray-950/20", {
+    return (s, g) => (c(), v("div", {
+      class: R(["flex-grow p-2.5 hover:bg-gray-200/30 dark:hover:bg-gray-950/20", {
         "hover:bg-green-500/20 dark:hover:bg-green-500/20": t.isWinner,
         "hover:bg-red-500/20 dark:hover:bg-red-500/20": t.isLoser,
         "bg-green-500/20 dark:bg-green-500/20": t.shouldHighlight && t.isWinner,
@@ -87,42 +100,42 @@ const S = {
       onMouseenter: u,
       onMouseleave: m
     }, [
-      t.canEdit ? (c(), v("div", X, [
+      t.canEdit && t.permissions[S(H).CAN_SELECT_TEAM] ? (c(), v("div", Y, [
         n.value ? (c(), v("img", {
           key: 0,
           src: n.value,
           alt: l.value,
           class: "w-6 h-6 rounded-full"
-        }, null, 8, Y)) : V("", !0),
-        R(e("select", {
-          "onUpdate:modelValue": f[0] || (f[0] = (o) => l.value = o),
+        }, null, 8, Z)) : I("", !0),
+        G(e("select", {
+          "onUpdate:modelValue": g[0] || (g[0] = (o) => l.value = o),
           class: "fi-select-input p-0 w-full border-none bg-transparent text-base text-gray-900 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900 hover:cursor-pointer",
           onChange: y
         }, [
-          f[1] || (f[1] = e("option", { value: "TBD" }, "TBD", -1)),
-          (c(!0), v(U, null, F(x.value, (o) => (c(), v("option", {
+          g[1] || (g[1] = e("option", { value: "TBD" }, "TBD", -1)),
+          (c(!0), v(z, null, F(x.value, (o) => (c(), v("option", {
             key: o.id,
             value: o.name,
             disabled: h(o.name)
-          }, L(o.name), 9, Z))), 128))
+          }, C(o.name), 9, ee))), 128))
         ], 544), [
-          [Q, l.value]
+          [X, l.value]
         ])
-      ])) : (c(), v("div", ee, [
+      ])) : (c(), v("div", te, [
         t.team.logo ? (c(), v("img", {
           key: 0,
           src: t.team.logo,
           alt: t.team.name,
           class: "w-6 h-6 rounded-full"
-        }, null, 8, te)) : V("", !0),
-        e("span", ae, L(t.team.name), 1)
+        }, null, 8, ae)) : I("", !0),
+        e("span", le, C(t.team.name), 1)
       ]))
     ], 34));
   }
-}, ie = {
+}, re = {
   key: 1,
   class: "text-white"
-}, re = {
+}, ne = {
   __name: "TeamScoreInput",
   props: {
     team: {
@@ -153,13 +166,13 @@ const S = {
         score: u
       });
     };
-    return H(() => a.team, (u) => {
+    return A(() => a.team, (u) => {
       n.value = u.score ?? 0;
     }, { deep: !0 }), (u, m) => (c(), v("div", {
-      class: W(["p-2.5 bg-orange-500 dark:bg-orange-600 cursor-pointer min-w-10 text-center", { "border-b border-orange-600 dark:border-orange-700": t.isFirstTeam }]),
+      class: R(["p-2.5 bg-orange-500 dark:bg-orange-600 cursor-pointer min-w-10 text-center", { "border-b border-orange-600 dark:border-orange-700": t.isFirstTeam }]),
       onClick: h
     }, [
-      l.value ? R((c(), v("input", {
+      l.value ? G((c(), v("input", {
         key: 0,
         type: "number",
         "onUpdate:modelValue": m[0] || (m[0] = (y) => n.value = y),
@@ -168,11 +181,11 @@ const S = {
         onChange: x,
         onBlur: m[1] || (m[1] = (y) => l.value = !1)
       }, null, 544)), [
-        [j, n.value]
-      ]) : (c(), v("span", ie, L(t.team.score), 1))
+        [J, n.value]
+      ]) : (c(), v("span", re, C(t.team.score), 1))
     ], 2));
   }
-}, ne = { class: "flex" }, G = {
+}, oe = { class: "flex" }, D = {
   __name: "TeamRow",
   props: {
     team: {
@@ -214,25 +227,39 @@ const S = {
     isFirstTeam: {
       type: Boolean,
       default: !1
+    },
+    highlightedTeam: {
+      type: Number,
+      default: null
+    },
+    permissions: {
+      type: Object,
+      required: !0,
+      default: () => ({
+        [H.CAN_SELECT_TEAM]: !0
+      })
     }
   },
   emits: ["update:team", "update:score", "highlight-team", "unhighlight-team"],
   setup(t) {
-    return (p, a) => (c(), v("div", ne, [
-      E(le, {
+    return (p, a) => (c(), v("div", oe, [
+      U(ie, {
         team: t.team,
         "team-position": t.teamPosition,
         "available-teams": t.availableTeams,
         "selected-teams": t.selectedTeams,
+        "highlighted-team": t.highlightedTeam,
+        permissions: t.permissions,
         "can-edit": t.canEdit,
         "is-winner": t.isWinner,
         "is-loser": t.isLoser,
         "should-highlight": t.shouldHighlight,
+        "is-first-team": t.isFirstTeam,
         "onUpdate:team": a[0] || (a[0] = (i) => p.$emit("update:team", i)),
         onHighlightTeam: a[1] || (a[1] = (i) => p.$emit("highlight-team", i)),
         onUnhighlightTeam: a[2] || (a[2] = (i) => p.$emit("unhighlight-team"))
-      }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "is-winner", "is-loser", "should-highlight"]),
-      E(re, {
+      }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "highlighted-team", "permissions", "can-edit", "is-winner", "is-loser", "should-highlight", "is-first-team"]),
+      U(ne, {
         team: t.team,
         "team-position": t.teamPosition,
         "can-edit-score": t.canEditScore,
@@ -241,10 +268,10 @@ const S = {
       }, null, 8, ["team", "team-position", "can-edit-score", "is-first-team"])
     ]));
   }
-}, oe = { class: "my-1.5 ml-2.5 bg-white dark:bg-gray-900 rounded overflow-hidden w-full min-w-[200px] shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10" }, se = {
+}, se = { class: "my-1.5 ml-2.5 bg-white dark:bg-gray-900 rounded overflow-hidden w-full min-w-[200px] shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10" }, de = {
   key: 0,
   class: "absolute top-1/2 left-full w-2.5 h-[calc(100%+2px)] border-2 border-gray-300 dark:border-gray-600 border-l-0 rounded-r flex items-center z-10 -mt-[1px] mx-2 transition-colors duration-200"
-}, de = {
+}, ue = {
   __name: "BracketMatch",
   props: {
     match: {
@@ -274,6 +301,13 @@ const S = {
     highlightedTeam: {
       type: String,
       default: null
+    },
+    permissions: {
+      type: Object,
+      required: !0,
+      default: () => ({
+        [H.CAN_SELECT_TEAM]: !0
+      })
     }
   },
   emits: ["update:match", "highlight-team", "unhighlight-team"],
@@ -291,7 +325,7 @@ const S = {
         [o]: b
       };
       i("update:match", r);
-    }, f = ({ position: o, score: b }) => {
+    }, g = ({ position: o, score: b }) => {
       const r = {
         ...a.match,
         [o]: {
@@ -302,47 +336,53 @@ const S = {
       r.teamOne.score > 0 || r.teamTwo.score > 0 ? r.winner = r.teamOne.score > r.teamTwo.score ? d.ONE : d.TWO : r.winner = null, i("update:match", r);
     };
     return (o, b) => (c(), v("div", {
-      class: W(["relative text-[0.8em] flex items-center", { group: t.index % 2 == 0 && t.totalMatches > 1 }])
+      class: R(["relative text-[0.8em] flex items-center", { group: t.index % 2 == 0 && t.totalMatches > 1 }])
     }, [
-      e("div", oe, [
-        E(G, {
+      e("div", se, [
+        U(D, {
           team: t.match.teamOne,
-          "team-position": M(d).ONE,
+          "team-position": S(d).ONE,
           "available-teams": t.availableTeams,
           "selected-teams": t.selectedTeams,
           "can-edit": l.value,
           "can-edit-score": n.value,
-          "is-winner": h(M(d).ONE),
-          "is-loser": x(M(d).ONE),
-          "should-highlight": u(M(d).ONE),
+          "is-winner": h(S(d).ONE),
+          "is-loser": x(S(d).ONE),
+          "should-highlight": u(S(d).ONE),
           "is-first-team": !0,
+          "can-select-team": o.canSelectTeam,
+          "highlighted-team": t.highlightedTeam,
+          permissions: t.permissions,
           "onUpdate:team": s,
-          "onUpdate:score": f,
+          "onUpdate:score": g,
           onHighlightTeam: m,
           onUnhighlightTeam: y
-        }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "can-edit-score", "is-winner", "is-loser", "should-highlight"]),
-        E(G, {
+        }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "can-edit-score", "is-winner", "is-loser", "should-highlight", "can-select-team", "highlighted-team", "permissions"]),
+        U(D, {
           team: t.match.teamTwo,
-          "team-position": M(d).TWO,
+          "team-position": S(d).TWO,
           "available-teams": t.availableTeams,
           "selected-teams": t.selectedTeams,
           "can-edit": l.value,
           "can-edit-score": n.value,
-          "is-winner": h(M(d).TWO),
-          "is-loser": x(M(d).TWO),
-          "should-highlight": u(M(d).TWO),
+          "is-winner": h(S(d).TWO),
+          "is-loser": x(S(d).TWO),
+          "should-highlight": u(S(d).TWO),
+          "can-select-team": o.canSelectTeam,
+          "highlighted-team": t.highlightedTeam,
+          permissions: t.permissions,
           "onUpdate:team": s,
-          "onUpdate:score": f,
+          "onUpdate:score": g,
           onHighlightTeam: m,
           onUnhighlightTeam: y
-        }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "can-edit-score", "is-winner", "is-loser", "should-highlight"])
+        }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "can-edit-score", "is-winner", "is-loser", "should-highlight", "can-select-team", "highlighted-team", "permissions"])
       ]),
-      t.index % 2 == 0 && t.totalMatches > 1 ? (c(), v("div", se, b[0] || (b[0] = [
+      t.index % 2 == 0 && t.totalMatches > 1 ? (c(), v("div", de, b[0] || (b[0] = [
         e("span", { class: "w-2.5 h-0.5 bg-gray-300 dark:bg-gray-600 translate-x-full block" }, null, -1)
-      ]))) : V("", !0)
+      ]))) : I("", !0)
     ], 2));
   }
-}, ue = { class: "flex-1 px-5 pb-2.5 grid grid-cols-[min-content_auto]" }, me = { class: "text-[0.7em] text-gray-900 dark:text-white flex justify-end items-center opacity-50" }, J = {
+}, me = { class: "flex-1 px-5 pb-2.5 grid grid-cols-[min-content_auto]" }, ce = { class: "text-[0.7em] text-gray-900 dark:text-white flex justify-end items-center opacity-50" }, K = {
   __name: "BracketColumn",
   props: {
     column: {
@@ -364,6 +404,13 @@ const S = {
     highlightedTeam: {
       type: String,
       default: null
+    },
+    permissions: {
+      type: Object,
+      required: !0,
+      default: () => ({
+        [H.CAN_SELECT_TEAM]: !0
+      })
     }
   },
   emits: ["update:match", "highlight-team", "unhighlight-team"],
@@ -371,12 +418,12 @@ const S = {
     const a = t, i = p, l = (n, h) => {
       i("update:match", a.columnIndex, n, h);
     };
-    return (n, h) => (c(), v("div", ue, [
-      (c(!0), v(U, null, F(t.column.items, (x, u) => (c(), v(U, {
+    return (n, h) => (c(), v("div", me, [
+      (c(!0), v(z, null, F(t.column.items, (x, u) => (c(), v(z, {
         key: x.number
       }, [
-        e("div", me, L(x.number), 1),
-        E(de, {
+        e("div", ce, C(x.number), 1),
+        U(ue, {
           match: x,
           index: u,
           "total-matches": t.column.items.length,
@@ -384,14 +431,15 @@ const S = {
           "available-teams": t.availableTeams,
           "selected-teams": t.selectedTeams,
           "highlighted-team": t.highlightedTeam,
+          permissions: t.permissions,
           "onUpdate:match": (m) => l(u, m),
           onHighlightTeam: h[0] || (h[0] = (m) => n.$emit("highlight-team", m)),
           onUnhighlightTeam: h[1] || (h[1] = (m) => n.$emit("unhighlight-team"))
-        }, null, 8, ["match", "index", "total-matches", "round-index", "available-teams", "selected-teams", "highlighted-team", "onUpdate:match"])
+        }, null, 8, ["match", "index", "total-matches", "round-index", "available-teams", "selected-teams", "highlighted-team", "permissions", "onUpdate:match"])
       ], 64))), 128))
     ]));
   }
-}, ce = { class: "flex justify-between px-5" }, he = { class: "flex flex-col items-center gap-2" }, fe = ["onUpdate:modelValue", "onBlur"], ge = ["value", "onChange"], pe = ["value"], K = {
+}, he = { class: "flex justify-between px-5" }, ge = { class: "flex flex-col items-center gap-2" }, fe = ["onUpdate:modelValue", "onBlur"], pe = ["value", "onChange"], ve = ["value"], Q = {
   __name: "BracketRoundHeaders",
   props: {
     columns: {
@@ -402,7 +450,7 @@ const S = {
   emits: ["update:columns"],
   setup(t, { emit: p }) {
     const a = t, i = p, l = [1, 3, 5, 7, 9], n = B(a.columns.map((u) => u.name));
-    H(() => a.columns, (u) => {
+    A(() => a.columns, (u) => {
       n.value = u.map((m) => m.name);
     }, { deep: !0 });
     const h = (u, m) => {
@@ -419,12 +467,12 @@ const S = {
         bestOf: Number(m)
       }, i("update:columns", y);
     };
-    return (u, m) => (c(), v("div", ce, [
-      (c(!0), v(U, null, F(t.columns, (y, s) => (c(), v("div", {
+    return (u, m) => (c(), v("div", he, [
+      (c(!0), v(z, null, F(t.columns, (y, s) => (c(), v("div", {
         key: y.name,
         class: "flex-1 text-center text-sm text-gray-400 py-2 rounded overflow-hidden"
       }, [
-        e("div", he, [
+        e("div", ge, [
           m[0] || (m[0] = e("form", { class: "max-w-sm mx-auto" }, [
             e("div", { class: "flex items-center" }, [
               e("button", {
@@ -530,7 +578,7 @@ const S = {
                     ])
                   ])
                 ]),
-                z(" +1 "),
+                _(" +1 "),
                 e("svg", {
                   class: "w-2.5 h-2.5 ms-2.5",
                   "aria-hidden": "true",
@@ -659,7 +707,7 @@ const S = {
                             ])
                           ])
                         ]),
-                        z(" United States (+1) ")
+                        _(" United States (+1) ")
                       ])
                     ])
                   ]),
@@ -724,7 +772,7 @@ const S = {
                             })
                           ])
                         ]),
-                        z(" United Kingdom (+44) ")
+                        _(" United Kingdom (+44) ")
                       ])
                     ])
                   ]),
@@ -826,7 +874,7 @@ const S = {
                             ])
                           ])
                         ]),
-                        z(" Australia (+61) ")
+                        _(" Australia (+61) ")
                       ])
                     ])
                   ]),
@@ -953,7 +1001,7 @@ const S = {
                             ])
                           ])
                         ]),
-                        z(" Germany (+49) ")
+                        _(" Germany (+49) ")
                       ])
                     ])
                   ]),
@@ -1012,7 +1060,7 @@ const S = {
                             })
                           ])
                         ]),
-                        z(" France (+33) ")
+                        _(" France (+33) ")
                       ])
                     ])
                   ]),
@@ -1139,7 +1187,7 @@ const S = {
                             ])
                           ])
                         ]),
-                        z(" Germany (+49) ")
+                        _(" Germany (+49) ")
                       ])
                     ])
                   ])
@@ -1161,28 +1209,28 @@ const S = {
               ])
             ])
           ], -1)),
-          R(e("input", {
-            "onUpdate:modelValue": (f) => n.value[s] = f,
-            onBlur: (f) => h(s, f.target.value),
+          G(e("input", {
+            "onUpdate:modelValue": (g) => n.value[s] = g,
+            onBlur: (g) => h(s, g.target.value),
             class: "fi-input text-center border-none py-1.5 text-base text-gray-950 transition duration-75 placeholder:text-gray-400 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.400)] dark:text-white dark:placeholder:text-gray-500 dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] dark:disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.500)] sm:text-sm sm:leading-6 bg-white/0 ps-0 pe-3"
           }, null, 40, fe), [
-            [j, n.value[s]]
+            [J, n.value[s]]
           ]),
           e("select", {
             value: y.bestOf,
-            onChange: (f) => x(s, f.target.value),
+            onChange: (g) => x(s, g.target.value),
             class: "fi-select-input w-32border-none bg-transparent text-base text-gray-900 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900"
           }, [
-            (c(), v(U, null, F(l, (f) => e("option", {
-              key: f,
-              value: f
-            }, " Best of " + L(f), 9, pe)), 64))
-          ], 40, ge)
+            (c(), v(z, null, F(l, (g) => e("option", {
+              key: g,
+              value: g
+            }, " Best of " + C(g), 9, ve)), 64))
+          ], 40, pe)
         ])
       ]))), 128))
     ]));
   }
-}, ve = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8" }, ye = { class: "flex flex-col" }, xe = { class: "overflow-x-auto" }, be = { class: "min-w-max" }, we = { class: "flex flex-1 p-5" }, ke = {
+}, ye = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8" }, xe = { class: "flex flex-col" }, be = { class: "overflow-x-auto" }, we = { class: "min-w-max" }, ke = { class: "flex flex-1 p-5" }, Te = {
   __name: "BracketLower",
   props: {
     initialState: {
@@ -1215,15 +1263,15 @@ const S = {
     }, m = (o, b, r) => {
       if (console.log("Updating lower match:", { roundIndex: o, matchIndex: b, updatedMatch: r }), l.value[o] && l.value[o].items) {
         if (l.value[o].items[b] = r, r.winner && o < l.value.length - 1) {
-          const w = o + 1, g = Math.floor(b / 2);
-          if (l.value[w] && l.value[w].items[g]) {
-            const T = l.value[w].items[g], O = b % 2 === 0 ? d.ONE : d.TWO, _ = r[r.winner];
-            l.value[w].items[g] = {
+          const w = o + 1, f = Math.floor(b / 2);
+          if (l.value[w] && l.value[w].items[f]) {
+            const T = l.value[w].items[f], O = b % 2 === 0 ? d.ONE : d.TWO, M = r[r.winner];
+            l.value[w].items[f] = {
               ...T,
               [O]: {
-                id: _.id,
-                name: _.name,
-                logo: _.logo,
+                id: M.id,
+                name: M.name,
+                logo: M.logo,
                 score: 0
               }
             };
@@ -1235,24 +1283,24 @@ const S = {
       console.log("Updating lower columns:", o), l.value = o, s();
     }, s = () => {
       console.log("Emitting lower tournament state:", l.value), a("update:state", l.value);
-    }, f = () => {
+    }, g = () => {
       console.log("Initializing lower tournament with state:", i.initialState), i.initialState && i.initialState.length > 0 && (l.value = JSON.parse(JSON.stringify(i.initialState)));
     };
-    return H(() => i.initialState, () => {
-      f();
-    }, { deep: !0 }), C(() => {
-      f();
-    }), (o, b) => (c(), v("div", ve, [
+    return A(() => i.initialState, () => {
+      g();
+    }, { deep: !0 }), W(() => {
+      g();
+    }), (o, b) => (c(), v("div", ye, [
       b[0] || (b[0] = e("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4 px-5" }, "Lower Bracket", -1)),
-      e("div", ye, [
-        e("div", xe, [
-          e("div", be, [
-            E(K, {
+      e("div", xe, [
+        e("div", be, [
+          e("div", we, [
+            U(Q, {
               columns: l.value,
               "onUpdate:columns": y
             }, null, 8, ["columns"]),
-            e("div", we, [
-              (c(!0), v(U, null, F(l.value, (r, w) => (c(), q(J, {
+            e("div", ke, [
+              (c(!0), v(z, null, F(l.value, (r, w) => (c(), q(K, {
                 key: r.name,
                 column: r,
                 "column-index": w,
@@ -1269,15 +1317,15 @@ const S = {
       ])
     ]));
   }
-}, D = () => ({
+}, j = () => ({
   id: null,
   name: k,
   logo: null,
   score: 0
-}), I = (t) => ({
+}), V = (t) => ({
   number: t,
-  [d.ONE]: D(),
-  [d.TWO]: D(),
+  [d.ONE]: j(),
+  [d.TWO]: j(),
   winner: null
 }), Ue = (t, p = 3) => {
   const a = [], i = Math.log2(t);
@@ -1285,7 +1333,7 @@ const S = {
   for (let n = 0; n < i; n++) {
     const h = Math.pow(2, i - n - 1), x = [];
     for (let u = 0; u < h; u++)
-      x.push(I(l++));
+      x.push(V(l++));
     a.push({
       name: `Round ${n + 1}`,
       items: x,
@@ -1299,28 +1347,28 @@ const S = {
   const l = Math.pow(2, t - 2), n = {
     name: "Lower Round 1",
     bestOf: p,
-    items: Array(l).fill(null).map(() => I(i++))
+    items: Array(l).fill(null).map(() => V(i++))
   };
   a.push(n);
   const h = Math.pow(2, t - 3), x = {
     name: "Lower Round 2",
     bestOf: p,
-    items: Array(h).fill(null).map(() => I(i++))
+    items: Array(h).fill(null).map(() => V(i++))
   };
   if (a.push(x), t > 3) {
     const u = Math.pow(2, t - 4), m = {
       name: "Lower Round 3",
       bestOf: p,
-      items: Array(u).fill(null).map(() => I(i++))
+      items: Array(u).fill(null).map(() => V(i++))
     };
     a.push(m);
   }
   return a;
-}, Te = { class: "flex flex-col" }, Oe = { class: "flex flex-col" }, _e = { class: "overflow-x-auto" }, Se = { class: "min-w-max" }, Me = { class: "flex flex-1 p-5" }, Be = {
+}, Oe = { class: "flex flex-col" }, Se = { class: "flex flex-col" }, Me = { class: "overflow-x-auto" }, Be = { class: "min-w-max" }, _e = { class: "flex flex-1 p-5" }, Ee = {
   __name: "TournamentBracket",
   props: {
     initialState: {
-      type: Array,
+      type: Object,
       required: !0
     },
     availableTeams: {
@@ -1329,13 +1377,18 @@ const S = {
     },
     defaultBestOf: {
       type: Number,
-      default: 3,
-      validator: (t) => [1, 3, 5, 7, 9].includes(t)
+      required: !0
     },
     format: {
       type: String,
-      default: S.SINGLE_ELIMINATION,
-      validator: (t) => Object.values(S).includes(t)
+      required: !0
+    },
+    permissions: {
+      type: Object,
+      required: !0,
+      default: () => ({
+        [H.CAN_SELECT_TEAM]: !0
+      })
     }
   },
   emits: ["update:state"],
@@ -1343,44 +1396,44 @@ const S = {
     const a = p, i = t, l = B([]), n = B([]), h = B(null), x = N(() => {
       const r = /* @__PURE__ */ new Set();
       return l.value.forEach((w) => {
-        w.items.forEach((g) => {
-          g[d.ONE].name !== k && r.add(g[d.ONE].name), g[d.TWO].name !== k && r.add(g[d.TWO].name);
+        w.items.forEach((f) => {
+          f[d.ONE].name !== k && r.add(f[d.ONE].name), f[d.TWO].name !== k && r.add(f[d.TWO].name);
         });
-      }), i.format === S.DOUBLE_ELIMINATION && n.value.forEach((w) => {
-        w.items.forEach((g) => {
-          g[d.ONE].name !== k && r.add(g[d.ONE].name), g[d.TWO].name !== k && r.add(g[d.TWO].name);
+      }), i.format === E.DOUBLE_ELIMINATION && n.value.forEach((w) => {
+        w.items.forEach((f) => {
+          f[d.ONE].name !== k && r.add(f[d.ONE].name), f[d.TWO].name !== k && r.add(f[d.TWO].name);
         });
       }), Array.from(r);
     }), u = (r) => {
       h.value = r;
     }, m = () => {
       h.value = null;
-    }, y = (r, w, g) => {
-      if (console.log("Updating upper match:", { roundIndex: r, matchIndex: w, updatedMatch: g }), l.value[r] && l.value[r].items) {
-        if (l.value[r].items[w] = g, g.winner && r < l.value.length - 1) {
+    }, y = (r, w, f) => {
+      if (console.log("Updating upper match:", { roundIndex: r, matchIndex: w, updatedMatch: f }), l.value[r] && l.value[r].items) {
+        if (l.value[r].items[w] = f, f.winner && r < l.value.length - 1) {
           const T = r + 1, O = Math.floor(w / 2);
           if (l.value[T] && l.value[T].items[O]) {
-            const _ = l.value[T].items[O], $ = w % 2 === 0 ? d.ONE : d.TWO, A = g[g.winner];
+            const M = l.value[T].items[O], $ = w % 2 === 0 ? d.ONE : d.TWO, L = f[f.winner];
             l.value[T].items[O] = {
-              ..._,
+              ...M,
               [$]: {
-                id: A.id,
-                name: A.name,
-                logo: A.logo,
+                id: L.id,
+                name: L.name,
+                logo: L.logo,
                 score: 0
               }
             };
           }
         }
-        if (i.format === S.DOUBLE_ELIMINATION && g.winner) {
-          const T = g[g.winner === d.ONE ? d.TWO : d.ONE];
+        if (i.format === E.DOUBLE_ELIMINATION && f.winner) {
+          const T = f[f.winner === d.ONE ? d.TWO : d.ONE];
           if (T.name !== k) {
-            const O = Math.floor(r / 2), _ = Math.floor(w / 2);
-            if (n.value[O] && n.value[O].items[_]) {
-              const $ = n.value[O].items[_], A = w % 2 === 0 ? d.ONE : d.TWO;
-              n.value[O].items[_] = {
+            const O = Math.floor(r / 2), M = Math.floor(w / 2);
+            if (n.value[O] && n.value[O].items[M]) {
+              const $ = n.value[O].items[M], L = w % 2 === 0 ? d.ONE : d.TWO;
+              n.value[O].items[M] = {
                 ...$,
-                [A]: {
+                [L]: {
                   id: T.id,
                   name: T.name,
                   logo: T.logo,
@@ -1394,65 +1447,67 @@ const S = {
       }
     }, s = (r) => {
       console.log("Updating upper columns:", r), l.value = r, o();
-    }, f = (r) => {
+    }, g = (r) => {
       console.log("Updating lower state:", r), n.value = r, o();
     }, o = () => {
       console.log("Emitting tournament state:", {
         upper: l.value,
-        lower: i.format === S.DOUBLE_ELIMINATION ? n.value : null
+        lower: i.format === E.DOUBLE_ELIMINATION ? n.value : null
       }), a("update:state", {
         upper: l.value,
-        lower: i.format === S.DOUBLE_ELIMINATION ? n.value : null
+        lower: i.format === E.DOUBLE_ELIMINATION ? n.value : null
       });
     }, b = () => {
-      console.log("Initializing tournament with state:", i.initialState), i.initialState && (Array.isArray(i.initialState) ? (l.value = JSON.parse(JSON.stringify(i.initialState)), i.format === S.DOUBLE_ELIMINATION && (n.value = P(l.value.length, i.defaultBestOf))) : (l.value = JSON.parse(JSON.stringify(i.initialState.upper || [])), n.value = JSON.parse(JSON.stringify(i.initialState.lower || []))));
+      console.log("Initializing tournament with state:", i.initialState), i.initialState && (Array.isArray(i.initialState) ? (l.value = JSON.parse(JSON.stringify(i.initialState)), i.format === E.DOUBLE_ELIMINATION && (n.value = P(l.value.length, i.defaultBestOf))) : (l.value = JSON.parse(JSON.stringify(i.initialState.upper || [])), n.value = JSON.parse(JSON.stringify(i.initialState.lower || []))));
     };
-    return H(() => i.initialState, () => {
+    return A(() => i.initialState, () => {
       b();
-    }, { deep: !0 }), H(() => i.format, (r) => {
-      r === S.DOUBLE_ELIMINATION && (!n.value || n.value.length === 0) && (n.value = P(l.value.length, i.defaultBestOf), o());
-    }), C(() => {
+    }, { deep: !0 }), A(() => i.format, (r) => {
+      r === E.DOUBLE_ELIMINATION && (!n.value || n.value.length === 0) && (n.value = P(l.value.length, i.defaultBestOf), o());
+    }), W(() => {
       b();
-    }), (r, w) => (c(), v("div", Te, [
+    }), (r, w) => (c(), v("div", Oe, [
       w[0] || (w[0] = e("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4 px-5" }, "Upper Bracket", -1)),
-      e("div", Oe, [
-        e("div", _e, [
-          e("div", Se, [
-            E(K, {
+      e("div", Se, [
+        e("div", Me, [
+          e("div", Be, [
+            U(Q, {
               columns: l.value,
               "onUpdate:columns": s
             }, null, 8, ["columns"]),
-            e("div", Me, [
-              (c(!0), v(U, null, F(l.value, (g, T) => (c(), q(J, {
-                key: g.name,
-                column: g,
+            e("div", _e, [
+              (c(!0), v(z, null, F(l.value, (f, T) => (c(), q(K, {
+                key: f.name,
+                column: f,
                 "column-index": T,
                 "available-teams": t.availableTeams,
                 "selected-teams": x.value,
                 "highlighted-team": h.value,
+                permissions: t.permissions,
                 "onUpdate:match": y,
                 onHighlightTeam: u,
                 onUnhighlightTeam: m
-              }, null, 8, ["column", "column-index", "available-teams", "selected-teams", "highlighted-team"]))), 128))
+              }, null, 8, ["column", "column-index", "available-teams", "selected-teams", "highlighted-team", "permissions"]))), 128))
             ])
           ])
         ])
       ]),
-      t.format === M(S).DOUBLE_ELIMINATION ? (c(), q(ke, {
+      t.format === S(E).DOUBLE_ELIMINATION ? (c(), q(Te, {
         key: 0,
         "initial-state": n.value,
         "available-teams": t.availableTeams,
         "default-best-of": t.defaultBestOf,
-        "onUpdate:state": f
-      }, null, 8, ["initial-state", "available-teams", "default-best-of"])) : V("", !0)
+        permissions: t.permissions,
+        "onUpdate:state": g
+      }, null, 8, ["initial-state", "available-teams", "default-best-of", "permissions"])) : I("", !0)
     ]));
   }
-}, Ee = (t) => {
-  t.component("TournamentBracket", Be);
+}, Ne = (t) => {
+  t.component("TournamentBracket", Ee);
 };
 export {
-  Be as TournamentBracket,
+  Ee as TournamentBracket,
   P as createLowerBracketStructure,
   Ue as createTournamentState,
-  Ee as install
+  Ne as install
 };

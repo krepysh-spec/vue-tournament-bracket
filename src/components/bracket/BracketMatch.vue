@@ -12,6 +12,9 @@
         :is-loser="isLoser(TEAM_POSITION.ONE)"
         :should-highlight="shouldHighlight(TEAM_POSITION.ONE)"
         :is-first-team="true"
+        :can-select-team="canSelectTeam"
+        :highlighted-team="highlightedTeam"
+        :permissions="permissions"
         @update:team="updateTeam"
         @update:score="updateScore"
         @highlight-team="highlightTeam"
@@ -27,6 +30,9 @@
         :is-winner="isWinner(TEAM_POSITION.TWO)"
         :is-loser="isLoser(TEAM_POSITION.TWO)"
         :should-highlight="shouldHighlight(TEAM_POSITION.TWO)"
+        :can-select-team="canSelectTeam"
+        :highlighted-team="highlightedTeam"
+        :permissions="permissions"
         @update:team="updateTeam"
         @update:score="updateScore"
         @highlight-team="highlightTeam"
@@ -45,7 +51,7 @@
 <script setup>
 import { computed } from 'vue';
 import TeamRow from '../team/TeamRow.vue';
-import { TBD, TEAM_POSITION } from '../../constants/tournament';
+import { TBD, TEAM_POSITION, PERMISSIONS } from '../../constants/tournament';
 
 const props = defineProps({
   match: {
@@ -75,6 +81,13 @@ const props = defineProps({
   highlightedTeam: {
     type: String,
     default: null
+  },
+  permissions: {
+    type: Object,
+    required: true,
+    default: () => ({
+      [PERMISSIONS.CAN_SELECT_TEAM]: true
+    })
   }
 });
 

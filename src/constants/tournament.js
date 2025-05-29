@@ -8,4 +8,8 @@ export const TBD = 'TBD';
 export const TEAM_POSITION = {
   ONE: 'teamOne',
   TWO: 'teamTwo'
+};
+
+export const PERMISSIONS = {
+  CAN_SELECT_TEAM: 'can-select-team'
 }; 

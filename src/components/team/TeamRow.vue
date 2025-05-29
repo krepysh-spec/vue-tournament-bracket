@@ -5,10 +5,13 @@
       :team-position="teamPosition"
       :available-teams="availableTeams"
       :selected-teams="selectedTeams"
+      :highlighted-team="highlightedTeam"
+      :permissions="permissions"
       :can-edit="canEdit"
       :is-winner="isWinner"
       :is-loser="isLoser"
       :should-highlight="shouldHighlight"
+      :is-first-team="isFirstTeam"
       @update:team="$emit('update:team', $event)"
       @highlight-team="$emit('highlight-team', $event)"
       @unhighlight-team="$emit('unhighlight-team')"
@@ -26,8 +29,9 @@
 <script setup>
 import TeamSelect from './TeamSelect.vue';
 import TeamScoreInput from './TeamScoreInput.vue';
+import { PERMISSIONS } from '../../constants/tournament';
 
-defineProps({
+const props = defineProps({
   team: {
     type: Object,
     required: true
@@ -67,6 +71,17 @@ defineProps({
   isFirstTeam: {
     type: Boolean,
     default: false
+  },
+  highlightedTeam: {
+    type: Number,
+    default: null
+  },
+  permissions: {
+    type: Object,
+    required: true,
+    default: () => ({
+      [PERMISSIONS.CAN_SELECT_TEAM]: true
+    })
   }
 });
 

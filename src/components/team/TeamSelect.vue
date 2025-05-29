@@ -10,7 +10,7 @@
     @mouseenter="highlightTeam"
     @mouseleave="unhighlightTeam"
   >
-    <div v-if="canEdit" class="flex items-center gap-2">
+    <div v-if="canEdit && permissions[PERMISSIONS.CAN_SELECT_TEAM]" class="flex items-center gap-2">
       <img 
         v-if="selectedTeamLogo"
         :src="selectedTeamLogo"
@@ -49,7 +49,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
-import { TBD } from '../../constants/tournament';
+import { TBD, PERMISSIONS } from '../../constants/tournament';
 
 const props = defineProps({
   team: {
@@ -71,6 +71,17 @@ const props = defineProps({
   canEdit: {
     type: Boolean,
     required: true
+  },
+  highlightedTeam: {
+    type: Number,
+    default: null
+  },
+  permissions: {
+    type: Object,
+    required: true,
+    default: () => ({
+      [PERMISSIONS.CAN_SELECT_TEAM]: true
+    })
   },
   isWinner: {
     type: Boolean,

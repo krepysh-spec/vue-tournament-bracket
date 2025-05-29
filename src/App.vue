@@ -25,7 +25,15 @@
               <option value="single_elimination">Single Elimination</option>
               <option value="double_elimination">Double Elimination</option>
             </select>
-            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <label class="text-gray-700 dark:text-gray-300">Team Selection:</label>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" v-model="permissions[PERMISSIONS.CAN_SELECT_TEAM]" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <span class="ms-3 text-sm font-medium text-gray-700 dark:text-gray-300">{{ permissions[PERMISSIONS.CAN_SELECT_TEAM] ? 'Enabled' : 'Disabled' }}</span>
+            </label>
+          </div>
           <div class="flex items-center gap-2">
             <label class="text-gray-700 dark:text-gray-300">Theme:</label>
             <button 
@@ -58,6 +66,7 @@
         :available-teams="teams"
         :default-best-of="defaultBestOf"
         :format="tournamentFormat"
+        :permissions="permissions"
         @update:state="updateTournamentState"
       />
   </div>
@@ -68,6 +77,7 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import TournamentBracket from './components/TournamentBracket.vue';
 import { createTournamentState } from './utils/tournament';
+import { PERMISSIONS } from './constants/tournament';
 
 const sizes = [2, 4, 8, 16, 32, 64];
 const bestOfValues = [1, 3, 5, 7, 9];
@@ -75,6 +85,9 @@ const selectedSize = ref(16);
 const defaultBestOf = ref(3);
 const isDark = ref(localStorage.getItem('theme') === 'dark');
 const tournamentFormat = ref(localStorage.getItem('tournamentFormat') || 'single_elimination');
+const permissions = ref({
+  [PERMISSIONS.CAN_SELECT_TEAM]: localStorage.getItem('permissions') ? JSON.parse(localStorage.getItem('permissions'))[PERMISSIONS.CAN_SELECT_TEAM] !== false : true
+});
 
 const teams = ref([
   {id: 1, name: 'Alpha', logo: 'https://www.gravatar.com/avatar/1?d=identicon&s=32'},
@@ -131,6 +144,10 @@ updateTheme();
 watch([selectedSize, defaultBestOf], () => {
   clearState();
 });
+
+watch(permissions, (newValue) => {
+  localStorage.setItem('permissions', JSON.stringify(newValue));
+}, { deep: true });
 
 const updateTournamentState = (newState) => {
   console.log('Saving tournament state:', newState);

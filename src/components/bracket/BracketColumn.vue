@@ -10,6 +10,7 @@
         :available-teams="availableTeams"
         :selected-teams="selectedTeams"
         :highlighted-team="highlightedTeam"
+        :permissions="permissions"
         @update:match="updateMatch(index, $event)"
         @highlight-team="$emit('highlight-team', $event)"
         @unhighlight-team="$emit('unhighlight-team')"
@@ -20,6 +21,7 @@
 
 <script setup>
 import BracketMatch from './BracketMatch.vue';
+import { PERMISSIONS } from '../../constants/tournament';
 
 const props = defineProps({
   column: {
@@ -41,6 +43,13 @@ const props = defineProps({
   highlightedTeam: {
     type: String,
     default: null
+  },
+  permissions: {
+    type: Object,
+    required: true,
+    default: () => ({
+      [PERMISSIONS.CAN_SELECT_TEAM]: true
+    })
   }
 });
 

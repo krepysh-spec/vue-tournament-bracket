@@ -17,6 +17,7 @@
               :available-teams="availableTeams"
               :selected-teams="selectedTeams"
               :highlighted-team="highlightedTeam"
+              :permissions="permissions"
               @update:match="updateUpperMatch"
               @highlight-team="highlightTeam"
               @unhighlight-team="unhighlightTeam"
@@ -31,6 +32,7 @@
       :initial-state="lowerColumns"
       :available-teams="availableTeams"
       :default-best-of="defaultBestOf"
+      :permissions="permissions"
       @update:state="updateLowerState"
     />
   </div>
@@ -42,13 +44,13 @@ import BracketColumn from './bracket/BracketColumn.vue';
 import BracketRoundHeaders from './bracket/BracketRoundHeaders.vue';
 import BracketLower from './bracket/BracketLower.vue';
 import { createLowerBracketStructure } from '../utils/tournament';
-import { TOURNAMENT_FORMAT, TBD, TEAM_POSITION } from '../constants/tournament';
+import { TOURNAMENT_FORMAT, TBD, TEAM_POSITION, PERMISSIONS } from '../constants/tournament';
 
 const emit = defineEmits(['update:state']);
 
 const props = defineProps({
   initialState: {
-    type: Array,
+    type: Object,
     required: true
   },
   availableTeams: {
@@ -57,13 +59,18 @@ const props = defineProps({
   },
   defaultBestOf: {
     type: Number,
-    default: 3,
-    validator: (value) => [1, 3, 5, 7, 9].includes(value)
+    required: true
   },
   format: {
     type: String,
-    default: TOURNAMENT_FORMAT.SINGLE_ELIMINATION,
-    validator: (value) => Object.values(TOURNAMENT_FORMAT).includes(value)
+    required: true
+  },
+  permissions: {
+    type: Object,
+    required: true,
+    default: () => ({
+      [PERMISSIONS.CAN_SELECT_TEAM]: true
+    })
   }
 });
 
