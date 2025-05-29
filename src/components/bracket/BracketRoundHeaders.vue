@@ -8,17 +8,17 @@
       <div class="flex flex-col items-center gap-2">
       
         <div class="mt-2">
-    <div class="flex items-center rounded-md bg-white dark:bg-gray-900 pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600">
+    <div class="flex items-center rounded-md bg-white dark:bg-gray-900">
     
       <input type="text"
       v-model="localColumnNames[index]"
       @blur="updateColumnName(index, $event.target.value)"
-        class="block min-w-0 grow py-1.5 pr-3 border-none pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6">
+        class="block min-w-0 grow py-1.5 pr-3 text-gray-800 dark:text-white border-none pl-1 text-base text-gray-900 bg-white dark:bg-gray-900  placeholder:text-gray-400 focus:outline-none sm:text-sm/6">
       <div class="grid shrink-0 grid-cols-1 focus-within:relative">
         <select 
           :value="column.bestOf"
           @change="updateColumnBestOf(index, $event.target.value)"
-          class="col-start-1 row-start-1 w-full appearance-none py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+          class="col-start-1 row-start-1 w-full text-gray-800 dark:text-white appearance-none py-1.5 bg-white dark:bg-gray-900  pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
         >
           <option v-for="value in bestOfValues" :key="value" :value="value">
             Best of {{ value }}
