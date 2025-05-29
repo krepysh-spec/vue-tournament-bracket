@@ -8,7 +8,7 @@
       <div class="flex flex-col items-center gap-2">
       
         <div class="mt-2">
-    <div class="flex items-center rounded-md bg-white dark:bg-gray-900">
+    <div class="flex items-center rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600">
     
       <input type="text"
       v-model="localColumnNames[index]"
@@ -18,7 +18,7 @@
         <select 
           :value="column.bestOf"
           @change="updateColumnBestOf(index, $event.target.value)"
-          class="col-start-1 row-start-1 w-full text-gray-800 dark:text-white appearance-none py-1.5 bg-white dark:bg-gray-900  pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+          class="col-start-1 row-start-1 w-full text-gray-800 dark:text-white border-none appearance-none py-1.5 bg-white dark:bg-gray-900  pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
         >
           <option v-for="value in bestOfValues" :key="value" :value="value">
             Best of {{ value }}
