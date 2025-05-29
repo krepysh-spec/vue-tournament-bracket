@@ -439,7 +439,7 @@ const A = {
       ], 64))), 128))
     ]));
   }
-}, de = { class: "flex justify-between px-5" }, he = { class: "flex flex-col items-center gap-2" }, ge = { class: "mt-2" }, fe = { class: "flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600" }, ve = ["onUpdate:modelValue", "onBlur"], pe = { class: "grid shrink-0 grid-cols-1 focus-within:relative" }, Te = ["value", "onChange"], be = ["value"], Q = {
+}, de = { class: "flex justify-between px-5" }, he = { class: "flex flex-col items-center gap-2" }, ge = { class: "mt-2" }, fe = { class: "flex items-center rounded-md bg-white dark:bg-gray-900 pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600" }, ve = ["onUpdate:modelValue", "onBlur"], pe = { class: "grid shrink-0 grid-cols-1 focus-within:relative" }, Te = ["value", "onChange"], be = ["value"], Q = {
   __name: "BracketRoundHeaders",
   props: {
     columns: {
@@ -479,7 +479,7 @@ const A = {
                 type: "text",
                 "onUpdate:modelValue": (h) => l.value[o] = h,
                 onBlur: (h) => d(o, h.target.value),
-                class: "block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+                class: "block min-w-0 grow py-1.5 pr-3 border-none pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
               }, null, 40, ve), [
                 [G, l.value[o]]
               ]),
@@ -487,7 +487,7 @@ const A = {
                 p("select", {
                   value: T.bestOf,
                   onChange: (h) => b(o, h.target.value),
-                  class: "col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  class: "col-start-1 row-start-1 w-full appearance-none py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 }, [
                   (c(), v(B, null, $(a, (h) => p("option", {
                     key: h,
