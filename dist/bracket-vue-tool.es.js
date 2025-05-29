@@ -1,19 +1,19 @@
-import { ref as B, computed as N, watch as A, onMounted as W, createElementBlock as v, openBlock as c, normalizeClass as R, unref as S, createCommentVNode as I, withDirectives as G, createElementVNode as e, Fragment as z, renderList as F, toDisplayString as C, vModelSelect as X, vModelText as J, createVNode as U, createTextVNode as _, createBlock as q } from "vue";
-const E = {
+import { ref as k, computed as L, watch as U, onMounted as P, createElementBlock as p, openBlock as c, normalizeClass as D, unref as N, createCommentVNode as R, withDirectives as z, createElementVNode as f, Fragment as A, renderList as $, toDisplayString as I, vModelSelect as Q, vModelText as G, createVNode as M, createBlock as H } from "vue";
+const B = {
   SINGLE_ELIMINATION: "single_elimination",
   DOUBLE_ELIMINATION: "double_elimination"
-}, k = "TBD", d = {
+}, O = "TBD", r = {
   ONE: "teamOne",
   TWO: "teamTwo"
-}, H = {
+}, q = {
   CAN_SELECT_TEAM: "can-select-team"
-}, Y = {
+}, X = {
   key: 0,
   class: "flex items-center gap-2"
-}, Z = ["src", "alt"], ee = ["value", "disabled"], te = {
+}, Y = ["src", "alt"], _ = ["value", "disabled"], ee = {
   key: 1,
   class: "flex items-center gap-2"
-}, ae = ["src", "alt"], le = { class: "text-gray-900 dark:text-white" }, ie = {
+}, te = ["src", "alt"], ae = { class: "text-gray-900 dark:text-white" }, ie = {
   __name: "TeamSelect",
   props: {
     team: {
@@ -44,7 +44,7 @@ const E = {
       type: Object,
       required: !0,
       default: () => ({
-        [H.CAN_SELECT_TEAM]: !0
+        [q.CAN_SELECT_TEAM]: !0
       })
     },
     isWinner: {
@@ -61,81 +61,81 @@ const E = {
     }
   },
   emits: ["update:team", "highlight-team", "unhighlight-team"],
-  setup(t, { emit: p }) {
-    const a = t, i = p, l = B(a.team.name), n = N(() => {
-      var s;
-      return l.value === k ? null : ((s = a.availableTeams.find((g) => g.name === l.value)) == null ? void 0 : s.logo) || null;
+  setup(e, { emit: v }) {
+    const t = e, i = v, a = k(t.team.name), l = L(() => {
+      var o;
+      return a.value === O ? null : ((o = t.availableTeams.find((h) => h.name === a.value)) == null ? void 0 : o.logo) || null;
     });
-    A(() => a.team, (s) => {
-      l.value = s.name;
-    }, { immediate: !0 }), W(() => {
+    U(() => t.team, (o) => {
+      a.value = o.name;
+    }, { immediate: !0 }), P(() => {
       console.log("TeamSelect mounted:", {
-        team: a.team,
-        availableTeams: a.availableTeams
+        team: t.team,
+        availableTeams: t.availableTeams
       });
     });
-    const h = (s) => s === k ? !1 : a.selectedTeams.includes(s) && s !== a.team.name || s === a.team.name && a.team.name !== k, x = N(() => a.availableTeams ? a.availableTeams.filter((s) => s.name === k || s.name === a.team.name ? !0 : !h(s.name)) : []), u = () => {
-      a.team.name !== k && i("highlight-team", a.team.name);
-    }, m = () => {
+    const d = (o) => o === O ? !1 : t.selectedTeams.includes(o) && o !== t.team.name || o === t.team.name && t.team.name !== O, b = L(() => t.availableTeams ? t.availableTeams.filter((o) => o.name === O || o.name === t.team.name ? !0 : !d(o.name)) : []), m = () => {
+      t.team.name !== O && i("highlight-team", t.team.name);
+    }, u = () => {
       i("unhighlight-team");
-    }, y = () => {
-      const s = a.availableTeams.find((g) => g.name === l.value);
-      console.log("Updating team:", { selectedTeam: l.value, selectedTeamData: s }), i("update:team", {
-        position: a.teamPosition,
+    }, T = () => {
+      const o = t.availableTeams.find((h) => h.name === a.value);
+      console.log("Updating team:", { selectedTeam: a.value, selectedTeamData: o }), i("update:team", {
+        position: t.teamPosition,
         team: {
-          id: (s == null ? void 0 : s.id) || null,
-          name: l.value,
-          logo: (s == null ? void 0 : s.logo) || null,
+          id: (o == null ? void 0 : o.id) || null,
+          name: a.value,
+          logo: (o == null ? void 0 : o.logo) || null,
           score: 0
         }
       });
     };
-    return (s, g) => (c(), v("div", {
-      class: R(["flex-grow p-2.5 hover:bg-gray-200/30 dark:hover:bg-gray-950/20", {
-        "hover:bg-green-500/20 dark:hover:bg-green-500/20": t.isWinner,
-        "hover:bg-red-500/20 dark:hover:bg-red-500/20": t.isLoser,
-        "bg-green-500/20 dark:bg-green-500/20": t.shouldHighlight && t.isWinner,
-        "bg-red-500/20 dark:bg-red-500/20": t.shouldHighlight && t.isLoser
+    return (o, h) => (c(), p("div", {
+      class: D(["flex-grow p-2.5 hover:bg-gray-200/30 dark:hover:bg-gray-950/20", {
+        "hover:bg-green-500/20 dark:hover:bg-green-500/20": e.isWinner,
+        "hover:bg-red-500/20 dark:hover:bg-red-500/20": e.isLoser,
+        "bg-green-500/20 dark:bg-green-500/20": e.shouldHighlight && e.isWinner,
+        "bg-red-500/20 dark:bg-red-500/20": e.shouldHighlight && e.isLoser
       }]),
-      onMouseenter: u,
-      onMouseleave: m
+      onMouseenter: m,
+      onMouseleave: u
     }, [
-      t.canEdit && t.permissions[S(H).CAN_SELECT_TEAM] ? (c(), v("div", Y, [
-        n.value ? (c(), v("img", {
+      e.canEdit && e.permissions[N(q).CAN_SELECT_TEAM] ? (c(), p("div", X, [
+        l.value ? (c(), p("img", {
           key: 0,
-          src: n.value,
-          alt: l.value,
+          src: l.value,
+          alt: a.value,
           class: "w-6 h-6 rounded-full"
-        }, null, 8, Z)) : I("", !0),
-        G(e("select", {
-          "onUpdate:modelValue": g[0] || (g[0] = (o) => l.value = o),
+        }, null, 8, Y)) : R("", !0),
+        z(f("select", {
+          "onUpdate:modelValue": h[0] || (h[0] = (s) => a.value = s),
           class: "fi-select-input p-0 w-full border-none bg-transparent text-base text-gray-900 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900 hover:cursor-pointer",
-          onChange: y
+          onChange: T
         }, [
-          g[1] || (g[1] = e("option", { value: "TBD" }, "TBD", -1)),
-          (c(!0), v(z, null, F(x.value, (o) => (c(), v("option", {
-            key: o.id,
-            value: o.name,
-            disabled: h(o.name)
-          }, C(o.name), 9, ee))), 128))
+          h[1] || (h[1] = f("option", { value: "TBD" }, "TBD", -1)),
+          (c(!0), p(A, null, $(b.value, (s) => (c(), p("option", {
+            key: s.id,
+            value: s.name,
+            disabled: d(s.name)
+          }, I(s.name), 9, _))), 128))
         ], 544), [
-          [X, l.value]
+          [Q, a.value]
         ])
-      ])) : (c(), v("div", te, [
-        t.team.logo ? (c(), v("img", {
+      ])) : (c(), p("div", ee, [
+        e.team.logo ? (c(), p("img", {
           key: 0,
-          src: t.team.logo,
-          alt: t.team.name,
+          src: e.team.logo,
+          alt: e.team.name,
           class: "w-6 h-6 rounded-full"
-        }, null, 8, ae)) : I("", !0),
-        e("span", le, C(t.team.name), 1)
+        }, null, 8, te)) : R("", !0),
+        f("span", ae, I(e.team.name), 1)
       ]))
     ], 34));
   }
-}, re = {
+}, ne = {
   key: 1,
   class: "text-white"
-}, ne = {
+}, le = {
   __name: "TeamScoreInput",
   props: {
     team: {
@@ -156,36 +156,36 @@ const E = {
     }
   },
   emits: ["update:score"],
-  setup(t, { emit: p }) {
-    const a = t, i = p, l = B(!1), n = B(a.team.score ?? 0), h = () => {
-      a.canEditScore && (l.value = !0);
-    }, x = () => {
-      const u = parseInt(n.value) || 0;
+  setup(e, { emit: v }) {
+    const t = e, i = v, a = k(!1), l = k(t.team.score ?? 0), d = () => {
+      t.canEditScore && (a.value = !0);
+    }, b = () => {
+      const m = parseInt(l.value) || 0;
       i("update:score", {
-        position: a.teamPosition,
-        score: u
+        position: t.teamPosition,
+        score: m
       });
     };
-    return A(() => a.team, (u) => {
-      n.value = u.score ?? 0;
-    }, { deep: !0 }), (u, m) => (c(), v("div", {
-      class: R(["p-2.5 bg-orange-500 dark:bg-orange-600 cursor-pointer min-w-10 text-center", { "border-b border-orange-600 dark:border-orange-700": t.isFirstTeam }]),
-      onClick: h
+    return U(() => t.team, (m) => {
+      l.value = m.score ?? 0;
+    }, { deep: !0 }), (m, u) => (c(), p("div", {
+      class: D(["p-2.5 bg-orange-500 dark:bg-orange-600 cursor-pointer min-w-10 text-center", { "border-b border-orange-600 dark:border-orange-700": e.isFirstTeam }]),
+      onClick: d
     }, [
-      l.value ? G((c(), v("input", {
+      a.value ? z((c(), p("input", {
         key: 0,
         type: "number",
-        "onUpdate:modelValue": m[0] || (m[0] = (y) => n.value = y),
+        "onUpdate:modelValue": u[0] || (u[0] = (T) => l.value = T),
         class: "w-12 border-none bg-orange-500 dark:bg-orange-600 text-center text-white text-base transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900",
         min: "0",
-        onChange: x,
-        onBlur: m[1] || (m[1] = (y) => l.value = !1)
+        onChange: b,
+        onBlur: u[1] || (u[1] = (T) => a.value = !1)
       }, null, 544)), [
-        [J, n.value]
-      ]) : (c(), v("span", re, C(t.team.score), 1))
+        [G, l.value]
+      ]) : (c(), p("span", ne, I(e.team.score), 1))
     ], 2));
   }
-}, oe = { class: "flex" }, D = {
+}, se = { class: "flex" }, F = {
   __name: "TeamRow",
   props: {
     team: {
@@ -236,42 +236,42 @@ const E = {
       type: Object,
       required: !0,
       default: () => ({
-        [H.CAN_SELECT_TEAM]: !0
+        [q.CAN_SELECT_TEAM]: !0
       })
     }
   },
   emits: ["update:team", "update:score", "highlight-team", "unhighlight-team"],
-  setup(t) {
-    return (p, a) => (c(), v("div", oe, [
-      U(ie, {
-        team: t.team,
-        "team-position": t.teamPosition,
-        "available-teams": t.availableTeams,
-        "selected-teams": t.selectedTeams,
-        "highlighted-team": t.highlightedTeam,
-        permissions: t.permissions,
-        "can-edit": t.canEdit,
-        "is-winner": t.isWinner,
-        "is-loser": t.isLoser,
-        "should-highlight": t.shouldHighlight,
-        "is-first-team": t.isFirstTeam,
-        "onUpdate:team": a[0] || (a[0] = (i) => p.$emit("update:team", i)),
-        onHighlightTeam: a[1] || (a[1] = (i) => p.$emit("highlight-team", i)),
-        onUnhighlightTeam: a[2] || (a[2] = (i) => p.$emit("unhighlight-team"))
+  setup(e) {
+    return (v, t) => (c(), p("div", se, [
+      M(ie, {
+        team: e.team,
+        "team-position": e.teamPosition,
+        "available-teams": e.availableTeams,
+        "selected-teams": e.selectedTeams,
+        "highlighted-team": e.highlightedTeam,
+        permissions: e.permissions,
+        "can-edit": e.canEdit,
+        "is-winner": e.isWinner,
+        "is-loser": e.isLoser,
+        "should-highlight": e.shouldHighlight,
+        "is-first-team": e.isFirstTeam,
+        "onUpdate:team": t[0] || (t[0] = (i) => v.$emit("update:team", i)),
+        onHighlightTeam: t[1] || (t[1] = (i) => v.$emit("highlight-team", i)),
+        onUnhighlightTeam: t[2] || (t[2] = (i) => v.$emit("unhighlight-team"))
       }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "highlighted-team", "permissions", "can-edit", "is-winner", "is-loser", "should-highlight", "is-first-team"]),
-      U(ne, {
-        team: t.team,
-        "team-position": t.teamPosition,
-        "can-edit-score": t.canEditScore,
-        "is-first-team": t.isFirstTeam,
-        "onUpdate:score": a[3] || (a[3] = (i) => p.$emit("update:score", i))
+      M(le, {
+        team: e.team,
+        "team-position": e.teamPosition,
+        "can-edit-score": e.canEditScore,
+        "is-first-team": e.isFirstTeam,
+        "onUpdate:score": t[3] || (t[3] = (i) => v.$emit("update:score", i))
       }, null, 8, ["team", "team-position", "can-edit-score", "is-first-team"])
     ]));
   }
-}, se = { class: "my-1.5 ml-2.5 bg-white dark:bg-gray-900 rounded overflow-hidden w-full min-w-[200px] shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10" }, de = {
+}, oe = { class: "my-1.5 ml-2.5 bg-white dark:bg-gray-900 rounded overflow-hidden w-full min-w-[200px] shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10" }, re = {
   key: 0,
   class: "absolute top-1/2 left-full w-2.5 h-[calc(100%+2px)] border-2 border-gray-300 dark:border-gray-600 border-l-0 rounded-r flex items-center z-10 -mt-[1px] mx-2 transition-colors duration-200"
-}, ue = {
+}, me = {
   __name: "BracketMatch",
   props: {
     match: {
@@ -306,83 +306,83 @@ const E = {
       type: Object,
       required: !0,
       default: () => ({
-        [H.CAN_SELECT_TEAM]: !0
+        [q.CAN_SELECT_TEAM]: !0
       })
     }
   },
   emits: ["update:match", "highlight-team", "unhighlight-team"],
-  setup(t, { emit: p }) {
-    const a = t, i = p, l = N(() => a.roundIndex === 0), n = N(() => a.match[d.ONE].name !== k && a.match[d.TWO].name !== k), h = (o) => a.match.winner === o, x = (o) => a.match.winner && a.match.winner !== o, u = (o) => {
-      const b = a.match[o].name;
-      return a.highlightedTeam === b;
-    }, m = (o) => {
-      i("highlight-team", o);
-    }, y = () => {
+  setup(e, { emit: v }) {
+    const t = e, i = v, a = L(() => t.roundIndex === 0), l = L(() => t.match[r.ONE].name !== O && t.match[r.TWO].name !== O), d = (s) => t.match.winner === s, b = (s) => t.match.winner && t.match.winner !== s, m = (s) => {
+      const y = t.match[s].name;
+      return t.highlightedTeam === y;
+    }, u = (s) => {
+      i("highlight-team", s);
+    }, T = () => {
       i("unhighlight-team");
-    }, s = ({ position: o, team: b }) => {
-      const r = {
-        ...a.match,
-        [o]: b
+    }, o = ({ position: s, team: y }) => {
+      const n = {
+        ...t.match,
+        [s]: y
       };
-      i("update:match", r);
-    }, g = ({ position: o, score: b }) => {
-      const r = {
-        ...a.match,
-        [o]: {
-          ...a.match[o],
-          score: b
+      i("update:match", n);
+    }, h = ({ position: s, score: y }) => {
+      const n = {
+        ...t.match,
+        [s]: {
+          ...t.match[s],
+          score: y
         }
       };
-      r.teamOne.score > 0 || r.teamTwo.score > 0 ? r.winner = r.teamOne.score > r.teamTwo.score ? d.ONE : d.TWO : r.winner = null, i("update:match", r);
+      n.teamOne.score > 0 || n.teamTwo.score > 0 ? n.winner = n.teamOne.score > n.teamTwo.score ? r.ONE : r.TWO : n.winner = null, i("update:match", n);
     };
-    return (o, b) => (c(), v("div", {
-      class: R(["relative text-[0.8em] flex items-center", { group: t.index % 2 == 0 && t.totalMatches > 1 }])
+    return (s, y) => (c(), p("div", {
+      class: D(["relative text-[0.8em] flex items-center", { group: e.index % 2 == 0 && e.totalMatches > 1 }])
     }, [
-      e("div", se, [
-        U(D, {
-          team: t.match.teamOne,
-          "team-position": S(d).ONE,
-          "available-teams": t.availableTeams,
-          "selected-teams": t.selectedTeams,
-          "can-edit": l.value,
-          "can-edit-score": n.value,
-          "is-winner": h(S(d).ONE),
-          "is-loser": x(S(d).ONE),
-          "should-highlight": u(S(d).ONE),
+      f("div", oe, [
+        M(F, {
+          team: e.match.teamOne,
+          "team-position": N(r).ONE,
+          "available-teams": e.availableTeams,
+          "selected-teams": e.selectedTeams,
+          "can-edit": a.value,
+          "can-edit-score": l.value,
+          "is-winner": d(N(r).ONE),
+          "is-loser": b(N(r).ONE),
+          "should-highlight": m(N(r).ONE),
           "is-first-team": !0,
-          "can-select-team": o.canSelectTeam,
-          "highlighted-team": t.highlightedTeam,
-          permissions: t.permissions,
-          "onUpdate:team": s,
-          "onUpdate:score": g,
-          onHighlightTeam: m,
-          onUnhighlightTeam: y
+          "can-select-team": s.canSelectTeam,
+          "highlighted-team": e.highlightedTeam,
+          permissions: e.permissions,
+          "onUpdate:team": o,
+          "onUpdate:score": h,
+          onHighlightTeam: u,
+          onUnhighlightTeam: T
         }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "can-edit-score", "is-winner", "is-loser", "should-highlight", "can-select-team", "highlighted-team", "permissions"]),
-        U(D, {
-          team: t.match.teamTwo,
-          "team-position": S(d).TWO,
-          "available-teams": t.availableTeams,
-          "selected-teams": t.selectedTeams,
-          "can-edit": l.value,
-          "can-edit-score": n.value,
-          "is-winner": h(S(d).TWO),
-          "is-loser": x(S(d).TWO),
-          "should-highlight": u(S(d).TWO),
-          "can-select-team": o.canSelectTeam,
-          "highlighted-team": t.highlightedTeam,
-          permissions: t.permissions,
-          "onUpdate:team": s,
-          "onUpdate:score": g,
-          onHighlightTeam: m,
-          onUnhighlightTeam: y
+        M(F, {
+          team: e.match.teamTwo,
+          "team-position": N(r).TWO,
+          "available-teams": e.availableTeams,
+          "selected-teams": e.selectedTeams,
+          "can-edit": a.value,
+          "can-edit-score": l.value,
+          "is-winner": d(N(r).TWO),
+          "is-loser": b(N(r).TWO),
+          "should-highlight": m(N(r).TWO),
+          "can-select-team": s.canSelectTeam,
+          "highlighted-team": e.highlightedTeam,
+          permissions: e.permissions,
+          "onUpdate:team": o,
+          "onUpdate:score": h,
+          onHighlightTeam: u,
+          onUnhighlightTeam: T
         }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "can-edit-score", "is-winner", "is-loser", "should-highlight", "can-select-team", "highlighted-team", "permissions"])
       ]),
-      t.index % 2 == 0 && t.totalMatches > 1 ? (c(), v("div", de, b[0] || (b[0] = [
-        e("span", { class: "w-2.5 h-0.5 bg-gray-300 dark:bg-gray-600 translate-x-full block" }, null, -1)
-      ]))) : I("", !0)
+      e.index % 2 == 0 && e.totalMatches > 1 ? (c(), p("div", re, y[0] || (y[0] = [
+        f("span", { class: "w-2.5 h-0.5 bg-gray-300 dark:bg-gray-600 translate-x-full block" }, null, -1)
+      ]))) : R("", !0)
     ], 2));
   }
-}, me = { class: "flex-1 px-5 pb-2.5 grid grid-cols-[min-content_auto]" }, ce = { class: "text-[0.7em] text-gray-900 dark:text-white flex justify-end items-center opacity-50" }, K = {
+}, ue = { class: "flex-1 px-5 pb-2.5 grid grid-cols-[min-content_auto]" }, ce = { class: "text-[0.7em] text-gray-900 dark:text-white flex justify-end items-center opacity-50" }, Z = {
   __name: "BracketColumn",
   props: {
     column: {
@@ -409,37 +409,37 @@ const E = {
       type: Object,
       required: !0,
       default: () => ({
-        [H.CAN_SELECT_TEAM]: !0
+        [q.CAN_SELECT_TEAM]: !0
       })
     }
   },
   emits: ["update:match", "highlight-team", "unhighlight-team"],
-  setup(t, { emit: p }) {
-    const a = t, i = p, l = (n, h) => {
-      i("update:match", a.columnIndex, n, h);
+  setup(e, { emit: v }) {
+    const t = e, i = v, a = (l, d) => {
+      i("update:match", t.columnIndex, l, d);
     };
-    return (n, h) => (c(), v("div", me, [
-      (c(!0), v(z, null, F(t.column.items, (x, u) => (c(), v(z, {
-        key: x.number
+    return (l, d) => (c(), p("div", ue, [
+      (c(!0), p(A, null, $(e.column.items, (b, m) => (c(), p(A, {
+        key: b.number
       }, [
-        e("div", ce, C(x.number), 1),
-        U(ue, {
-          match: x,
-          index: u,
-          "total-matches": t.column.items.length,
-          "round-index": t.columnIndex,
-          "available-teams": t.availableTeams,
-          "selected-teams": t.selectedTeams,
-          "highlighted-team": t.highlightedTeam,
-          permissions: t.permissions,
-          "onUpdate:match": (m) => l(u, m),
-          onHighlightTeam: h[0] || (h[0] = (m) => n.$emit("highlight-team", m)),
-          onUnhighlightTeam: h[1] || (h[1] = (m) => n.$emit("unhighlight-team"))
+        f("div", ce, I(b.number), 1),
+        M(me, {
+          match: b,
+          index: m,
+          "total-matches": e.column.items.length,
+          "round-index": e.columnIndex,
+          "available-teams": e.availableTeams,
+          "selected-teams": e.selectedTeams,
+          "highlighted-team": e.highlightedTeam,
+          permissions: e.permissions,
+          "onUpdate:match": (u) => a(m, u),
+          onHighlightTeam: d[0] || (d[0] = (u) => l.$emit("highlight-team", u)),
+          onUnhighlightTeam: d[1] || (d[1] = (u) => l.$emit("unhighlight-team"))
         }, null, 8, ["match", "index", "total-matches", "round-index", "available-teams", "selected-teams", "highlighted-team", "permissions", "onUpdate:match"])
       ], 64))), 128))
     ]));
   }
-}, he = { class: "flex justify-between px-5" }, ge = { class: "flex flex-col items-center gap-2" }, fe = ["onUpdate:modelValue", "onBlur"], pe = ["value", "onChange"], ve = ["value"], Q = {
+}, de = { class: "flex justify-between px-5" }, he = { class: "flex flex-col items-center gap-2" }, ge = { class: "mt-2" }, fe = { class: "flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-600" }, ve = ["onUpdate:modelValue", "onBlur"], pe = { class: "grid shrink-0 grid-cols-1 focus-within:relative" }, Te = ["value", "onChange"], be = ["value"], K = {
   __name: "BracketRoundHeaders",
   props: {
     columns: {
@@ -448,789 +448,74 @@ const E = {
     }
   },
   emits: ["update:columns"],
-  setup(t, { emit: p }) {
-    const a = t, i = p, l = [1, 3, 5, 7, 9], n = B(a.columns.map((u) => u.name));
-    A(() => a.columns, (u) => {
-      n.value = u.map((m) => m.name);
+  setup(e, { emit: v }) {
+    const t = e, i = v, a = [1, 3, 5, 7, 9], l = k(t.columns.map((m) => m.name));
+    U(() => t.columns, (m) => {
+      l.value = m.map((u) => u.name);
     }, { deep: !0 });
-    const h = (u, m) => {
-      n.value[u] = m;
-      const y = [...a.columns];
-      y[u] = {
-        ...y[u],
-        name: m
-      }, i("update:columns", y);
-    }, x = (u, m) => {
-      const y = [...a.columns];
-      y[u] = {
-        ...y[u],
-        bestOf: Number(m)
-      }, i("update:columns", y);
+    const d = (m, u) => {
+      l.value[m] = u;
+      const T = [...t.columns];
+      T[m] = {
+        ...T[m],
+        name: u
+      }, i("update:columns", T);
+    }, b = (m, u) => {
+      const T = [...t.columns];
+      T[m] = {
+        ...T[m],
+        bestOf: Number(u)
+      }, i("update:columns", T);
     };
-    return (u, m) => (c(), v("div", he, [
-      (c(!0), v(z, null, F(t.columns, (y, s) => (c(), v("div", {
-        key: y.name,
+    return (m, u) => (c(), p("div", de, [
+      (c(!0), p(A, null, $(e.columns, (T, o) => (c(), p("div", {
+        key: T.name,
         class: "flex-1 text-center text-sm text-gray-400 py-2 rounded overflow-hidden"
       }, [
-        e("div", ge, [
-          m[0] || (m[0] = e("form", { class: "max-w-sm mx-auto" }, [
-            e("div", { class: "flex items-center" }, [
-              e("button", {
-                id: "dropdown-phone-button",
-                "data-dropdown-toggle": "dropdown-phone",
-                class: "shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600",
-                type: "button"
-              }, [
-                e("svg", {
-                  fill: "none",
-                  "aria-hidden": "true",
-                  class: "h-4 w-4 me-2",
-                  viewBox: "0 0 20 15"
+        f("div", he, [
+          f("div", ge, [
+            f("div", fe, [
+              z(f("input", {
+                type: "text",
+                "onUpdate:modelValue": (h) => l.value[o] = h,
+                onBlur: (h) => d(o, h.target.value),
+                class: "block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6",
+                placeholder: "0.00"
+              }, null, 40, ve), [
+                [G, l.value[o]]
+              ]),
+              f("div", pe, [
+                f("select", {
+                  value: T.bestOf,
+                  onChange: (h) => b(o, h.target.value),
+                  class: "col-start-1 row-start-1 w-full appearance-none rounded-md py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 }, [
-                  e("rect", {
-                    width: "19.6",
-                    height: "14",
-                    y: ".5",
-                    fill: "#fff",
-                    rx: "2"
-                  }),
-                  e("mask", {
-                    id: "a",
-                    style: { "mask-type": "luminance" },
-                    width: "20",
-                    height: "15",
-                    x: "0",
-                    y: "0",
-                    maskUnits: "userSpaceOnUse"
-                  }, [
-                    e("rect", {
-                      width: "19.6",
-                      height: "14",
-                      y: ".5",
-                      fill: "#fff",
-                      rx: "2"
-                    })
-                  ]),
-                  e("g", { mask: "url(#a)" }, [
-                    e("path", {
-                      fill: "#D02F44",
-                      "fill-rule": "evenodd",
-                      d: "M19.6.5H0v.933h19.6V.5zm0 1.867H0V3.3h19.6v-.933zM0 4.233h19.6v.934H0v-.934zM19.6 6.1H0v.933h19.6V6.1zM0 7.967h19.6V8.9H0v-.933zm19.6 1.866H0v.934h19.6v-.934zM0 11.7h19.6v.933H0V11.7zm19.6 1.867H0v.933h19.6v-.933z",
-                      "clip-rule": "evenodd"
-                    }),
-                    e("path", {
-                      fill: "#46467F",
-                      d: "M0 .5h8.4v6.533H0z"
-                    }),
-                    e("g", { filter: "url(#filter0_d_343_121520)" }, [
-                      e("path", {
-                        fill: "url(#paint0_linear_343_121520)",
-                        "fill-rule": "evenodd",
-                        d: "M1.867 1.9a.467.467 0 11-.934 0 .467.467 0 01.934 0zm1.866 0a.467.467 0 11-.933 0 .467.467 0 01.933 0zm1.4.467a.467.467 0 100-.934.467.467 0 000 .934zM7.467 1.9a.467.467 0 11-.934 0 .467.467 0 01.934 0zM2.333 3.3a.467.467 0 100-.933.467.467 0 000 .933zm2.334-.467a.467.467 0 11-.934 0 .467.467 0 01.934 0zm1.4.467a.467.467 0 100-.933.467.467 0 000 .933zm1.4.467a.467.467 0 11-.934 0 .467.467 0 01.934 0zm-2.334.466a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.466a.467.467 0 11-.933 0 .467.467 0 01.933 0zM1.4 4.233a.467.467 0 100-.933.467.467 0 000 .933zm1.4.467a.467.467 0 11-.933 0 .467.467 0 01.933 0zm1.4.467a.467.467 0 100-.934.467.467 0 000 .934zM6.533 4.7a.467.467 0 11-.933 0 .467.467 0 01.933 0zM7 6.1a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.467a.467.467 0 11-.933 0 .467.467 0 01.933 0zM3.267 6.1a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.467a.467.467 0 11-.934 0 .467.467 0 01.934 0z",
-                        "clip-rule": "evenodd"
-                      })
-                    ])
-                  ]),
-                  e("defs", null, [
-                    e("linearGradient", {
-                      id: "paint0_linear_343_121520",
-                      x1: ".933",
-                      x2: ".933",
-                      y1: "1.433",
-                      y2: "6.1",
-                      gradientUnits: "userSpaceOnUse"
-                    }, [
-                      e("stop", { "stop-color": "#fff" }),
-                      e("stop", {
-                        offset: "1",
-                        "stop-color": "#F0F0F0"
-                      })
-                    ]),
-                    e("filter", {
-                      id: "filter0_d_343_121520",
-                      width: "6.533",
-                      height: "5.667",
-                      x: ".933",
-                      y: "1.433",
-                      "color-interpolation-filters": "sRGB",
-                      filterUnits: "userSpaceOnUse"
-                    }, [
-                      e("feFlood", {
-                        "flood-opacity": "0",
-                        result: "BackgroundImageFix"
-                      }),
-                      e("feColorMatrix", {
-                        in: "SourceAlpha",
-                        result: "hardAlpha",
-                        values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                      }),
-                      e("feOffset", { dy: "1" }),
-                      e("feColorMatrix", { values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0" }),
-                      e("feBlend", {
-                        in2: "BackgroundImageFix",
-                        result: "effect1_dropShadow_343_121520"
-                      }),
-                      e("feBlend", {
-                        in: "SourceGraphic",
-                        in2: "effect1_dropShadow_343_121520",
-                        result: "shape"
-                      })
-                    ])
-                  ])
-                ]),
-                _(" +1 "),
-                e("svg", {
-                  class: "w-2.5 h-2.5 ms-2.5",
+                  (c(), p(A, null, $(a, (h) => f("option", {
+                    key: h,
+                    value: h
+                  }, " Best of " + I(h), 9, be)), 64))
+                ], 40, Te),
+                u[0] || (u[0] = f("svg", {
+                  class: "pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4",
+                  viewBox: "0 0 16 16",
+                  fill: "currentColor",
                   "aria-hidden": "true",
-                  xmlns: "http://www.w3.org/2000/svg",
-                  fill: "none",
-                  viewBox: "0 0 10 6"
+                  "data-slot": "icon"
                 }, [
-                  e("path", {
-                    stroke: "currentColor",
-                    "stroke-linecap": "round",
-                    "stroke-linejoin": "round",
-                    "stroke-width": "2",
-                    d: "m1 1 4 4 4-4"
+                  f("path", {
+                    "fill-rule": "evenodd",
+                    d: "M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z",
+                    "clip-rule": "evenodd"
                   })
-                ])
-              ]),
-              e("div", {
-                id: "dropdown-phone",
-                class: "z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-52 dark:bg-gray-700"
-              }, [
-                e("ul", {
-                  class: "py-2 text-sm text-gray-700 dark:text-gray-200",
-                  "aria-labelledby": "dropdown-phone-button"
-                }, [
-                  e("li", null, [
-                    e("button", {
-                      type: "button",
-                      class: "inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white",
-                      role: "menuitem"
-                    }, [
-                      e("div", { class: "inline-flex items-center" }, [
-                        e("svg", {
-                          fill: "none",
-                          "aria-hidden": "true",
-                          class: "h-4 w-4 me-2",
-                          viewBox: "0 0 20 15"
-                        }, [
-                          e("rect", {
-                            width: "19.6",
-                            height: "14",
-                            y: ".5",
-                            fill: "#fff",
-                            rx: "2"
-                          }),
-                          e("mask", {
-                            id: "a",
-                            style: { "mask-type": "luminance" },
-                            width: "20",
-                            height: "15",
-                            x: "0",
-                            y: "0",
-                            maskUnits: "userSpaceOnUse"
-                          }, [
-                            e("rect", {
-                              width: "19.6",
-                              height: "14",
-                              y: ".5",
-                              fill: "#fff",
-                              rx: "2"
-                            })
-                          ]),
-                          e("g", { mask: "url(#a)" }, [
-                            e("path", {
-                              fill: "#D02F44",
-                              "fill-rule": "evenodd",
-                              d: "M19.6.5H0v.933h19.6V.5zm0 1.867H0V3.3h19.6v-.933zM0 4.233h19.6v.934H0v-.934zM19.6 6.1H0v.933h19.6V6.1zM0 7.967h19.6V8.9H0v-.933zm19.6 1.866H0v.934h19.6v-.934zM0 11.7h19.6v.933H0V11.7zm19.6 1.867H0v.933h19.6v-.933z",
-                              "clip-rule": "evenodd"
-                            }),
-                            e("path", {
-                              fill: "#46467F",
-                              d: "M0 .5h8.4v6.533H0z"
-                            }),
-                            e("g", { filter: "url(#filter0_d_343_121520)" }, [
-                              e("path", {
-                                fill: "url(#paint0_linear_343_121520)",
-                                "fill-rule": "evenodd",
-                                d: "M1.867 1.9a.467.467 0 11-.934 0 .467.467 0 01.934 0zm1.866 0a.467.467 0 11-.933 0 .467.467 0 01.933 0zm1.4.467a.467.467 0 100-.934.467.467 0 000 .934zM7.467 1.9a.467.467 0 11-.934 0 .467.467 0 01.934 0zM2.333 3.3a.467.467 0 100-.933.467.467 0 000 .933zm2.334-.467a.467.467 0 11-.934 0 .467.467 0 01.934 0zm1.4.467a.467.467 0 100-.933.467.467 0 000 .933zm1.4.467a.467.467 0 11-.934 0 .467.467 0 01.934 0zm-2.334.466a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.466a.467.467 0 11-.933 0 .467.467 0 01.933 0zM1.4 4.233a.467.467 0 100-.933.467.467 0 000 .933zm1.4.467a.467.467 0 11-.933 0 .467.467 0 01.933 0zm1.4.467a.467.467 0 100-.934.467.467 0 000 .934zM6.533 4.7a.467.467 0 11-.933 0 .467.467 0 01.933 0zM7 6.1a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.467a.467.467 0 11-.933 0 .467.467 0 01.933 0zM3.267 6.1a.467.467 0 100-.933.467.467 0 000 .933zm-1.4-.467a.467.467 0 11-.934 0 .467.467 0 01.934 0z",
-                                "clip-rule": "evenodd"
-                              })
-                            ])
-                          ]),
-                          e("defs", null, [
-                            e("linearGradient", {
-                              id: "paint0_linear_343_121520",
-                              x1: ".933",
-                              x2: ".933",
-                              y1: "1.433",
-                              y2: "6.1",
-                              gradientUnits: "userSpaceOnUse"
-                            }, [
-                              e("stop", { "stop-color": "#fff" }),
-                              e("stop", {
-                                offset: "1",
-                                "stop-color": "#F0F0F0"
-                              })
-                            ]),
-                            e("filter", {
-                              id: "filter0_d_343_121520",
-                              width: "6.533",
-                              height: "5.667",
-                              x: ".933",
-                              y: "1.433",
-                              "color-interpolation-filters": "sRGB",
-                              filterUnits: "userSpaceOnUse"
-                            }, [
-                              e("feFlood", {
-                                "flood-opacity": "0",
-                                result: "BackgroundImageFix"
-                              }),
-                              e("feColorMatrix", {
-                                in: "SourceAlpha",
-                                result: "hardAlpha",
-                                values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                              }),
-                              e("feOffset", { dy: "1" }),
-                              e("feColorMatrix", { values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0" }),
-                              e("feBlend", {
-                                in2: "BackgroundImageFix",
-                                result: "effect1_dropShadow_343_121520"
-                              }),
-                              e("feBlend", {
-                                in: "SourceGraphic",
-                                in2: "effect1_dropShadow_343_121520",
-                                result: "shape"
-                              })
-                            ])
-                          ])
-                        ]),
-                        _(" United States (+1) ")
-                      ])
-                    ])
-                  ]),
-                  e("li", null, [
-                    e("button", {
-                      type: "button",
-                      class: "inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white",
-                      role: "menuitem"
-                    }, [
-                      e("div", { class: "inline-flex items-center" }, [
-                        e("svg", {
-                          class: "h-4 w-4 me-2",
-                          fill: "none",
-                          viewBox: "0 0 20 15"
-                        }, [
-                          e("rect", {
-                            width: "19.6",
-                            height: "14",
-                            y: ".5",
-                            fill: "#fff",
-                            rx: "2"
-                          }),
-                          e("mask", {
-                            id: "a",
-                            style: { "mask-type": "luminance" },
-                            width: "20",
-                            height: "15",
-                            x: "0",
-                            y: "0",
-                            maskUnits: "userSpaceOnUse"
-                          }, [
-                            e("rect", {
-                              width: "19.6",
-                              height: "14",
-                              y: ".5",
-                              fill: "#fff",
-                              rx: "2"
-                            })
-                          ]),
-                          e("g", { mask: "url(#a)" }, [
-                            e("path", {
-                              fill: "#0A17A7",
-                              d: "M0 .5h19.6v14H0z"
-                            }),
-                            e("path", {
-                              fill: "#fff",
-                              "fill-rule": "evenodd",
-                              d: "M-.898-.842L7.467 4.8V-.433h4.667V4.8l8.364-5.642L21.542.706l-6.614 4.46H19.6v4.667h-4.672l6.614 4.46-1.044 1.549-8.365-5.642v5.233H7.467V10.2l-8.365 5.642-1.043-1.548 6.613-4.46H0V5.166h4.672L-1.941.706-.898-.842z",
-                              "clip-rule": "evenodd"
-                            }),
-                            e("path", {
-                              stroke: "#DB1F35",
-                              "stroke-linecap": "round",
-                              "stroke-width": ".667",
-                              d: "M13.067 4.933L21.933-.9M14.009 10.088l7.947 5.357M5.604 4.917L-2.686-.67M6.503 10.024l-9.189 6.093"
-                            }),
-                            e("path", {
-                              fill: "#E6273E",
-                              "fill-rule": "evenodd",
-                              d: "M0 8.9h8.4v5.6h2.8V8.9h8.4V6.1h-8.4V.5H8.4v5.6H0v2.8z",
-                              "clip-rule": "evenodd"
-                            })
-                          ])
-                        ]),
-                        _(" United Kingdom (+44) ")
-                      ])
-                    ])
-                  ]),
-                  e("li", null, [
-                    e("button", {
-                      type: "button",
-                      class: "inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white",
-                      role: "menuitem"
-                    }, [
-                      e("div", { class: "inline-flex items-center" }, [
-                        e("svg", {
-                          class: "h-4 w-4 me-2",
-                          fill: "none",
-                          viewBox: "0 0 20 15",
-                          xmlns: "http://www.w3.org/2000/svg"
-                        }, [
-                          e("rect", {
-                            width: "19.6",
-                            height: "14",
-                            y: ".5",
-                            fill: "#fff",
-                            rx: "2"
-                          }),
-                          e("mask", {
-                            id: "a",
-                            style: { "mask-type": "luminance" },
-                            width: "20",
-                            height: "15",
-                            x: "0",
-                            y: "0",
-                            maskUnits: "userSpaceOnUse"
-                          }, [
-                            e("rect", {
-                              width: "19.6",
-                              height: "14",
-                              y: ".5",
-                              fill: "#fff",
-                              rx: "2"
-                            })
-                          ]),
-                          e("g", { mask: "url(#a)" }, [
-                            e("path", {
-                              fill: "#0A17A7",
-                              d: "M0 .5h19.6v14H0z"
-                            }),
-                            e("path", {
-                              fill: "#fff",
-                              stroke: "#fff",
-                              "stroke-width": ".667",
-                              d: "M0 .167h-.901l.684.586 3.15 2.7v.609L-.194 6.295l-.14.1v1.24l.51-.319L3.83 5.033h.73L7.7 7.276a.488.488 0 00.601-.767L5.467 4.08v-.608l2.987-2.134a.667.667 0 00.28-.543V-.1l-.51.318L4.57 2.5h-.73L.66.229.572.167H0z"
-                            }),
-                            e("path", {
-                              fill: "url(#paint0_linear_374_135177)",
-                              "fill-rule": "evenodd",
-                              d: "M0 2.833V4.7h3.267v2.133c0 .369.298.667.666.667h.534a.667.667 0 00.666-.667V4.7H8.2a.667.667 0 00.667-.667V3.5a.667.667 0 00-.667-.667H5.133V.5H3.267v2.333H0z",
-                              "clip-rule": "evenodd"
-                            }),
-                            e("path", {
-                              fill: "url(#paint1_linear_374_135177)",
-                              "fill-rule": "evenodd",
-                              d: "M0 3.3h3.733V.5h.934v2.8H8.4v.933H4.667v2.8h-.934v-2.8H0V3.3z",
-                              "clip-rule": "evenodd"
-                            }),
-                            e("path", {
-                              fill: "#fff",
-                              "fill-rule": "evenodd",
-                              d: "M4.2 11.933l-.823.433.157-.916-.666-.65.92-.133.412-.834.411.834.92.134-.665.649.157.916-.823-.433zm9.8.7l-.66.194.194-.66-.194-.66.66.193.66-.193-.193.66.193.66-.66-.194zm0-8.866l-.66.193.194-.66-.194-.66.66.193.66-.193-.193.66.193.66-.66-.193zm2.8 2.8l-.66.193.193-.66-.193-.66.66.193.66-.193-.193.66.193.66-.66-.193zm-5.6.933l-.66.193.193-.66-.193-.66.66.194.66-.194-.193.66.193.66-.66-.193zm4.2 1.167l-.33.096.096-.33-.096-.33.33.097.33-.097-.097.33.097.33-.33-.096z",
-                              "clip-rule": "evenodd"
-                            })
-                          ]),
-                          e("defs", null, [
-                            e("linearGradient", {
-                              id: "paint0_linear_374_135177",
-                              x1: "0",
-                              x2: "0",
-                              y1: ".5",
-                              y2: "7.5",
-                              gradientUnits: "userSpaceOnUse"
-                            }, [
-                              e("stop", { "stop-color": "#fff" }),
-                              e("stop", {
-                                offset: "1",
-                                "stop-color": "#F0F0F0"
-                              })
-                            ]),
-                            e("linearGradient", {
-                              id: "paint1_linear_374_135177",
-                              x1: "0",
-                              x2: "0",
-                              y1: ".5",
-                              y2: "7.033",
-                              gradientUnits: "userSpaceOnUse"
-                            }, [
-                              e("stop", { "stop-color": "#FF2E3B" }),
-                              e("stop", {
-                                offset: "1",
-                                "stop-color": "#FC0D1B"
-                              })
-                            ])
-                          ])
-                        ]),
-                        _(" Australia (+61) ")
-                      ])
-                    ])
-                  ]),
-                  e("li", null, [
-                    e("button", {
-                      type: "button",
-                      class: "inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white",
-                      role: "menuitem"
-                    }, [
-                      e("div", { class: "inline-flex items-center" }, [
-                        e("svg", {
-                          class: "w-4 h-4 me-2",
-                          fill: "none",
-                          viewBox: "0 0 20 15"
-                        }, [
-                          e("rect", {
-                            width: "19.6",
-                            height: "14",
-                            y: ".5",
-                            fill: "#fff",
-                            rx: "2"
-                          }),
-                          e("mask", {
-                            id: "a",
-                            style: { "mask-type": "luminance" },
-                            width: "20",
-                            height: "15",
-                            x: "0",
-                            y: "0",
-                            maskUnits: "userSpaceOnUse"
-                          }, [
-                            e("rect", {
-                              width: "19.6",
-                              height: "14",
-                              y: ".5",
-                              fill: "#fff",
-                              rx: "2"
-                            })
-                          ]),
-                          e("g", { mask: "url(#a)" }, [
-                            e("path", {
-                              fill: "#262626",
-                              "fill-rule": "evenodd",
-                              d: "M0 5.167h19.6V.5H0v4.667z",
-                              "clip-rule": "evenodd"
-                            }),
-                            e("g", { filter: "url(#filter0_d_374_135180)" }, [
-                              e("path", {
-                                fill: "#F01515",
-                                "fill-rule": "evenodd",
-                                d: "M0 9.833h19.6V5.167H0v4.666z",
-                                "clip-rule": "evenodd"
-                              })
-                            ]),
-                            e("g", { filter: "url(#filter1_d_374_135180)" }, [
-                              e("path", {
-                                fill: "#FFD521",
-                                "fill-rule": "evenodd",
-                                d: "M0 14.5h19.6V9.833H0V14.5z",
-                                "clip-rule": "evenodd"
-                              })
-                            ])
-                          ]),
-                          e("defs", null, [
-                            e("filter", {
-                              id: "filter0_d_374_135180",
-                              width: "19.6",
-                              height: "4.667",
-                              x: "0",
-                              y: "5.167",
-                              "color-interpolation-filters": "sRGB",
-                              filterUnits: "userSpaceOnUse"
-                            }, [
-                              e("feFlood", {
-                                "flood-opacity": "0",
-                                result: "BackgroundImageFix"
-                              }),
-                              e("feColorMatrix", {
-                                in: "SourceAlpha",
-                                result: "hardAlpha",
-                                values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                              }),
-                              e("feOffset"),
-                              e("feColorMatrix", { values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0" }),
-                              e("feBlend", {
-                                in2: "BackgroundImageFix",
-                                result: "effect1_dropShadow_374_135180"
-                              }),
-                              e("feBlend", {
-                                in: "SourceGraphic",
-                                in2: "effect1_dropShadow_374_135180",
-                                result: "shape"
-                              })
-                            ]),
-                            e("filter", {
-                              id: "filter1_d_374_135180",
-                              width: "19.6",
-                              height: "4.667",
-                              x: "0",
-                              y: "9.833",
-                              "color-interpolation-filters": "sRGB",
-                              filterUnits: "userSpaceOnUse"
-                            }, [
-                              e("feFlood", {
-                                "flood-opacity": "0",
-                                result: "BackgroundImageFix"
-                              }),
-                              e("feColorMatrix", {
-                                in: "SourceAlpha",
-                                result: "hardAlpha",
-                                values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                              }),
-                              e("feOffset"),
-                              e("feColorMatrix", { values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0" }),
-                              e("feBlend", {
-                                in2: "BackgroundImageFix",
-                                result: "effect1_dropShadow_374_135180"
-                              }),
-                              e("feBlend", {
-                                in: "SourceGraphic",
-                                in2: "effect1_dropShadow_374_135180",
-                                result: "shape"
-                              })
-                            ])
-                          ])
-                        ]),
-                        _(" Germany (+49) ")
-                      ])
-                    ])
-                  ]),
-                  e("li", null, [
-                    e("button", {
-                      type: "button",
-                      class: "inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white",
-                      role: "menuitem"
-                    }, [
-                      e("div", { class: "inline-flex items-center" }, [
-                        e("svg", {
-                          class: "w-4 h-4 me-2",
-                          fill: "none",
-                          viewBox: "0 0 20 15"
-                        }, [
-                          e("rect", {
-                            width: "19.1",
-                            height: "13.5",
-                            x: ".25",
-                            y: ".75",
-                            fill: "#fff",
-                            stroke: "#F5F5F5",
-                            "stroke-width": ".5",
-                            rx: "1.75"
-                          }),
-                          e("mask", {
-                            id: "a",
-                            style: { "mask-type": "luminance" },
-                            width: "20",
-                            height: "15",
-                            x: "0",
-                            y: "0",
-                            maskUnits: "userSpaceOnUse"
-                          }, [
-                            e("rect", {
-                              width: "19.1",
-                              height: "13.5",
-                              x: ".25",
-                              y: ".75",
-                              fill: "#fff",
-                              stroke: "#fff",
-                              "stroke-width": ".5",
-                              rx: "1.75"
-                            })
-                          ]),
-                          e("g", { mask: "url(#a)" }, [
-                            e("path", {
-                              fill: "#F44653",
-                              d: "M13.067.5H19.6v14h-6.533z"
-                            }),
-                            e("path", {
-                              fill: "#1035BB",
-                              "fill-rule": "evenodd",
-                              d: "M0 14.5h6.533V.5H0v14z",
-                              "clip-rule": "evenodd"
-                            })
-                          ])
-                        ]),
-                        _(" France (+33) ")
-                      ])
-                    ])
-                  ]),
-                  e("li", null, [
-                    e("button", {
-                      type: "button",
-                      class: "inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white",
-                      role: "menuitem"
-                    }, [
-                      e("div", { class: "inline-flex items-center" }, [
-                        e("svg", {
-                          class: "w-4 h-4 me-2",
-                          fill: "none",
-                          viewBox: "0 0 20 15"
-                        }, [
-                          e("rect", {
-                            width: "19.6",
-                            height: "14",
-                            y: ".5",
-                            fill: "#fff",
-                            rx: "2"
-                          }),
-                          e("mask", {
-                            id: "a",
-                            style: { "mask-type": "luminance" },
-                            width: "20",
-                            height: "15",
-                            x: "0",
-                            y: "0",
-                            maskUnits: "userSpaceOnUse"
-                          }, [
-                            e("rect", {
-                              width: "19.6",
-                              height: "14",
-                              y: ".5",
-                              fill: "#fff",
-                              rx: "2"
-                            })
-                          ]),
-                          e("g", { mask: "url(#a)" }, [
-                            e("path", {
-                              fill: "#262626",
-                              "fill-rule": "evenodd",
-                              d: "M0 5.167h19.6V.5H0v4.667z",
-                              "clip-rule": "evenodd"
-                            }),
-                            e("g", { filter: "url(#filter0_d_374_135180)" }, [
-                              e("path", {
-                                fill: "#F01515",
-                                "fill-rule": "evenodd",
-                                d: "M0 9.833h19.6V5.167H0v4.666z",
-                                "clip-rule": "evenodd"
-                              })
-                            ]),
-                            e("g", { filter: "url(#filter1_d_374_135180)" }, [
-                              e("path", {
-                                fill: "#FFD521",
-                                "fill-rule": "evenodd",
-                                d: "M0 14.5h19.6V9.833H0V14.5z",
-                                "clip-rule": "evenodd"
-                              })
-                            ])
-                          ]),
-                          e("defs", null, [
-                            e("filter", {
-                              id: "filter0_d_374_135180",
-                              width: "19.6",
-                              height: "4.667",
-                              x: "0",
-                              y: "5.167",
-                              "color-interpolation-filters": "sRGB",
-                              filterUnits: "userSpaceOnUse"
-                            }, [
-                              e("feFlood", {
-                                "flood-opacity": "0",
-                                result: "BackgroundImageFix"
-                              }),
-                              e("feColorMatrix", {
-                                in: "SourceAlpha",
-                                result: "hardAlpha",
-                                values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                              }),
-                              e("feOffset"),
-                              e("feColorMatrix", { values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0" }),
-                              e("feBlend", {
-                                in2: "BackgroundImageFix",
-                                result: "effect1_dropShadow_374_135180"
-                              }),
-                              e("feBlend", {
-                                in: "SourceGraphic",
-                                in2: "effect1_dropShadow_374_135180",
-                                result: "shape"
-                              })
-                            ]),
-                            e("filter", {
-                              id: "filter1_d_374_135180",
-                              width: "19.6",
-                              height: "4.667",
-                              x: "0",
-                              y: "9.833",
-                              "color-interpolation-filters": "sRGB",
-                              filterUnits: "userSpaceOnUse"
-                            }, [
-                              e("feFlood", {
-                                "flood-opacity": "0",
-                                result: "BackgroundImageFix"
-                              }),
-                              e("feColorMatrix", {
-                                in: "SourceAlpha",
-                                result: "hardAlpha",
-                                values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                              }),
-                              e("feOffset"),
-                              e("feColorMatrix", { values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0" }),
-                              e("feBlend", {
-                                in2: "BackgroundImageFix",
-                                result: "effect1_dropShadow_374_135180"
-                              }),
-                              e("feBlend", {
-                                in: "SourceGraphic",
-                                in2: "effect1_dropShadow_374_135180",
-                                result: "shape"
-                              })
-                            ])
-                          ])
-                        ]),
-                        _(" Germany (+49) ")
-                      ])
-                    ])
-                  ])
-                ])
-              ]),
-              e("label", {
-                for: "phone-input",
-                class: "mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-              }, "Phone number:"),
-              e("div", { class: "relative w-full" }, [
-                e("input", {
-                  type: "phone",
-                  id: "phone-input",
-                  class: "block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-0 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500",
-                  pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}",
-                  placeholder: "123-456-7890",
-                  required: ""
-                })
+                ], -1))
               ])
             ])
-          ], -1)),
-          G(e("input", {
-            "onUpdate:modelValue": (g) => n.value[s] = g,
-            onBlur: (g) => h(s, g.target.value),
-            class: "fi-input text-center border-none py-1.5 text-base text-gray-950 transition duration-75 placeholder:text-gray-400 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.400)] dark:text-white dark:placeholder:text-gray-500 dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] dark:disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.500)] sm:text-sm sm:leading-6 bg-white/0 ps-0 pe-3"
-          }, null, 40, fe), [
-            [J, n.value[s]]
-          ]),
-          e("select", {
-            value: y.bestOf,
-            onChange: (g) => x(s, g.target.value),
-            class: "fi-select-input w-32border-none bg-transparent text-base text-gray-900 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900"
-          }, [
-            (c(), v(z, null, F(l, (g) => e("option", {
-              key: g,
-              value: g
-            }, " Best of " + C(g), 9, ve)), 64))
-          ], 40, pe)
+          ])
         ])
       ]))), 128))
     ]));
   }
-}, ye = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8" }, xe = { class: "flex flex-col" }, be = { class: "overflow-x-auto" }, we = { class: "min-w-max" }, ke = { class: "flex flex-1 p-5" }, Te = {
+}, ye = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8" }, we = { class: "flex flex-col" }, Oe = { class: "overflow-x-auto" }, xe = { class: "min-w-max" }, Ee = { class: "flex flex-1 p-5" }, Ne = {
   __name: "BracketLower",
   props: {
     initialState: {
@@ -1244,72 +529,72 @@ const E = {
     defaultBestOf: {
       type: Number,
       default: 3,
-      validator: (t) => [1, 3, 5, 7, 9].includes(t)
+      validator: (e) => [1, 3, 5, 7, 9].includes(e)
     }
   },
   emits: ["update:state"],
-  setup(t, { emit: p }) {
-    const a = p, i = t, l = B([]), n = B(null), h = N(() => {
-      const o = /* @__PURE__ */ new Set();
-      return l.value.forEach((b) => {
-        b.items.forEach((r) => {
-          r[d.ONE].name !== k && o.add(r[d.ONE].name), r[d.TWO].name !== k && o.add(r[d.TWO].name);
+  setup(e, { emit: v }) {
+    const t = v, i = e, a = k([]), l = k(null), d = L(() => {
+      const s = /* @__PURE__ */ new Set();
+      return a.value.forEach((y) => {
+        y.items.forEach((n) => {
+          n[r.ONE].name !== O && s.add(n[r.ONE].name), n[r.TWO].name !== O && s.add(n[r.TWO].name);
         });
-      }), Array.from(o);
-    }), x = (o) => {
-      n.value = o;
-    }, u = () => {
-      n.value = null;
-    }, m = (o, b, r) => {
-      if (console.log("Updating lower match:", { roundIndex: o, matchIndex: b, updatedMatch: r }), l.value[o] && l.value[o].items) {
-        if (l.value[o].items[b] = r, r.winner && o < l.value.length - 1) {
-          const w = o + 1, f = Math.floor(b / 2);
-          if (l.value[w] && l.value[w].items[f]) {
-            const T = l.value[w].items[f], O = b % 2 === 0 ? d.ONE : d.TWO, M = r[r.winner];
-            l.value[w].items[f] = {
-              ...T,
-              [O]: {
-                id: M.id,
-                name: M.name,
-                logo: M.logo,
+      }), Array.from(s);
+    }), b = (s) => {
+      l.value = s;
+    }, m = () => {
+      l.value = null;
+    }, u = (s, y, n) => {
+      if (console.log("Updating lower match:", { roundIndex: s, matchIndex: y, updatedMatch: n }), a.value[s] && a.value[s].items) {
+        if (a.value[s].items[y] = n, n.winner && s < a.value.length - 1) {
+          const w = s + 1, g = Math.floor(y / 2);
+          if (a.value[w] && a.value[w].items[g]) {
+            const x = a.value[w].items[g], E = y % 2 === 0 ? r.ONE : r.TWO, S = n[n.winner];
+            a.value[w].items[g] = {
+              ...x,
+              [E]: {
+                id: S.id,
+                name: S.name,
+                logo: S.logo,
                 score: 0
               }
             };
           }
         }
-        s();
+        o();
       }
-    }, y = (o) => {
-      console.log("Updating lower columns:", o), l.value = o, s();
-    }, s = () => {
-      console.log("Emitting lower tournament state:", l.value), a("update:state", l.value);
-    }, g = () => {
-      console.log("Initializing lower tournament with state:", i.initialState), i.initialState && i.initialState.length > 0 && (l.value = JSON.parse(JSON.stringify(i.initialState)));
+    }, T = (s) => {
+      console.log("Updating lower columns:", s), a.value = s, o();
+    }, o = () => {
+      console.log("Emitting lower tournament state:", a.value), t("update:state", a.value);
+    }, h = () => {
+      console.log("Initializing lower tournament with state:", i.initialState), i.initialState && i.initialState.length > 0 && (a.value = JSON.parse(JSON.stringify(i.initialState)));
     };
-    return A(() => i.initialState, () => {
-      g();
-    }, { deep: !0 }), W(() => {
-      g();
-    }), (o, b) => (c(), v("div", ye, [
-      b[0] || (b[0] = e("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4 px-5" }, "Lower Bracket", -1)),
-      e("div", xe, [
-        e("div", be, [
-          e("div", we, [
-            U(Q, {
-              columns: l.value,
-              "onUpdate:columns": y
+    return U(() => i.initialState, () => {
+      h();
+    }, { deep: !0 }), P(() => {
+      h();
+    }), (s, y) => (c(), p("div", ye, [
+      y[0] || (y[0] = f("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4" }, "Lower Bracket", -1)),
+      f("div", we, [
+        f("div", Oe, [
+          f("div", xe, [
+            M(K, {
+              columns: a.value,
+              "onUpdate:columns": T
             }, null, 8, ["columns"]),
-            e("div", ke, [
-              (c(!0), v(z, null, F(l.value, (r, w) => (c(), q(K, {
-                key: r.name,
-                column: r,
+            f("div", Ee, [
+              (c(!0), p(A, null, $(a.value, (n, w) => (c(), H(Z, {
+                key: n.name,
+                column: n,
                 "column-index": w,
-                "available-teams": t.availableTeams,
-                "selected-teams": h.value,
-                "highlighted-team": n.value,
-                "onUpdate:match": m,
-                onHighlightTeam: x,
-                onUnhighlightTeam: u
+                "available-teams": e.availableTeams,
+                "selected-teams": d.value,
+                "highlighted-team": l.value,
+                "onUpdate:match": u,
+                onHighlightTeam: b,
+                onUnhighlightTeam: m
               }, null, 8, ["column", "column-index", "available-teams", "selected-teams", "highlighted-team"]))), 128))
             ])
           ])
@@ -1317,54 +602,54 @@ const E = {
       ])
     ]));
   }
-}, j = () => ({
+}, J = () => ({
   id: null,
-  name: k,
+  name: O,
   logo: null,
   score: 0
-}), V = (t) => ({
-  number: t,
-  [d.ONE]: j(),
-  [d.TWO]: j(),
+}), W = (e) => ({
+  number: e,
+  [r.ONE]: J(),
+  [r.TWO]: J(),
   winner: null
-}), Ue = (t, p = 3) => {
-  const a = [], i = Math.log2(t);
-  let l = 1;
-  for (let n = 0; n < i; n++) {
-    const h = Math.pow(2, i - n - 1), x = [];
-    for (let u = 0; u < h; u++)
-      x.push(V(l++));
-    a.push({
-      name: `Round ${n + 1}`,
-      items: x,
-      bestOf: p
+}), $e = (e, v = 3) => {
+  const t = [], i = Math.log2(e);
+  let a = 1;
+  for (let l = 0; l < i; l++) {
+    const d = Math.pow(2, i - l - 1), b = [];
+    for (let m = 0; m < d; m++)
+      b.push(W(a++));
+    t.push({
+      name: `Round ${l + 1}`,
+      items: b,
+      bestOf: v
     });
   }
-  return a;
-}, P = (t, p) => {
-  const a = [];
+  return t;
+}, V = (e, v) => {
+  const t = [];
   let i = 1;
-  const l = Math.pow(2, t - 2), n = {
+  const a = Math.pow(2, e - 2), l = {
     name: "Lower Round 1",
-    bestOf: p,
-    items: Array(l).fill(null).map(() => V(i++))
+    bestOf: v,
+    items: Array(a).fill(null).map(() => W(i++))
   };
-  a.push(n);
-  const h = Math.pow(2, t - 3), x = {
+  t.push(l);
+  const d = Math.pow(2, e - 3), b = {
     name: "Lower Round 2",
-    bestOf: p,
-    items: Array(h).fill(null).map(() => V(i++))
+    bestOf: v,
+    items: Array(d).fill(null).map(() => W(i++))
   };
-  if (a.push(x), t > 3) {
-    const u = Math.pow(2, t - 4), m = {
+  if (t.push(b), e > 3) {
+    const m = Math.pow(2, e - 4), u = {
       name: "Lower Round 3",
-      bestOf: p,
-      items: Array(u).fill(null).map(() => V(i++))
+      bestOf: v,
+      items: Array(m).fill(null).map(() => W(i++))
     };
-    a.push(m);
+    t.push(u);
   }
-  return a;
-}, Oe = { class: "flex flex-col" }, Se = { class: "flex flex-col" }, Me = { class: "overflow-x-auto" }, Be = { class: "min-w-max" }, _e = { class: "flex flex-1 p-5" }, Ee = {
+  return t;
+}, Se = { class: "flex flex-col" }, ke = { class: "flex flex-col" }, Be = { class: "overflow-x-auto" }, Ae = { class: "min-w-max" }, Me = { class: "flex flex-1 p-5" }, Le = {
   __name: "TournamentBracket",
   props: {
     initialState: {
@@ -1387,127 +672,128 @@ const E = {
       type: Object,
       required: !0,
       default: () => ({
-        [H.CAN_SELECT_TEAM]: !0
+        [q.CAN_SELECT_TEAM]: !0
       })
     }
   },
   emits: ["update:state"],
-  setup(t, { emit: p }) {
-    const a = p, i = t, l = B([]), n = B([]), h = B(null), x = N(() => {
-      const r = /* @__PURE__ */ new Set();
-      return l.value.forEach((w) => {
-        w.items.forEach((f) => {
-          f[d.ONE].name !== k && r.add(f[d.ONE].name), f[d.TWO].name !== k && r.add(f[d.TWO].name);
+  setup(e, { emit: v }) {
+    const t = v, i = e, a = k([]), l = k([]), d = k(null), b = L(() => {
+      const n = /* @__PURE__ */ new Set();
+      return a.value.forEach((w) => {
+        w.items.forEach((g) => {
+          g[r.ONE].name !== O && n.add(g[r.ONE].name), g[r.TWO].name !== O && n.add(g[r.TWO].name);
         });
-      }), i.format === E.DOUBLE_ELIMINATION && n.value.forEach((w) => {
-        w.items.forEach((f) => {
-          f[d.ONE].name !== k && r.add(f[d.ONE].name), f[d.TWO].name !== k && r.add(f[d.TWO].name);
+      }), i.format === B.DOUBLE_ELIMINATION && l.value.forEach((w) => {
+        w.items.forEach((g) => {
+          g[r.ONE].name !== O && n.add(g[r.ONE].name), g[r.TWO].name !== O && n.add(g[r.TWO].name);
         });
-      }), Array.from(r);
-    }), u = (r) => {
-      h.value = r;
-    }, m = () => {
-      h.value = null;
-    }, y = (r, w, f) => {
-      if (console.log("Updating upper match:", { roundIndex: r, matchIndex: w, updatedMatch: f }), l.value[r] && l.value[r].items) {
-        if (l.value[r].items[w] = f, f.winner && r < l.value.length - 1) {
-          const T = r + 1, O = Math.floor(w / 2);
-          if (l.value[T] && l.value[T].items[O]) {
-            const M = l.value[T].items[O], $ = w % 2 === 0 ? d.ONE : d.TWO, L = f[f.winner];
-            l.value[T].items[O] = {
-              ...M,
-              [$]: {
-                id: L.id,
-                name: L.name,
-                logo: L.logo,
+      }), Array.from(n);
+    }), m = (n) => {
+      d.value = n;
+    }, u = () => {
+      d.value = null;
+    }, T = (n, w, g) => {
+      if (console.log("Updating upper match:", { roundIndex: n, matchIndex: w, updatedMatch: g }), a.value[n] && a.value[n].items) {
+        if (a.value[n].items[w] = g, g.winner && n < a.value.length - 1) {
+          const x = n + 1, E = Math.floor(w / 2);
+          if (a.value[x] && a.value[x].items[E]) {
+            const S = a.value[x].items[E], j = w % 2 === 0 ? r.ONE : r.TWO, C = g[g.winner];
+            a.value[x].items[E] = {
+              ...S,
+              [j]: {
+                id: C.id,
+                name: C.name,
+                logo: C.logo,
                 score: 0
               }
             };
           }
         }
-        if (i.format === E.DOUBLE_ELIMINATION && f.winner) {
-          const T = f[f.winner === d.ONE ? d.TWO : d.ONE];
-          if (T.name !== k) {
-            const O = Math.floor(r / 2), M = Math.floor(w / 2);
-            if (n.value[O] && n.value[O].items[M]) {
-              const $ = n.value[O].items[M], L = w % 2 === 0 ? d.ONE : d.TWO;
-              n.value[O].items[M] = {
-                ...$,
-                [L]: {
-                  id: T.id,
-                  name: T.name,
-                  logo: T.logo,
+        if (i.format === B.DOUBLE_ELIMINATION && g.winner) {
+          const x = g[g.winner === r.ONE ? r.TWO : r.ONE];
+          if (x.name !== O) {
+            const E = Math.floor(n / 2), S = Math.floor(w / 2);
+            if (l.value[E] && l.value[E].items[S]) {
+              const j = l.value[E].items[S], C = w % 2 === 0 ? r.ONE : r.TWO;
+              l.value[E].items[S] = {
+                ...j,
+                [C]: {
+                  id: x.id,
+                  name: x.name,
+                  logo: x.logo,
                   score: 0
                 }
               };
             }
           }
         }
-        o();
+        s();
       }
-    }, s = (r) => {
-      console.log("Updating upper columns:", r), l.value = r, o();
-    }, g = (r) => {
-      console.log("Updating lower state:", r), n.value = r, o();
-    }, o = () => {
+    }, o = (n) => {
+      console.log("Updating upper columns:", n), a.value = n, s();
+    }, h = (n) => {
+      console.log("Updating lower state:", n), l.value = n, s();
+    }, s = () => {
       console.log("Emitting tournament state:", {
-        upper: l.value,
-        lower: i.format === E.DOUBLE_ELIMINATION ? n.value : null
-      }), a("update:state", {
-        upper: l.value,
-        lower: i.format === E.DOUBLE_ELIMINATION ? n.value : null
+        upper: a.value,
+        lower: i.format === B.DOUBLE_ELIMINATION ? l.value : null
+      }), t("update:state", {
+        upper: a.value,
+        lower: i.format === B.DOUBLE_ELIMINATION ? l.value : null
       });
-    }, b = () => {
-      console.log("Initializing tournament with state:", i.initialState), i.initialState && (Array.isArray(i.initialState) ? (l.value = JSON.parse(JSON.stringify(i.initialState)), i.format === E.DOUBLE_ELIMINATION && (n.value = P(l.value.length, i.defaultBestOf))) : (l.value = JSON.parse(JSON.stringify(i.initialState.upper || [])), n.value = JSON.parse(JSON.stringify(i.initialState.lower || []))));
+    }, y = () => {
+      console.log("Initializing tournament with state:", i.initialState), i.initialState && (Array.isArray(i.initialState) ? (a.value = JSON.parse(JSON.stringify(i.initialState)), i.format === B.DOUBLE_ELIMINATION && (l.value = V(a.value.length, i.defaultBestOf))) : (a.value = JSON.parse(JSON.stringify(i.initialState.upper || [])), l.value = JSON.parse(JSON.stringify(i.initialState.lower || []))));
     };
-    return A(() => i.initialState, () => {
-      b();
-    }, { deep: !0 }), A(() => i.format, (r) => {
-      r === E.DOUBLE_ELIMINATION && (!n.value || n.value.length === 0) && (n.value = P(l.value.length, i.defaultBestOf), o());
-    }), W(() => {
-      b();
-    }), (r, w) => (c(), v("div", Oe, [
-      w[0] || (w[0] = e("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4 px-5" }, "Upper Bracket", -1)),
-      e("div", Se, [
-        e("div", Me, [
-          e("div", Be, [
-            U(Q, {
-              columns: l.value,
-              "onUpdate:columns": s
+    return U(() => i.initialState, () => {
+      y();
+    }, { deep: !0 }), U(() => i.format, (n) => {
+      n === B.DOUBLE_ELIMINATION && (!l.value || l.value.length === 0) && (l.value = V(a.value.length, i.defaultBestOf), s());
+    }), P(() => {
+      y();
+    }), (n, w) => (c(), p("div", Se, [
+      w[0] || (w[0] = f("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4" }, "Upper Bracket", -1)),
+      f("div", ke, [
+        f("div", Be, [
+          f("div", Ae, [
+            M(K, {
+              columns: a.value,
+              "onUpdate:columns": o
             }, null, 8, ["columns"]),
-            e("div", _e, [
-              (c(!0), v(z, null, F(l.value, (f, T) => (c(), q(K, {
-                key: f.name,
-                column: f,
-                "column-index": T,
-                "available-teams": t.availableTeams,
-                "selected-teams": x.value,
-                "highlighted-team": h.value,
-                permissions: t.permissions,
-                "onUpdate:match": y,
-                onHighlightTeam: u,
-                onUnhighlightTeam: m
+            f("div", Me, [
+              (c(!0), p(A, null, $(a.value, (g, x) => (c(), H(Z, {
+                key: g.name,
+                column: g,
+                "column-index": x,
+                "available-teams": e.availableTeams,
+                "selected-teams": b.value,
+                "highlighted-team": d.value,
+                permissions: e.permissions,
+                "onUpdate:match": T,
+                onHighlightTeam: m,
+                onUnhighlightTeam: u
               }, null, 8, ["column", "column-index", "available-teams", "selected-teams", "highlighted-team", "permissions"]))), 128))
             ])
           ])
         ])
       ]),
-      t.format === S(E).DOUBLE_ELIMINATION ? (c(), q(Te, {
+      e.format === N(B).DOUBLE_ELIMINATION ? (c(), H(Ne, {
         key: 0,
-        "initial-state": n.value,
-        "available-teams": t.availableTeams,
-        "default-best-of": t.defaultBestOf,
-        permissions: t.permissions,
-        "onUpdate:state": g
-      }, null, 8, ["initial-state", "available-teams", "default-best-of", "permissions"])) : I("", !0)
+        "initial-state": l.value,
+        "available-teams": e.availableTeams,
+        "default-best-of": e.defaultBestOf,
+        permissions: e.permissions,
+        "onUpdate:state": h
+      }, null, 8, ["initial-state", "available-teams", "default-best-of", "permissions"])) : R("", !0)
     ]));
   }
-}, Ne = (t) => {
-  t.component("TournamentBracket", Ee);
+}, qe = (e) => {
+  e.component("TournamentBracket", Le);
 };
 export {
-  Ee as TournamentBracket,
-  P as createLowerBracketStructure,
-  Ue as createTournamentState,
-  Ne as install
+  q as PERMISSIONS,
+  Le as TournamentBracket,
+  V as createLowerBracketStructure,
+  $e as createTournamentState,
+  qe as install
 };

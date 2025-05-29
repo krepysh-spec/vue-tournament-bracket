@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8">
-    <div class="text-xl font-bold text-gray-800 dark:text-white mb-4 px-5">Lower Bracket</div>
+    <div class="text-xl font-bold text-gray-800 dark:text-white mb-4">Lower Bracket</div>
     <div class="flex flex-col">
       <div class="overflow-x-auto">
         <div class="min-w-max">

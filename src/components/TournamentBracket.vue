@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col">
-    <div class="text-xl font-bold text-gray-800 dark:text-white mb-4 px-5">Upper Bracket</div>
+    <div class="text-xl font-bold text-gray-800 dark:text-white mb-4">Upper Bracket</div>
     <div class="flex flex-col">
       <div class="overflow-x-auto">
         <div class="min-w-max">
