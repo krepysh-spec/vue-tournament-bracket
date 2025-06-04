@@ -17,6 +17,7 @@
               :available-teams="availableTeams"
               :selected-teams="selectedTeams"
               :highlighted-team="highlightedTeam"
+              :permissions="permissions"
               @update:match="updateMatch"
               @highlight-team="highlightTeam"
               @unhighlight-team="unhighlightTeam"
@@ -32,7 +33,7 @@
 import { ref, onMounted, watch, computed } from 'vue';
 import BracketColumn from './BracketColumn.vue';
 import BracketRoundHeaders from './BracketRoundHeaders.vue';
-import { TBD, TEAM_POSITION } from '../../constants/tournament';
+import { TBD, TEAM_POSITION, PERMISSIONS } from '../../constants/tournament';
 
 const emit = defineEmits(['update:state']);
 
@@ -49,6 +50,14 @@ const props = defineProps({
     type: Number,
     default: 3,
     validator: (value) => [1, 3, 5, 7, 9].includes(value)
+  },
+  permissions: {
+    type: Object,
+    required: true,
+    default: () => ({
+      [PERMISSIONS.CAN_SELECT_TEAM]: true,
+      [PERMISSIONS.CAN_EDIT_DATE]: true
+    })
   }
 });
 

@@ -7,12 +7,15 @@ export const createEmptyTeam = () => ({
   score: 0
 });
 
-export const createEmptyMatch = (number) => ({
-  number,
-  [TEAM_POSITION.ONE]: createEmptyTeam(),
-  [TEAM_POSITION.TWO]: createEmptyTeam(),
-  winner: null
-});
+export const createEmptyMatch = (number) => {
+  return {
+    number,
+    [TEAM_POSITION.ONE]: createEmptyTeam(),
+    [TEAM_POSITION.TWO]: createEmptyTeam(),
+    winner: null,
+    date: null
+  };
+};
 
 export const createTournamentState = (size, defaultBestOf = 3) => {
   const rounds = [];

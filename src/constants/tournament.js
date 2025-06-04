@@ -11,5 +11,6 @@ export const TEAM_POSITION = {
 };
 
 export const PERMISSIONS = {
-  CAN_SELECT_TEAM: 'can-select-team'
+  CAN_SELECT_TEAM: 'can_select_team',
+  CAN_EDIT_DATE: 'can_edit_date'
 }; 
