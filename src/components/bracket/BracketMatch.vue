@@ -111,12 +111,15 @@ const props = defineProps({
 
 const emit = defineEmits(['update:match', 'highlight-team', 'unhighlight-team']);
 
-// Перевіряємо, чи можна редагувати матч (тільки перший раунд)
-const canEdit = computed(() => props.roundIndex === 0);
+// Check if we can edit the match (first round only)
+const canEdit = computed(() => {
+  return props.roundIndex === 0 && props.permissions[PERMISSIONS.CAN_SELECT_TEAM];
+});
 
-// Перевіряємо, чи можна редагувати рахунок (коли обидві команди вибрані)
+// Check if we can edit the score (when both teams are selected)
 const canEditScore = computed(() => {
-  return props.match[TEAM_POSITION.ONE].name !== TBD && props.match[TEAM_POSITION.TWO].name !== TBD;
+  return props.match[TEAM_POSITION.ONE].name !== TBD && 
+         props.match[TEAM_POSITION.TWO].name !== TBD;
 });
 
 const isWinner = (teamPosition) => {
@@ -156,14 +159,16 @@ const updateScore = ({ position, score }) => {
       score: score
     }
   };
-
-  // Визначаємо переможця на основі рахунку
-  if (updatedMatch.teamOne.score > 0 || updatedMatch.teamTwo.score > 0) {
-    updatedMatch.winner = updatedMatch.teamOne.score > updatedMatch.teamTwo.score ? TEAM_POSITION.ONE : TEAM_POSITION.TWO;
+  
+  // Determine the winner based on the score
+  if (updatedMatch[TEAM_POSITION.ONE].score > updatedMatch[TEAM_POSITION.TWO].score) {
+    updatedMatch.winner = TEAM_POSITION.ONE;
+  } else if (updatedMatch[TEAM_POSITION.TWO].score > updatedMatch[TEAM_POSITION.ONE].score) {
+    updatedMatch.winner = TEAM_POSITION.TWO;
   } else {
     updatedMatch.winner = null;
   }
-
+  
   emit('update:match', updatedMatch);
 };
 

@@ -11,7 +11,7 @@
           <div class="flex flex-1 p-5">
             <BracketColumn 
               v-for="(column, index) in columns" 
-              :key="column.name"
+              :key="column.id"
               :column="column"
               :column-index="index"
               :available-teams="availableTeams"
@@ -67,7 +67,7 @@ const highlightedTeam = ref(null);
 const selectedTeams = computed(() => {
   const teams = new Set();
   columns.value.forEach(round => {
-    round.items.forEach(match => {
+    round.matches.forEach(match => {
       if (match[TEAM_POSITION.ONE].name !== TBD) teams.add(match[TEAM_POSITION.ONE].name);
       if (match[TEAM_POSITION.TWO].name !== TBD) teams.add(match[TEAM_POSITION.TWO].name);
     });
@@ -85,20 +85,20 @@ const unhighlightTeam = () => {
 
 const updateMatch = (roundIndex, matchIndex, updatedMatch) => {
   console.log('Updating lower match:', { roundIndex, matchIndex, updatedMatch });
-  if (columns.value[roundIndex] && columns.value[roundIndex].items) {
-    columns.value[roundIndex].items[matchIndex] = updatedMatch;
+  if (columns.value[roundIndex] && columns.value[roundIndex].matches) {
+    columns.value[roundIndex].matches[matchIndex] = updatedMatch;
     
-    // Якщо є переможець, оновлюємо наступний раунд
+    // If there is a winner, update the next round
     if (updatedMatch.winner && roundIndex < columns.value.length - 1) {
       const nextRoundIndex = roundIndex + 1;
       const nextMatchIndex = Math.floor(matchIndex / 2);
       
-      if (columns.value[nextRoundIndex] && columns.value[nextRoundIndex].items[nextMatchIndex]) {
-        const nextMatch = columns.value[nextRoundIndex].items[nextMatchIndex];
+      if (columns.value[nextRoundIndex] && columns.value[nextRoundIndex].matches[nextMatchIndex]) {
+        const nextMatch = columns.value[nextRoundIndex].matches[nextMatchIndex];
         const teamPosition = matchIndex % 2 === 0 ? TEAM_POSITION.ONE : TEAM_POSITION.TWO;
         const winningTeam = updatedMatch[updatedMatch.winner];
         
-        columns.value[nextRoundIndex].items[nextMatchIndex] = {
+        columns.value[nextRoundIndex].matches[nextMatchIndex] = {
           ...nextMatch,
           [teamPosition]: {
             id: winningTeam.id,

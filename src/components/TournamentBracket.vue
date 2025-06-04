@@ -11,7 +11,7 @@
           <div class="flex flex-1 p-5">
             <BracketColumn 
               v-for="(column, index) in upperColumns" 
-              :key="column.name"
+              :key="column.id"
               :column="column"
               :column-index="index"
               :available-teams="availableTeams"
@@ -81,14 +81,14 @@ const highlightedTeam = ref(null);
 const selectedTeams = computed(() => {
   const teams = new Set();
   upperColumns.value.forEach(round => {
-    round.items.forEach(match => {
+    round.matches.forEach(match => {
       if (match[TEAM_POSITION.ONE].name !== TBD) teams.add(match[TEAM_POSITION.ONE].name);
       if (match[TEAM_POSITION.TWO].name !== TBD) teams.add(match[TEAM_POSITION.TWO].name);
     });
   });
   if (props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION) {
     lowerColumns.value.forEach(round => {
-      round.items.forEach(match => {
+      round.matches.forEach(match => {
         if (match[TEAM_POSITION.ONE].name !== TBD) teams.add(match[TEAM_POSITION.ONE].name);
         if (match[TEAM_POSITION.TWO].name !== TBD) teams.add(match[TEAM_POSITION.TWO].name);
       });
@@ -107,20 +107,20 @@ const unhighlightTeam = () => {
 
 const updateUpperMatch = (roundIndex, matchIndex, updatedMatch) => {
   console.log('Updating upper match:', { roundIndex, matchIndex, updatedMatch });
-  if (upperColumns.value[roundIndex] && upperColumns.value[roundIndex].items) {
-    upperColumns.value[roundIndex].items[matchIndex] = updatedMatch;
+  if (upperColumns.value[roundIndex] && upperColumns.value[roundIndex].matches) {
+    upperColumns.value[roundIndex].matches[matchIndex] = updatedMatch;
     
-    // Якщо є переможець, оновлюємо наступний раунд
+    // If there is a winner, update the next round
     if (updatedMatch.winner && roundIndex < upperColumns.value.length - 1) {
       const nextRoundIndex = roundIndex + 1;
       const nextMatchIndex = Math.floor(matchIndex / 2);
       
-      if (upperColumns.value[nextRoundIndex] && upperColumns.value[nextRoundIndex].items[nextMatchIndex]) {
-        const nextMatch = upperColumns.value[nextRoundIndex].items[nextMatchIndex];
+      if (upperColumns.value[nextRoundIndex] && upperColumns.value[nextRoundIndex].matches[nextMatchIndex]) {
+        const nextMatch = upperColumns.value[nextRoundIndex].matches[nextMatchIndex];
         const teamPosition = matchIndex % 2 === 0 ? TEAM_POSITION.ONE : TEAM_POSITION.TWO;
         const winningTeam = updatedMatch[updatedMatch.winner];
         
-        upperColumns.value[nextRoundIndex].items[nextMatchIndex] = {
+        upperColumns.value[nextRoundIndex].matches[nextMatchIndex] = {
           ...nextMatch,
           [teamPosition]: {
             id: winningTeam.id,
@@ -132,19 +132,19 @@ const updateUpperMatch = (roundIndex, matchIndex, updatedMatch) => {
       }
     }
 
-    // Якщо це Double Elimination і команда програла, додаємо її в нижню сітку
+    // If it's Double Elimination and a team lost, add them to the lower bracket
     if (props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION && updatedMatch.winner) {
       const losingTeam = updatedMatch[updatedMatch.winner === TEAM_POSITION.ONE ? TEAM_POSITION.TWO : TEAM_POSITION.ONE];
       if (losingTeam.name !== TBD) {
-        // Знаходимо відповідний матч в нижній сітці
+        // Find the corresponding match in the lower bracket
         const lowerRoundIndex = Math.floor(roundIndex / 2);
         const lowerMatchIndex = Math.floor(matchIndex / 2);
         
-        if (lowerColumns.value[lowerRoundIndex] && lowerColumns.value[lowerRoundIndex].items[lowerMatchIndex]) {
-          const lowerMatch = lowerColumns.value[lowerRoundIndex].items[lowerMatchIndex];
+        if (lowerColumns.value[lowerRoundIndex] && lowerColumns.value[lowerRoundIndex].matches[lowerMatchIndex]) {
+          const lowerMatch = lowerColumns.value[lowerRoundIndex].matches[lowerMatchIndex];
           const teamPosition = matchIndex % 2 === 0 ? TEAM_POSITION.ONE : TEAM_POSITION.TWO;
           
-          lowerColumns.value[lowerRoundIndex].items[lowerMatchIndex] = {
+          lowerColumns.value[lowerRoundIndex].matches[lowerMatchIndex] = {
             ...lowerMatch,
             [teamPosition]: {
               id: losingTeam.id,
@@ -188,14 +188,14 @@ const initializeTournament = () => {
   console.log('Initializing tournament with state:', props.initialState);
   if (props.initialState) {
     if (Array.isArray(props.initialState)) {
-      // Старий формат (тільки верхня сітка)
+      // Old format (upper bracket only)
       upperColumns.value = JSON.parse(JSON.stringify(props.initialState));
       if (props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION) {
-        // Створюємо початкову структуру для нижньої сітки
+        // Create initial structure for lower bracket
         lowerColumns.value = createLowerBracketStructure(upperColumns.value.length, props.defaultBestOf);
       }
     } else {
-      // Новий формат (верхня і нижня сітки)
+      // New format (upper and lower brackets)
       upperColumns.value = JSON.parse(JSON.stringify(props.initialState.upper || []));
       lowerColumns.value = JSON.parse(JSON.stringify(props.initialState.lower || []));
     }

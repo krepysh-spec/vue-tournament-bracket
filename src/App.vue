@@ -122,10 +122,10 @@ const tournamentState = ref(createTournamentState(selectedSize.value, defaultBes
 const totalMatches = computed(() => {
   if (!tournamentState.value) return 0;
   if (Array.isArray(tournamentState.value)) {
-    return tournamentState.value.reduce((total, round) => total + round.items.length, 0);
+    return tournamentState.value.reduce((total, round) => total + round.matches.length, 0);
   }
-  return (tournamentState.value.upper?.reduce((total, round) => total + round.items.length, 0) || 0) +
-         (tournamentState.value.lower?.reduce((total, round) => total + round.items.length, 0) || 0);
+  return (tournamentState.value.upper?.reduce((total, round) => total + round.matches.length, 0) || 0) +
+         (tournamentState.value.lower?.reduce((total, round) => total + round.matches.length, 0) || 0);
 });
 
 const toggleTheme = () => {
@@ -147,8 +147,11 @@ const updateTheme = () => {
   }
 };
 
-// Ініціалізуємо тему при завантаженні
-updateTheme();
+// Initialize theme on load
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+  isDark.value = savedTheme === 'dark';
+}
 
 watch([selectedSize, defaultBestOf], () => {
   clearState();
@@ -170,29 +173,24 @@ const clearState = () => {
   tournamentState.value = createTournamentState(selectedSize.value, defaultBestOf.value);
 };
 
-// Завантажуємо стан при ініціалізації
-onMounted(() => {
-  const savedState = localStorage.getItem('tournamentState');
-  if (savedState) {
-    try {
-      const parsedState = JSON.parse(savedState);
-      console.log('Loading saved state:', parsedState);
-      
-      // Якщо це старий формат (масив), конвертуємо в новий
-      if (Array.isArray(parsedState)) {
-        tournamentState.value = {
-          upper: parsedState,
-          lower: tournamentFormat.value === 'double_elimination' ? createLowerBracketStructure(parsedState.length, defaultBestOf.value) : null
-        };
-      } else {
-        tournamentState.value = parsedState;
-      }
-    } catch (error) {
-      console.error('Error parsing saved tournament state:', error);
-      clearState();
+// Load state on initialization
+const savedState = localStorage.getItem('tournamentState');
+if (savedState) {
+  try {
+    const parsedState = JSON.parse(savedState);
+    if (Array.isArray(parsedState)) {
+      // If it's the old format (array), convert to new format
+      tournamentState.value = {
+        upper: parsedState,
+        lower: null
+      };
+    } else {
+      tournamentState.value = parsedState;
     }
+  } catch (error) {
+    console.error('Error loading tournament state:', error);
   }
-});
+}
 </script>
 
 <style>

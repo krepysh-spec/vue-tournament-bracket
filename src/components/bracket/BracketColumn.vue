@@ -1,11 +1,11 @@
 <template>
   <div class="flex-1 px-5 pb-2.5 grid grid-cols-[min-content_auto]">
-    <template v-for="(item, index) in column.items" :key="item.number">
+    <template v-for="(item, index) in column.matches" :key="item.id">
       <div class="text-[0.7em] text-gray-900 dark:text-white flex justify-end items-center opacity-50 mt-[23px]">{{item.number}}</div>
       <BracketMatch 
         :match="item"
         :index="index"
-        :total-matches="column.items.length"
+        :total-matches="column.matches.length"
         :round-index="columnIndex"
         :available-teams="availableTeams"
         :selected-teams="selectedTeams"
