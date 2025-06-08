@@ -80,7 +80,8 @@ const props = defineProps({
     type: Object,
     required: true,
     default: () => ({
-      [PERMISSIONS.CAN_SELECT_TEAM]: true
+      [PERMISSIONS.CAN_SELECT_TEAM]: true,
+      [PERMISSIONS.CAN_EDIT_SCOPE]: true
     })
   }
 });

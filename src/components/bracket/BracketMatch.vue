@@ -104,7 +104,8 @@ const props = defineProps({
     required: true,
     default: () => ({
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
-      [PERMISSIONS.CAN_EDIT_DATE]: true
+      [PERMISSIONS.CAN_EDIT_DATE]: true,
+      [PERMISSIONS.CAN_EDIT_SCOPE]: true
     })
   }
 });
@@ -119,7 +120,8 @@ const canEdit = computed(() => {
 // Check if we can edit the score (when both teams are selected)
 const canEditScore = computed(() => {
   return props.match[TEAM_POSITION.ONE].name !== TBD && 
-         props.match[TEAM_POSITION.TWO].name !== TBD;
+         props.match[TEAM_POSITION.TWO].name !== TBD &&
+         props.permissions[PERMISSIONS.CAN_EDIT_SCOPE];
 });
 
 const isWinner = (teamPosition) => {
