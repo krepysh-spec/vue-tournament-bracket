@@ -1,14 +1,16 @@
-import { ref as A, computed as I, watch as U, onMounted as P, createElementBlock as p, openBlock as d, normalizeClass as j, unref as N, createCommentVNode as D, withDirectives as H, createElementVNode as v, Fragment as C, renderList as L, toDisplayString as q, vModelSelect as Q, vModelText as V, createVNode as $, createBlock as _ } from "vue";
-const B = {
+import { ref as k, computed as _, watch as $, onMounted as P, createElementBlock as T, openBlock as d, normalizeClass as j, unref as N, createCommentVNode as L, withDirectives as R, createElementVNode as v, Fragment as B, renderList as U, toDisplayString as D, vModelSelect as Q, vModelText as V, createVNode as I, createBlock as W } from "vue";
+const C = {
   SINGLE_ELIMINATION: "single_elimination",
   DOUBLE_ELIMINATION: "double_elimination"
-}, E = "TBD", l = {
+}, O = "TBD", l = {
   ONE: "teamOne",
   TWO: "teamTwo"
-}, O = {
+}, E = {
   CAN_SELECT_TEAM: "can_select_team",
   CAN_EDIT_DATE: "can_edit_date",
-  CAN_EDIT_SCOPE: "can_edit_scope"
+  CAN_EDIT_SCOPE: "can_edit_scope",
+  CAN_EDIT_ROUND_NAME: "can_edit_round_name",
+  CAN_EDIT_BEST_OF: "can_edit_best_of"
 }, X = {
   key: 0,
   class: "flex items-center gap-2"
@@ -46,7 +48,7 @@ const B = {
       type: Object,
       required: !0,
       default: () => ({
-        [O.CAN_SELECT_TEAM]: !0
+        [E.CAN_SELECT_TEAM]: !0
       })
     },
     isWinner: {
@@ -63,12 +65,12 @@ const B = {
     }
   },
   emits: ["update:team", "highlight-team", "unhighlight-team"],
-  setup(e, { emit: T }) {
-    const t = e, s = T, a = A(t.team.name), n = I(() => {
+  setup(e, { emit: p }) {
+    const t = e, s = p, a = k(t.team.name), n = _(() => {
       var r;
-      return a.value === E ? null : ((r = t.availableTeams.find((f) => f.name === a.value)) == null ? void 0 : r.logo) || null;
+      return a.value === O ? null : ((r = t.availableTeams.find((f) => f.name === a.value)) == null ? void 0 : r.logo) || null;
     });
-    U(() => t.team, (r) => {
+    $(() => t.team, (r) => {
       a.value = r.name;
     }, { immediate: !0 }), P(() => {
       console.log("TeamSelect mounted:", {
@@ -76,8 +78,8 @@ const B = {
         availableTeams: t.availableTeams
       });
     });
-    const h = (r) => r === E ? !1 : t.selectedTeams.includes(r) && r !== t.team.name || r === t.team.name && t.team.name !== E, b = I(() => t.availableTeams ? t.availableTeams.filter((r) => r.name === E || r.name === t.team.name ? !0 : !h(r.name)) : []), m = () => {
-      t.team.name !== E && s("highlight-team", t.team.name);
+    const h = (r) => r === O ? !1 : t.selectedTeams.includes(r) && r !== t.team.name || r === t.team.name && t.team.name !== O, b = _(() => t.availableTeams ? t.availableTeams.filter((r) => r.name === O || r.name === t.team.name ? !0 : !h(r.name)) : []), m = () => {
+      t.team.name !== O && s("highlight-team", t.team.name);
     }, g = () => {
       s("unhighlight-team");
     }, y = () => {
@@ -92,7 +94,7 @@ const B = {
         }
       });
     };
-    return (r, f) => (d(), p("div", {
+    return (r, f) => (d(), T("div", {
       class: j(["flex-grow p-2.5 hover:bg-gray-200/30 dark:hover:bg-gray-950/20", {
         "hover:bg-green-500/20 dark:hover:bg-green-500/20": e.isWinner,
         "hover:bg-red-500/20 dark:hover:bg-red-500/20": e.isLoser,
@@ -102,35 +104,35 @@ const B = {
       onMouseenter: m,
       onMouseleave: g
     }, [
-      e.canEdit && e.permissions[N(O).CAN_SELECT_TEAM] ? (d(), p("div", X, [
-        n.value ? (d(), p("img", {
+      e.canEdit && e.permissions[N(E).CAN_SELECT_TEAM] ? (d(), T("div", X, [
+        n.value ? (d(), T("img", {
           key: 0,
           src: n.value,
           alt: a.value,
           class: "w-6 h-6 rounded-full"
-        }, null, 8, Y)) : D("", !0),
-        H(v("select", {
+        }, null, 8, Y)) : L("", !0),
+        R(v("select", {
           "onUpdate:modelValue": f[0] || (f[0] = (c) => a.value = c),
           class: "fi-select-input p-0 w-full border-none bg-transparent text-base text-gray-900 transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900 hover:cursor-pointer",
           onChange: y
         }, [
           f[1] || (f[1] = v("option", { value: "TBD" }, "TBD", -1)),
-          (d(!0), p(C, null, L(b.value, (c) => (d(), p("option", {
+          (d(!0), T(B, null, U(b.value, (c) => (d(), T("option", {
             key: c.id,
             value: c.name,
             disabled: h(c.name)
-          }, q(c.name), 9, Z))), 128))
+          }, D(c.name), 9, Z))), 128))
         ], 544), [
           [Q, a.value]
         ])
-      ])) : (d(), p("div", ee, [
-        e.team.logo ? (d(), p("img", {
+      ])) : (d(), T("div", ee, [
+        e.team.logo ? (d(), T("img", {
           key: 0,
           src: e.team.logo,
           alt: e.team.name,
           class: "w-6 h-6 rounded-full"
-        }, null, 8, te)) : D("", !0),
-        v("span", ae, q(e.team.name), 1)
+        }, null, 8, te)) : L("", !0),
+        v("span", ae, D(e.team.name), 1)
       ]))
     ], 34));
   }
@@ -158,8 +160,8 @@ const B = {
     }
   },
   emits: ["update:score"],
-  setup(e, { emit: T }) {
-    const t = e, s = T, a = A(!1), n = A(t.team.score ?? 0), h = () => {
+  setup(e, { emit: p }) {
+    const t = e, s = p, a = k(!1), n = k(t.team.score ?? 0), h = () => {
       t.canEditScore && (a.value = !0);
     }, b = () => {
       const m = parseInt(n.value) || 0;
@@ -168,13 +170,13 @@ const B = {
         score: m
       });
     };
-    return U(() => t.team, (m) => {
+    return $(() => t.team, (m) => {
       n.value = m.score ?? 0;
-    }, { deep: !0 }), (m, g) => (d(), p("div", {
+    }, { deep: !0 }), (m, g) => (d(), T("div", {
       class: j(["p-2.5 bg-orange-500 dark:bg-orange-600 cursor-pointer min-w-10 text-center", { "border-b border-orange-600 dark:border-orange-700": e.isFirstTeam }]),
       onClick: h
     }, [
-      a.value ? H((d(), p("input", {
+      a.value ? R((d(), T("input", {
         key: 0,
         type: "number",
         "onUpdate:modelValue": g[0] || (g[0] = (y) => n.value = y),
@@ -184,10 +186,10 @@ const B = {
         onBlur: g[1] || (g[1] = (y) => a.value = !1)
       }, null, 544)), [
         [V, n.value]
-      ]) : (d(), p("span", ne, q(e.team.score), 1))
+      ]) : (d(), T("span", ne, D(e.team.score), 1))
     ], 2));
   }
-}, le = { class: "flex" }, R = {
+}, le = { class: "flex" }, F = {
   __name: "TeamRow",
   props: {
     team: {
@@ -238,15 +240,15 @@ const B = {
       type: Object,
       required: !0,
       default: () => ({
-        [O.CAN_SELECT_TEAM]: !0,
-        [O.CAN_EDIT_SCOPE]: !0
+        [E.CAN_SELECT_TEAM]: !0,
+        [E.CAN_EDIT_SCOPE]: !0
       })
     }
   },
   emits: ["update:team", "update:score", "highlight-team", "unhighlight-team"],
   setup(e) {
-    return (T, t) => (d(), p("div", le, [
-      $(ie, {
+    return (p, t) => (d(), T("div", le, [
+      I(ie, {
         team: e.team,
         "team-position": e.teamPosition,
         "available-teams": e.availableTeams,
@@ -258,16 +260,16 @@ const B = {
         "is-loser": e.isLoser,
         "should-highlight": e.shouldHighlight,
         "is-first-team": e.isFirstTeam,
-        "onUpdate:team": t[0] || (t[0] = (s) => T.$emit("update:team", s)),
-        onHighlightTeam: t[1] || (t[1] = (s) => T.$emit("highlight-team", s)),
-        onUnhighlightTeam: t[2] || (t[2] = (s) => T.$emit("unhighlight-team"))
+        "onUpdate:team": t[0] || (t[0] = (s) => p.$emit("update:team", s)),
+        onHighlightTeam: t[1] || (t[1] = (s) => p.$emit("highlight-team", s)),
+        onUnhighlightTeam: t[2] || (t[2] = (s) => p.$emit("unhighlight-team"))
       }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "highlighted-team", "permissions", "can-edit", "is-winner", "is-loser", "should-highlight", "is-first-team"]),
-      $(se, {
+      I(se, {
         team: e.team,
         "team-position": e.teamPosition,
         "can-edit-score": e.canEditScore,
         "is-first-team": e.isFirstTeam,
-        "onUpdate:score": t[3] || (t[3] = (s) => T.$emit("update:score", s))
+        "onUpdate:score": t[3] || (t[3] = (s) => p.$emit("update:score", s))
       }, null, 8, ["team", "team-position", "can-edit-score", "is-first-team"])
     ]));
   }
@@ -281,8 +283,8 @@ const B = {
       type: Object,
       required: !0,
       default: () => ({
-        teamOne: { name: E, score: 0 },
-        teamTwo: { name: E, score: 0 },
+        teamOne: { name: O, score: 0 },
+        teamTwo: { name: O, score: 0 },
         winner: null,
         date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
         // Default to today's date
@@ -316,15 +318,15 @@ const B = {
       type: Object,
       required: !0,
       default: () => ({
-        [O.CAN_SELECT_TEAM]: !0,
-        [O.CAN_EDIT_DATE]: !0,
-        [O.CAN_EDIT_SCOPE]: !0
+        [E.CAN_SELECT_TEAM]: !0,
+        [E.CAN_EDIT_DATE]: !0,
+        [E.CAN_EDIT_SCOPE]: !0
       })
     }
   },
   emits: ["update:match", "highlight-team", "unhighlight-team"],
-  setup(e, { emit: T }) {
-    const t = e, s = T, a = I(() => t.roundIndex === 0 && t.permissions[O.CAN_SELECT_TEAM]), n = I(() => t.match[l.ONE].name !== E && t.match[l.TWO].name !== E && t.permissions[O.CAN_EDIT_SCOPE]), h = (i) => t.match.winner === i, b = (i) => t.match.winner && t.match.winner !== i, m = (i) => {
+  setup(e, { emit: p }) {
+    const t = e, s = p, a = _(() => t.roundIndex === 0 && t.permissions[E.CAN_SELECT_TEAM]), n = _(() => t.match[l.ONE].name !== O && t.match[l.TWO].name !== O && t.permissions[E.CAN_EDIT_SCOPE]), h = (i) => t.match.winner === i, b = (i) => t.match.winner && t.match.winner !== i, m = (i) => {
       const u = t.match[i].name;
       return t.highlightedTeam === u;
     }, g = (i) => {
@@ -353,7 +355,7 @@ const B = {
       };
       s("update:match", u);
     };
-    return (i, u) => (d(), p("div", {
+    return (i, u) => (d(), T("div", {
       class: j(["relative text-[0.8em] flex items-center", { group: e.index % 2 == 0 && e.totalMatches > 1 }])
     }, [
       v("div", oe, [
@@ -363,11 +365,11 @@ const B = {
             value: c(e.match.date),
             onInput: w,
             class: "bg-transparent border-none focus:ring-0 p-0 text-xs",
-            disabled: !e.permissions[N(O).CAN_EDIT_DATE]
+            disabled: !e.permissions[N(E).CAN_EDIT_DATE]
           }, null, 40, me)
         ]),
         v("div", ue, [
-          $(R, {
+          I(F, {
             team: e.match.teamOne,
             "team-position": N(l).ONE,
             "available-teams": e.availableTeams,
@@ -386,7 +388,7 @@ const B = {
             onHighlightTeam: g,
             onUnhighlightTeam: y
           }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "can-edit-score", "is-winner", "is-loser", "should-highlight", "can-select-team", "highlighted-team", "permissions"]),
-          $(R, {
+          I(F, {
             team: e.match.teamTwo,
             "team-position": N(l).TWO,
             "available-teams": e.availableTeams,
@@ -406,9 +408,9 @@ const B = {
           }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "can-edit-score", "is-winner", "is-loser", "should-highlight", "can-select-team", "highlighted-team", "permissions"])
         ])
       ]),
-      e.index % 2 == 0 && e.totalMatches > 1 ? (d(), p("div", ce, u[0] || (u[0] = [
+      e.index % 2 == 0 && e.totalMatches > 1 ? (d(), T("div", ce, u[0] || (u[0] = [
         v("span", { class: "w-2.5 h-0.5 bg-gray-300 dark:bg-gray-600 translate-x-full block" }, null, -1)
-      ]))) : D("", !0)
+      ]))) : L("", !0)
     ], 2));
   }
 }, he = { class: "flex-1 px-5 pb-2.5 grid grid-cols-[min-content_auto]" }, ge = { class: "text-[0.7em] text-gray-900 dark:text-white flex justify-end items-center opacity-50 mt-[23px]" }, z = {
@@ -438,21 +440,21 @@ const B = {
       type: Object,
       required: !0,
       default: () => ({
-        [O.CAN_SELECT_TEAM]: !0
+        [E.CAN_SELECT_TEAM]: !0
       })
     }
   },
   emits: ["update:match", "highlight-team", "unhighlight-team"],
-  setup(e, { emit: T }) {
-    const t = e, s = T, a = (n, h) => {
+  setup(e, { emit: p }) {
+    const t = e, s = p, a = (n, h) => {
       s("update:match", t.columnIndex, n, h);
     };
-    return (n, h) => (d(), p("div", he, [
-      (d(!0), p(C, null, L(e.column.matches, (b, m) => (d(), p(C, {
+    return (n, h) => (d(), T("div", he, [
+      (d(!0), T(B, null, U(e.column.matches, (b, m) => (d(), T(B, {
         key: b.id
       }, [
-        v("div", ge, q(b.number), 1),
-        $(de, {
+        v("div", ge, D(b.number), 1),
+        I(de, {
           match: b,
           index: m,
           "total-matches": e.column.matches.length,
@@ -468,18 +470,22 @@ const B = {
       ], 64))), 128))
     ]));
   }
-}, fe = { class: "flex justify-between px-5" }, ve = { class: "flex flex-col items-center gap-2" }, pe = { class: "mt-2" }, Te = { class: "flex items-center rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600" }, be = ["onUpdate:modelValue", "onBlur"], ye = { class: "grid shrink-0 grid-cols-1 focus-within:relative" }, Ee = ["value", "onChange"], Oe = ["value"], G = {
+}, fe = { class: "flex justify-between px-5" }, ve = { class: "flex flex-col items-center gap-2" }, Te = { class: "mt-2" }, pe = { class: "flex items-center rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600" }, be = ["onUpdate:modelValue", "onBlur", "disabled"], ye = { class: "grid shrink-0 grid-cols-1 focus-within:relative" }, Ee = ["value", "onChange", "disabled"], Oe = ["value"], G = {
   __name: "BracketRoundHeaders",
   props: {
     columns: {
       type: Array,
       required: !0
+    },
+    permissions: {
+      type: Object,
+      required: !0
     }
   },
   emits: ["update:columns"],
-  setup(e, { emit: T }) {
-    const t = e, s = T, a = [1, 3, 5, 7, 9], n = A(t.columns.map((m) => m.name));
-    U(() => t.columns, (m) => {
+  setup(e, { emit: p }) {
+    const t = e, s = p, a = [1, 3, 5, 7, 9], n = k(t.columns.map((m) => m.name));
+    $(() => t.columns, (m) => {
       n.value = m.map((g) => g.name);
     }, { deep: !0 });
     const h = (m, g) => {
@@ -496,18 +502,19 @@ const B = {
         bestOf: Number(g)
       }, s("update:columns", y);
     };
-    return (m, g) => (d(), p("div", fe, [
-      (d(!0), p(C, null, L(e.columns, (y, r) => (d(), p("div", {
+    return (m, g) => (d(), T("div", fe, [
+      (d(!0), T(B, null, U(e.columns, (y, r) => (d(), T("div", {
         key: y.name,
         class: "flex-1 text-center text-sm text-gray-400 py-2 rounded overflow-hidden"
       }, [
         v("div", ve, [
-          v("div", pe, [
-            v("div", Te, [
-              H(v("input", {
+          v("div", Te, [
+            v("div", pe, [
+              R(v("input", {
                 type: "text",
                 "onUpdate:modelValue": (f) => n.value[r] = f,
                 onBlur: (f) => h(r, f.target.value),
+                disabled: !e.permissions[N(E).CAN_EDIT_ROUND_NAME],
                 class: "block min-w-0 grow py-1.5 pr-3 text-gray-800 dark:text-white border-none pl-1 text-base text-gray-900 bg-white dark:bg-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
               }, null, 40, be), [
                 [V, n.value[r]]
@@ -516,12 +523,13 @@ const B = {
                 v("select", {
                   value: y.bestOf,
                   onChange: (f) => b(r, f.target.value),
+                  disabled: !e.permissions[N(E).CAN_EDIT_BEST_OF],
                   class: "col-start-1 row-start-1 w-full text-gray-800 dark:text-white border-none appearance-none py-1.5 bg-white dark:bg-gray-900 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 }, [
-                  (d(), p(C, null, L(a, (f) => v("option", {
+                  (d(), T(B, null, U(a, (f) => v("option", {
                     key: f,
                     value: f
-                  }, " Best of " + q(f), 9, Oe)), 64))
+                  }, " Best of " + D(f), 9, Oe)), 64))
                 ], 40, Ee)
               ])
             ])
@@ -530,7 +538,7 @@ const B = {
       ]))), 128))
     ]));
   }
-}, we = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8" }, xe = { class: "flex flex-col" }, Ne = { class: "overflow-x-auto" }, Se = { class: "min-w-max" }, ke = { class: "flex flex-1 p-5" }, Ae = {
+}, we = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8" }, xe = { class: "flex flex-col" }, Ne = { class: "overflow-x-auto" }, Se = { class: "min-w-max" }, Ae = { class: "flex flex-1 p-5" }, ke = {
   __name: "BracketLower",
   props: {
     initialState: {
@@ -550,19 +558,21 @@ const B = {
       type: Object,
       required: !0,
       default: () => ({
-        [O.CAN_SELECT_TEAM]: !0,
-        [O.CAN_EDIT_DATE]: !0,
-        [O.CAN_EDIT_SCOPE]: !0
+        [E.CAN_SELECT_TEAM]: !0,
+        [E.CAN_EDIT_DATE]: !0,
+        [E.CAN_EDIT_SCOPE]: !0,
+        [E.CAN_EDIT_ROUND_NAME]: !0,
+        [E.CAN_EDIT_BEST_OF]: !0
       })
     }
   },
   emits: ["update:state"],
-  setup(e, { emit: T }) {
-    const t = T, s = e, a = A([]), n = A(null), h = I(() => {
+  setup(e, { emit: p }) {
+    const t = p, s = e, a = k([]), n = k(null), h = _(() => {
       const c = /* @__PURE__ */ new Set();
       return a.value.forEach((w) => {
         w.matches.forEach((i) => {
-          i[l.ONE].name !== E && c.add(i[l.ONE].name), i[l.TWO].name !== E && c.add(i[l.TWO].name);
+          i[l.ONE].name !== O && c.add(i[l.ONE].name), i[l.TWO].name !== O && c.add(i[l.TWO].name);
         });
       }), Array.from(c);
     }), b = (c) => {
@@ -574,13 +584,13 @@ const B = {
         if (a.value[c].matches[w] = i, i.winner && c < a.value.length - 1) {
           const u = c + 1, o = Math.floor(w / 2);
           if (a.value[u] && a.value[u].matches[o]) {
-            const x = a.value[u].matches[o], S = w % 2 === 0 ? l.ONE : l.TWO, k = i[i.winner];
+            const x = a.value[u].matches[o], S = w % 2 === 0 ? l.ONE : l.TWO, A = i[i.winner];
             a.value[u].matches[o] = {
               ...x,
               [S]: {
-                id: k.id,
-                name: k.name,
-                logo: k.logo,
+                id: A.id,
+                name: A.name,
+                logo: A.logo,
                 score: 0
               }
             };
@@ -595,21 +605,22 @@ const B = {
     }, f = () => {
       console.log("Initializing lower tournament with state:", s.initialState), s.initialState && s.initialState.length > 0 && (a.value = JSON.parse(JSON.stringify(s.initialState)));
     };
-    return U(() => s.initialState, () => {
+    return $(() => s.initialState, () => {
       f();
     }, { deep: !0 }), P(() => {
       f();
-    }), (c, w) => (d(), p("div", we, [
+    }), (c, w) => (d(), T("div", we, [
       w[0] || (w[0] = v("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4" }, "Lower Bracket", -1)),
       v("div", xe, [
         v("div", Ne, [
           v("div", Se, [
-            $(G, {
+            I(G, {
               columns: a.value,
-              "onUpdate:columns": y
-            }, null, 8, ["columns"]),
-            v("div", ke, [
-              (d(!0), p(C, null, L(a.value, (i, u) => (d(), _(z, {
+              "onUpdate:columns": y,
+              permissions: e.permissions
+            }, null, 8, ["columns", "permissions"]),
+            v("div", Ae, [
+              (d(!0), T(B, null, U(a.value, (i, u) => (d(), W(z, {
                 key: i.id,
                 column: i,
                 "column-index": u,
@@ -627,19 +638,19 @@ const B = {
       ])
     ]));
   }
-}, F = () => ({
+}, H = () => ({
   id: null,
-  name: E,
+  name: O,
   logo: null,
   score: 0
 }), K = (e) => ({
   id: `match-${e}`,
   number: e,
-  [l.ONE]: F(),
-  [l.TWO]: F(),
+  [l.ONE]: H(),
+  [l.TWO]: H(),
   winner: null,
   date: null
-}), qe = (e, T = 3) => {
+}), De = (e, p = 3) => {
   const t = [], s = Math.log2(e);
   let a = 1;
   for (let n = 0; n < s; n++) {
@@ -650,11 +661,11 @@ const B = {
       id: `upper-round-${n + 1}`,
       name: `Round ${n + 1}`,
       matches: b,
-      bestOf: T
+      bestOf: p
     });
   }
   return t;
-}, J = (e, T) => {
+}, J = (e, p) => {
   const t = [];
   let s = 1;
   const a = e - 1;
@@ -666,11 +677,11 @@ const B = {
       id: `lower-round-${n + 1}`,
       name: `Lower Round ${n + 1}`,
       matches: b,
-      bestOf: T
+      bestOf: p
     });
   }
   return t;
-}, Be = { class: "flex flex-col" }, Ce = { class: "flex flex-col" }, $e = { class: "overflow-x-auto" }, Ie = { class: "min-w-max" }, Ue = { class: "flex flex-1 p-5" }, Le = {
+}, Ce = { class: "flex flex-col" }, Be = { class: "flex flex-col" }, Ie = { class: "overflow-x-auto" }, _e = { class: "min-w-max" }, $e = { class: "flex flex-1 p-5" }, Ue = {
   __name: "TournamentBracket",
   props: {
     initialState: {
@@ -693,21 +704,23 @@ const B = {
       type: Object,
       required: !0,
       default: () => ({
-        [O.CAN_SELECT_TEAM]: !0
+        [E.CAN_SELECT_TEAM]: !0,
+        [E.CAN_EDIT_ROUND_NAME]: !0,
+        [E.CAN_EDIT_BEST_OF]: !0
       })
     }
   },
   emits: ["update:state"],
-  setup(e, { emit: T }) {
-    const t = T, s = e, a = A([]), n = A([]), h = A(null), b = I(() => {
+  setup(e, { emit: p }) {
+    const t = p, s = e, a = k([]), n = k([]), h = k(null), b = _(() => {
       const i = /* @__PURE__ */ new Set();
       return a.value.forEach((u) => {
         u.matches.forEach((o) => {
-          o[l.ONE].name !== E && i.add(o[l.ONE].name), o[l.TWO].name !== E && i.add(o[l.TWO].name);
+          o[l.ONE].name !== O && i.add(o[l.ONE].name), o[l.TWO].name !== O && i.add(o[l.TWO].name);
         });
-      }), s.format === B.DOUBLE_ELIMINATION && n.value.forEach((u) => {
+      }), s.format === C.DOUBLE_ELIMINATION && n.value.forEach((u) => {
         u.matches.forEach((o) => {
-          o[l.ONE].name !== E && i.add(o[l.ONE].name), o[l.TWO].name !== E && i.add(o[l.TWO].name);
+          o[l.ONE].name !== O && i.add(o[l.ONE].name), o[l.TWO].name !== O && i.add(o[l.TWO].name);
         });
       }), Array.from(i);
     }), m = (i) => {
@@ -719,10 +732,10 @@ const B = {
         if (a.value[i].matches[u] = o, o.winner && i < a.value.length - 1) {
           const x = i + 1, S = Math.floor(u / 2);
           if (a.value[x] && a.value[x].matches[S]) {
-            const k = a.value[x].matches[S], W = u % 2 === 0 ? l.ONE : l.TWO, M = o[o.winner];
+            const A = a.value[x].matches[S], q = u % 2 === 0 ? l.ONE : l.TWO, M = o[o.winner];
             a.value[x].matches[S] = {
-              ...k,
-              [W]: {
+              ...A,
+              [q]: {
                 id: M.id,
                 name: M.name,
                 logo: M.logo,
@@ -731,14 +744,14 @@ const B = {
             };
           }
         }
-        if (s.format === B.DOUBLE_ELIMINATION && o.winner) {
+        if (s.format === C.DOUBLE_ELIMINATION && o.winner) {
           const x = o[o.winner === l.ONE ? l.TWO : l.ONE];
-          if (x.name !== E) {
-            const S = Math.floor(i / 2), k = Math.floor(u / 2);
-            if (n.value[S] && n.value[S].matches[k]) {
-              const W = n.value[S].matches[k], M = u % 2 === 0 ? l.ONE : l.TWO;
-              n.value[S].matches[k] = {
-                ...W,
+          if (x.name !== O) {
+            const S = Math.floor(i / 2), A = Math.floor(u / 2);
+            if (n.value[S] && n.value[S].matches[A]) {
+              const q = n.value[S].matches[A], M = u % 2 === 0 ? l.ONE : l.TWO;
+              n.value[S].matches[A] = {
+                ...q,
                 [M]: {
                   id: x.id,
                   name: x.name,
@@ -758,31 +771,32 @@ const B = {
     }, c = () => {
       console.log("Emitting tournament state:", {
         upper: a.value,
-        lower: s.format === B.DOUBLE_ELIMINATION ? n.value : null
+        lower: s.format === C.DOUBLE_ELIMINATION ? n.value : null
       }), t("update:state", {
         upper: a.value,
-        lower: s.format === B.DOUBLE_ELIMINATION ? n.value : null
+        lower: s.format === C.DOUBLE_ELIMINATION ? n.value : null
       });
     }, w = () => {
-      console.log("Initializing tournament with state:", s.initialState), s.initialState && (Array.isArray(s.initialState) ? (a.value = JSON.parse(JSON.stringify(s.initialState)), s.format === B.DOUBLE_ELIMINATION && (n.value = J(a.value.length, s.defaultBestOf))) : (a.value = JSON.parse(JSON.stringify(s.initialState.upper || [])), n.value = JSON.parse(JSON.stringify(s.initialState.lower || []))));
+      console.log("Initializing tournament with state:", s.initialState), s.initialState && (Array.isArray(s.initialState) ? (a.value = JSON.parse(JSON.stringify(s.initialState)), s.format === C.DOUBLE_ELIMINATION && (n.value = J(a.value.length, s.defaultBestOf))) : (a.value = JSON.parse(JSON.stringify(s.initialState.upper || [])), n.value = JSON.parse(JSON.stringify(s.initialState.lower || []))));
     };
-    return U(() => s.initialState, () => {
+    return $(() => s.initialState, () => {
       w();
-    }, { deep: !0 }), U(() => s.format, (i) => {
-      i === B.DOUBLE_ELIMINATION && (!n.value || n.value.length === 0) && (n.value = J(a.value.length, s.defaultBestOf), c());
+    }, { deep: !0 }), $(() => s.format, (i) => {
+      i === C.DOUBLE_ELIMINATION && (!n.value || n.value.length === 0) && (n.value = J(a.value.length, s.defaultBestOf), c());
     }), P(() => {
       w();
-    }), (i, u) => (d(), p("div", Be, [
+    }), (i, u) => (d(), T("div", Ce, [
       u[0] || (u[0] = v("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4" }, "Upper Bracket", -1)),
-      v("div", Ce, [
-        v("div", $e, [
-          v("div", Ie, [
-            $(G, {
+      v("div", Be, [
+        v("div", Ie, [
+          v("div", _e, [
+            I(G, {
               columns: a.value,
-              "onUpdate:columns": r
-            }, null, 8, ["columns"]),
-            v("div", Ue, [
-              (d(!0), p(C, null, L(a.value, (o, x) => (d(), _(z, {
+              "onUpdate:columns": r,
+              permissions: e.permissions
+            }, null, 8, ["columns", "permissions"]),
+            v("div", $e, [
+              (d(!0), T(B, null, U(a.value, (o, x) => (d(), W(z, {
                 key: o.id,
                 column: o,
                 "column-index": x,
@@ -798,23 +812,23 @@ const B = {
           ])
         ])
       ]),
-      e.format === N(B).DOUBLE_ELIMINATION ? (d(), _(Ae, {
+      e.format === N(C).DOUBLE_ELIMINATION ? (d(), W(ke, {
         key: 0,
         "initial-state": n.value,
         "available-teams": e.availableTeams,
         "default-best-of": e.defaultBestOf,
         permissions: e.permissions,
         "onUpdate:state": f
-      }, null, 8, ["initial-state", "available-teams", "default-best-of", "permissions"])) : D("", !0)
+      }, null, 8, ["initial-state", "available-teams", "default-best-of", "permissions"])) : L("", !0)
     ]));
   }
-}, De = (e) => {
-  e.component("TournamentBracket", Le);
+}, Le = (e) => {
+  e.component("TournamentBracket", Ue);
 };
 export {
-  O as PERMISSIONS,
-  Le as TournamentBracket,
+  E as PERMISSIONS,
+  Ue as TournamentBracket,
   J as createLowerBracketStructure,
-  qe as createTournamentState,
-  De as install
+  De as createTournamentState,
+  Le as install
 };

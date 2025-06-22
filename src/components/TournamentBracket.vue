@@ -7,6 +7,7 @@
           <BracketRoundHeaders 
             :columns="upperColumns" 
             @update:columns="updateUpperColumns"
+            :permissions="permissions"
           />
           <div class="flex flex-1 p-5">
             <BracketColumn 
@@ -69,7 +70,9 @@ const props = defineProps({
     type: Object,
     required: true,
     default: () => ({
-      [PERMISSIONS.CAN_SELECT_TEAM]: true
+      [PERMISSIONS.CAN_SELECT_TEAM]: true,
+      [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,
+      [PERMISSIONS.CAN_EDIT_BEST_OF]: true
     })
   }
 });

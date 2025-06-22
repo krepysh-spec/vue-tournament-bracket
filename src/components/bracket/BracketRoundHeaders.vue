@@ -13,11 +13,13 @@
       <input type="text"
       v-model="localColumnNames[index]"
       @blur="updateColumnName(index, $event.target.value)"
+      :disabled="!permissions[PERMISSIONS.CAN_EDIT_ROUND_NAME]"
         class="block min-w-0 grow py-1.5 pr-3 text-gray-800 dark:text-white border-none pl-1 text-base text-gray-900 bg-white dark:bg-gray-900  placeholder:text-gray-400 focus:outline-none sm:text-sm/6">
       <div class="grid shrink-0 grid-cols-1 focus-within:relative">
         <select 
           :value="column.bestOf"
           @change="updateColumnBestOf(index, $event.target.value)"
+          :disabled="!permissions[PERMISSIONS.CAN_EDIT_BEST_OF]"
           class="col-start-1 row-start-1 w-full text-gray-800 dark:text-white border-none appearance-none py-1.5 bg-white dark:bg-gray-900  pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
         >
           <option v-for="value in bestOfValues" :key="value" :value="value">
@@ -40,10 +42,15 @@
 
 <script setup>
 import { ref, watch } from 'vue';
+import { PERMISSIONS } from '../../constants/tournament';
 
 const props = defineProps({
   columns: {
     type: Array,
+    required: true
+  },
+  permissions: {
+    type: Object,
     required: true
   }
 });
