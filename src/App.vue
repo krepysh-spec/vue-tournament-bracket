@@ -100,6 +100,7 @@
         :format="tournamentFormat"
         :permissions="permissions"
         @update:state="updateTournamentState"
+        @click-match="onMatchClick"
       />
   </div>
 </div>
@@ -218,6 +219,12 @@ if (savedState) {
     console.error('Error loading tournament state:', error);
   }
 }
+
+const onMatchClick = (payload) => {
+  // payload: { match, roundIndex, matchIndex, id }
+  alert(`Клік по матчу!\nРаунд: ${payload.roundIndex + 1}, Матч: ${payload.matchIndex + 1}\nКоманди: ${payload.match.teamOne.name} vs ${payload.match.teamTwo.name}\nID: ${payload.id}`);
+  // або можна робити щось інше з payload
+};
 </script>
 
 <style>

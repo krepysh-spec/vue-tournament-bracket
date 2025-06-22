@@ -14,6 +14,7 @@
         @update:match="updateMatch(index, $event)"
         @highlight-team="$emit('highlight-team', $event)"
         @unhighlight-team="$emit('unhighlight-team')"
+        @click-match="onClickMatch(index, $event)"
       />
     </template>
   </div>
@@ -53,9 +54,17 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['update:match', 'highlight-team', 'unhighlight-team']);
+const emit = defineEmits(['update:match', 'highlight-team', 'unhighlight-team', 'click-match']);
 
 const updateMatch = (matchIndex, updatedMatch) => {
   emit('update:match', props.columnIndex, matchIndex, updatedMatch);
+};
+
+const onClickMatch = (matchIndex, payload) => {
+  emit('click-match', {
+    ...payload,
+    roundIndex: props.columnIndex,
+    matchIndex
+  });
 };
 </script> 

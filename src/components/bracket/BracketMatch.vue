@@ -10,7 +10,7 @@
           :disabled="!permissions[PERMISSIONS.CAN_EDIT_DATE]"
         />
       </div>
-      <div class="my-1.5 ml-2.5 bg-white dark:bg-gray-900 rounded overflow-hidden w-full min-w-[200px] shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
+      <div class="my-1.5 ml-2.5 bg-white dark:bg-gray-900 rounded overflow-hidden w-full min-w-[200px] shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10" @click="onMatchClick">
         <TeamRow
           :team="match.teamOne"
           :team-position="TEAM_POSITION.ONE"
@@ -110,7 +110,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['update:match', 'highlight-team', 'unhighlight-team']);
+const emit = defineEmits(['update:match', 'highlight-team', 'unhighlight-team', 'click-match']);
 
 // Check if we can edit the match (first round only)
 const canEdit = computed(() => {
@@ -195,6 +195,24 @@ const formatDate = (dateString) => {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric'
+  });
+};
+
+const onMatchClick = (event) => {
+  const tag = event.target.tagName.toLowerCase();
+  if (tag === 'input' || tag === 'select' || tag === 'option' || tag === 'button' || event.target.closest('input,select,option,button')) return;
+
+  const allPermissionsOff =
+    !props.permissions[PERMISSIONS.CAN_SELECT_TEAM] &&
+    !props.permissions[PERMISSIONS.CAN_EDIT_DATE] &&
+    !props.permissions[PERMISSIONS.CAN_EDIT_SCOPE];
+  if (!allPermissionsOff) return;
+
+  emit('click-match', {
+    match: props.match,
+    roundIndex: props.roundIndex,
+    matchIndex: props.index,
+    id: props.match.id ?? null
   });
 };
 </script> 

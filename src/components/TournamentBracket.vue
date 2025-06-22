@@ -22,6 +22,7 @@
               @update:match="updateUpperMatch"
               @highlight-team="highlightTeam"
               @unhighlight-team="unhighlightTeam"
+              @click-match="onMatchClick"
             />
           </div>
         </div>
@@ -47,7 +48,7 @@ import BracketLower from './bracket/BracketLower.vue';
 import { createLowerBracketStructure } from '../utils/tournament';
 import { TOURNAMENT_FORMAT, TBD, TEAM_POSITION, PERMISSIONS } from '../constants/tournament';
 
-const emit = defineEmits(['update:state']);
+const emit = defineEmits(['update:state', 'click-match']);
 
 const props = defineProps({
   initialState: {
@@ -215,6 +216,10 @@ watch(() => props.format, (newValue) => {
     emitTournamentState();
   }
 });
+
+const onMatchClick = (payload) => {
+  emit('click-match', payload);
+};
 
 onMounted(() => {
   initializeTournament();
