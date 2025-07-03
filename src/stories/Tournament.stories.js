@@ -15,7 +15,12 @@ export default {
     },
     format: {
       control: { type: 'select' },
-      options: [TOURNAMENT_FORMAT.SINGLE_ELIMINATION, TOURNAMENT_FORMAT.DOUBLE_ELIMINATION, TOURNAMENT_FORMAT.SWISS],
+      options: [
+        TOURNAMENT_FORMAT.SINGLE_ELIMINATION,
+        TOURNAMENT_FORMAT.DOUBLE_ELIMINATION,
+        TOURNAMENT_FORMAT.SWISS,
+        TOURNAMENT_FORMAT.ROUND_ROBIN
+      ],
     },
     size: {
       control: { type: 'select' },
@@ -25,12 +30,16 @@ export default {
       control: { type: 'select' },
       options: [1, 3, 5, 7, 9],
     },
+    permissions: {
+      control: 'object',
+    },
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: {
     format: TOURNAMENT_FORMAT.SINGLE_ELIMINATION,
     size: 16,
     defaultBestOf: 3,
+    theme: 'lite',
     permissions: {
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
       [PERMISSIONS.CAN_EDIT_DATE]: true,
@@ -45,17 +54,63 @@ export default {
 export const SingleElimination = {
   args: {
     format: TOURNAMENT_FORMAT.SINGLE_ELIMINATION,
+    size: 16,
+    defaultBestOf: 3,
+    theme: 'lite',
+    permissions: {
+      [PERMISSIONS.CAN_SELECT_TEAM]: true,
+      [PERMISSIONS.CAN_EDIT_DATE]: true,
+      [PERMISSIONS.CAN_EDIT_SCOPE]: true,
+      [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,
+      [PERMISSIONS.CAN_EDIT_BEST_OF]: true,
+    },
   },
 };
 
 export const DoubleElimination = {
   args: {
     format: TOURNAMENT_FORMAT.DOUBLE_ELIMINATION,
+    size: 16,
+    defaultBestOf: 3,
+    theme: 'lite',
+    permissions: {
+      [PERMISSIONS.CAN_SELECT_TEAM]: true,
+      [PERMISSIONS.CAN_EDIT_DATE]: true,
+      [PERMISSIONS.CAN_EDIT_SCOPE]: true,
+      [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,
+      [PERMISSIONS.CAN_EDIT_BEST_OF]: true,
+    },
   },
 };
 
 export const Swiss = {
   args: {
     format: TOURNAMENT_FORMAT.SWISS,
+    size: 16,
+    defaultBestOf: 3,
+    theme: 'lite',
+    permissions: {
+      [PERMISSIONS.CAN_SELECT_TEAM]: true,
+      [PERMISSIONS.CAN_EDIT_DATE]: true,
+      [PERMISSIONS.CAN_EDIT_SCOPE]: true,
+      [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,
+      [PERMISSIONS.CAN_EDIT_BEST_OF]: true,
+    },
+  },
+};
+
+export const RoundRobin = {
+  args: {
+    format: TOURNAMENT_FORMAT.ROUND_ROBIN,
+    size: 16,
+    defaultBestOf: 3,
+    theme: 'lite',
+    permissions: {
+      [PERMISSIONS.CAN_SELECT_TEAM]: true,
+      [PERMISSIONS.CAN_EDIT_DATE]: true,
+      [PERMISSIONS.CAN_EDIT_SCOPE]: true,
+      [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,
+      [PERMISSIONS.CAN_EDIT_BEST_OF]: true,
+    },
   },
 };

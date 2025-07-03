@@ -2,11 +2,11 @@
   <div class="relative text-[0.8em] flex items-center" :class="{'group': index % 2 == 0 && totalMatches > 1}">
     <div class="flex flex-col w-full">
       <div class="px-3 py-1 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center">
-        <input 
+        <input
           type="datetime-local" 
           :value="formatDateTimeForInput(match.date)" 
           @input="updateDate"
-          class="bg-transparent border-none focus:ring-0 p-0 text-xs"
+          class="input input-ghost input-sm"
           :disabled="!permissions[PERMISSIONS.CAN_EDIT_DATE]"
         />
       </div>
@@ -52,7 +52,7 @@
     </div>
     <div 
       v-if="index % 2 == 0 && totalMatches > 1" 
-      class="absolute top-1/2 left-full w-2.5 h-[calc(100%+2px)] border-2 border-gray-300 dark:border-gray-600 border-l-0 rounded-r flex items-center z-10 -mt-[-10px] ml-[15px] mx-2 transition-colors duration-200"
+      class="absolute top-1/2 left-full w-2.5 h-[calc(100%+10px)] border-2 border-gray-300 dark:border-gray-600 border-l-0 rounded-r flex items-center z-10 -mt-[-10px] ml-[15px] mx-2 transition-colors duration-200"
     >
       <span class="w-2.5 h-0.5 bg-gray-300 dark:bg-gray-600 translate-x-full block"></span>
     </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import "../assets/css/style.css"
 import TournamentBracket from "../components/TournamentBracket.vue";
 import { createTournamentState } from '../utils/tournament';
@@ -8,19 +8,31 @@ import {PERMISSIONS} from "../constants/tournament.js";
 const props = defineProps({
   size: {
     type: Number,
-    required: 16,
+    default: 16,
   },
   defaultBestOf: {
     type: Number,
-    default: 1,
+    default: 3,
   },
   format: {
     type: String,
-    // validator: function (value) {
-    //   return ['small', 'medium', 'large'].indexOf(value) !== -1;
-    // },
+    default: 'single_elimination',
   },
-})
+  permissions: {
+    type: Object,
+    default: () => ({
+      [PERMISSIONS.CAN_SELECT_TEAM]: true,
+      [PERMISSIONS.CAN_EDIT_DATE]: true,
+      [PERMISSIONS.CAN_EDIT_SCOPE]: true,
+      [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,
+      [PERMISSIONS.CAN_EDIT_BEST_OF]: true
+    })
+  },
+  theme: {
+    type: String,
+    default: 'lite',
+  }
+});
 
 const teams = ref([
   {id: 1, name: 'Alpha', logo: 'https://www.gravatar.com/avatar/1?d=identicon&s=32'},
@@ -41,25 +53,26 @@ const teams = ref([
   {id: 16, name: 'Pi', logo: 'https://www.gravatar.com/avatar/16?d=identicon&s=32'},
 ]);
 
-const permissions = ref({
-  [PERMISSIONS.CAN_SELECT_TEAM] : true,
-  [PERMISSIONS.CAN_EDIT_DATE]: true,
-  [PERMISSIONS.CAN_EDIT_SCOPE]: true,
-  [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,
-  [PERMISSIONS.CAN_EDIT_BEST_OF]: true
-});
+const tournamentState = ref(createTournamentState(props.size, props.defaultBestOf));
 
-const tournamentState = ref(createTournamentState(16, 1));
+watch(
+  () => [props.size, props.defaultBestOf, props.format],
+  ([size, bestOf, format]) => {
+    tournamentState.value = createTournamentState(size, bestOf);
+  }
+);
 
 </script>
 
 <template>
   <tournament-bracket
       :format="format"
-      :default-best-of="3"
+      :default-best-of="defaultBestOf"
       :available-teams="teams"
       :initial-state="tournamentState"
-      :permissions="permissions"/>
+      :permissions="permissions"
+      :theme="theme"
+  />
 </template>
 
 <style scoped>

@@ -4,14 +4,15 @@
     :class="{'border-b border-orange-600 dark:border-orange-700': isFirstTeam}"
     @click="selectScore"
   >
-    <input 
-      v-if="isEditing"
-      type="number"
-      v-model="score"
-      class="w-12 border-none bg-orange-500 dark:bg-orange-600 text-center text-white text-base transition duration-75 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] dark:text-white dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] sm:text-sm sm:leading-6 [&_optgroup]:bg-white [&_optgroup]:dark:bg-gray-900 [&_option]:bg-white [&_option]:dark:bg-gray-900"
-      min="0"
-      @change="updateScore"
-      @blur="isEditing = false"
+    <input
+        v-if="isEditing"
+        type="number"
+        v-model="score"
+        class="input input-xs"
+        required
+        min="0"
+        @change="updateScore"
+        @blur="isEditing = false"
     />
     <template v-else>
       <span class="text-white">{{team.score}}</span>
