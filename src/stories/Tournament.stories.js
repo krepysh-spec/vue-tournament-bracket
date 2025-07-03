@@ -50,6 +50,6 @@ export const SingleElimination = {
 
 export const DoubleElimination = {
   args: {
-    format: TOURNAMENT_FORMAT.DOUBLE_ELIMINATION,
+    format: "double_elimination",
   },
 };

@@ -11,6 +11,6 @@ services:
     ports:
       - "3000:5173"
       - "6006:6006"
-    command: ./start.sh
+    command: ./docker/node/start.sh
     environment:
       - NODE_ENV=development
