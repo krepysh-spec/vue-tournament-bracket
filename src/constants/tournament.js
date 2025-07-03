@@ -1,6 +1,8 @@
 export const TOURNAMENT_FORMAT = {
   SINGLE_ELIMINATION: 'single_elimination',
-  DOUBLE_ELIMINATION: 'double_elimination'
+  DOUBLE_ELIMINATION: 'double_elimination',
+  SWISS: 'swiss',
+  ROUND_ROBIN: 'round_robin'
 };
 
 export const TBD = 'TBD';

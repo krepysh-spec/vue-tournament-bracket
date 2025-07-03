@@ -15,7 +15,7 @@ export default {
     },
     format: {
       control: { type: 'select' },
-      options: [TOURNAMENT_FORMAT.SINGLE_ELIMINATION, TOURNAMENT_FORMAT.DOUBLE_ELIMINATION],
+      options: [TOURNAMENT_FORMAT.SINGLE_ELIMINATION, TOURNAMENT_FORMAT.DOUBLE_ELIMINATION, TOURNAMENT_FORMAT.SWISS],
     },
     size: {
       control: { type: 'select' },
@@ -50,6 +50,12 @@ export const SingleElimination = {
 
 export const DoubleElimination = {
   args: {
-    format: "double_elimination",
+    format: TOURNAMENT_FORMAT.DOUBLE_ELIMINATION,
+  },
+};
+
+export const Swiss = {
+  args: {
+    format: TOURNAMENT_FORMAT.SWISS,
   },
 };

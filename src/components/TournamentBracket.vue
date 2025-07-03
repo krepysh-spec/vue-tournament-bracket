@@ -37,6 +37,55 @@
       :permissions="permissions"
       @update:state="updateLowerState"
     />
+
+    <div v-if="format === TOURNAMENT_FORMAT.SWISS" class="mt-8">
+      <h2 class="text-lg font-bold mb-2">Standings</h2>
+      <table class="min-w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-xs">
+        <thead>
+          <tr>
+            <th class="border px-2 py-1">Place</th>
+            <th class="border px-2 py-1">Player</th>
+            <th class="border px-2 py-1">W-L-T</th>
+            <th class="border px-2 py-1">Points</th>
+            <th class="border px-2 py-1">Buchholz</th>
+            <th class="border px-2 py-1">Pts Diff</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="p in swissStandings" :key="p.id">
+            <td class="border px-2 py-1">{{p.place}}</td>
+            <td class="border px-2 py-1">{{p.name}}</td>
+            <td class="border px-2 py-1">{{p.wins}}-{{p.losses}}-{{p.ties}}</td>
+            <td class="border px-2 py-1">{{p.score}}</td>
+            <td class="border px-2 py-1">{{p.buchholz}}</td>
+            <td class="border px-2 py-1">{{p.ptsDiff}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-if="format === TOURNAMENT_FORMAT.ROUND_ROBIN" class="mt-8">
+      <h2 class="text-lg font-bold mb-2">Standings</h2>
+      <table class="min-w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-xs">
+        <thead>
+          <tr>
+            <th class="border px-2 py-1">Place</th>
+            <th class="border px-2 py-1">Player</th>
+            <th class="border px-2 py-1">W-L-T</th>
+            <th class="border px-2 py-1">Points</th>
+            <th class="border px-2 py-1">Pts Diff</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="p in roundRobinStandings" :key="p.id">
+            <td class="border px-2 py-1">{{p.place}}</td>
+            <td class="border px-2 py-1">{{p.name}}</td>
+            <td class="border px-2 py-1">{{p.wins}}-{{p.losses}}-{{p.ties}}</td>
+            <td class="border px-2 py-1">{{p.score}}</td>
+            <td class="border px-2 py-1">{{p.ptsDiff}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -46,6 +95,7 @@ import BracketColumn from './bracket/BracketColumn.vue';
 import BracketRoundHeaders from './bracket/BracketRoundHeaders.vue';
 import BracketLower from './bracket/BracketLower.vue';
 import { createLowerBracketStructure } from '../utils/tournament';
+import { shuffleSwissPairs, getSwissStandings } from '../utils/tournament';
 import { TOURNAMENT_FORMAT, TBD, TEAM_POSITION, PERMISSIONS } from '../constants/tournament';
 
 const emit = defineEmits(['update:state', 'click-match']);
@@ -99,6 +149,55 @@ const selectedTeams = computed(() => {
     });
   }
   return Array.from(teams);
+});
+
+const swissStandings = computed(() => {
+  if (props.format !== TOURNAMENT_FORMAT.SWISS) return [];
+  return getSwissStandings(upperColumns.value);
+});
+
+const roundRobinStandings = computed(() => {
+  if (props.format !== TOURNAMENT_FORMAT.ROUND_ROBIN) return [];
+  // Standings для Round Robin: рахуємо перемоги, поразки, різницю очок
+  const players = {};
+  upperColumns.value.forEach(round => {
+    round.matches.forEach(match => {
+      [TEAM_POSITION.ONE, TEAM_POSITION.TWO].forEach(pos => {
+        const t = match[pos];
+        if (!t || !t.id) return;
+        if (!players[t.id]) players[t.id] = { ...t, wins: 0, losses: 0, ties: 0, score: 0, ptsDiff: 0 };
+      });
+      const t1 = match[TEAM_POSITION.ONE];
+      const t2 = match[TEAM_POSITION.TWO];
+      if (t1 && t2 && t1.id && t2.id) {
+        const s1 = t1.score || 0;
+        const s2 = t2.score || 0;
+        if (match.winner === TEAM_POSITION.ONE) {
+          players[t1.id].wins++;
+          players[t1.id].score += 1;
+          players[t2.id].losses++;
+        } else if (match.winner === TEAM_POSITION.TWO) {
+          players[t2.id].wins++;
+          players[t2.id].score += 1;
+          players[t1.id].losses++;
+        } else if (match.winner === null && (s1 > 0 || s2 > 0)) {
+          players[t1.id].ties++;
+          players[t2.id].ties++;
+          players[t1.id].score += 0.5;
+          players[t2.id].score += 0.5;
+        }
+        players[t1.id].ptsDiff += s1 - s2;
+        players[t2.id].ptsDiff += s2 - s1;
+      }
+    });
+  });
+  const arr = Object.values(players).sort((a, b) =>
+    b.score - a.score ||
+    b.wins - a.wins ||
+    b.ptsDiff - a.ptsDiff
+  );
+  arr.forEach((p, i) => { p.place = i + 1; });
+  return arr;
 });
 
 const highlightTeam = (teamName) => {
@@ -163,6 +262,49 @@ const updateUpperMatch = (roundIndex, matchIndex, updatedMatch) => {
     
     emitTournamentState();
   }
+
+  // --- SWISS: якщо всі матчі у раунді завершені, формуємо наступний раунд ---
+  if (props.format === TOURNAMENT_FORMAT.SWISS) {
+    const currentRound = upperColumns.value[roundIndex];
+    const allFinished = currentRound.matches.every(m => m.winner);
+    if (allFinished && roundIndex < upperColumns.value.length - 1) {
+      // 1. Збираємо всі команди та їх очки
+      const teams = {};
+      for (let r = 0; r <= roundIndex; r++) {
+        upperColumns.value[r].matches.forEach(match => {
+          ["teamOne", "teamTwo"].forEach(pos => {
+            const t = match[pos];
+            if (!t) return;
+            if (!teams[t.id]) teams[t.id] = { ...t, score: 0 };
+          });
+          if (match.winner && match.teamOne && match.teamTwo) {
+            if (match.winner === "teamOne") teams[match.teamOne.id].score += 1;
+            if (match.winner === "teamTwo") teams[match.teamTwo.id].score += 1;
+          }
+        });
+      }
+      // 2. Збираємо всі попередні пари
+      const previousPairs = [];
+      for (let r = 0; r <= roundIndex; r++) {
+        upperColumns.value[r].matches.forEach(match => {
+          if (match.teamOne && match.teamTwo) previousPairs.push([match.teamOne.id, match.teamTwo.id]);
+        });
+      }
+      // 3. Формуємо нові пари
+      const teamArr = Object.values(teams);
+      const pairs = shuffleSwissPairs(teamArr, previousPairs);
+      // 4. Записуємо у наступний раунд
+      const nextRound = upperColumns.value[roundIndex + 1];
+      nextRound.matches = pairs.map((pair, i) => ({
+        id: `swiss-match-${roundIndex + 2}-${i + 1}`,
+        number: i + 1,
+        teamOne: pair[0],
+        teamTwo: pair[1],
+        winner: null,
+        date: null
+      }));
+    }
+  }
 };
 
 const updateUpperColumns = (updatedColumns) => {
@@ -197,6 +339,9 @@ const initializeTournament = () => {
       if (props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION) {
         // Create initial structure for lower bracket
         lowerColumns.value = createLowerBracketStructure(upperColumns.value.length, props.defaultBestOf);
+      } else if (props.format === TOURNAMENT_FORMAT.SWISS) {
+        // Для Swiss нижня сітка не потрібна
+        lowerColumns.value = [];
       }
     } else {
       // New format (upper and lower brackets)

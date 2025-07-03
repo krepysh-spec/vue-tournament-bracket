@@ -24,6 +24,8 @@
             >
               <option value="single_elimination">Single Elimination</option>
               <option value="double_elimination">Double Elimination</option>
+              <option value="swiss">Swiss</option>
+              <option value="round_robin">Round Robin</option>
             </select>
           </div>
           <div class="flex items-center gap-2">
@@ -109,7 +111,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import TournamentBracket from './components/TournamentBracket.vue';
-import { createTournamentState } from './utils/tournament';
+import { createTournamentState, createSwissTournamentState, createRoundRobinTournamentState } from './utils/tournament';
 import { PERMISSIONS } from './constants/tournament';
 
 const sizes = [2, 4, 8, 16, 32, 64];
@@ -145,7 +147,17 @@ const teams = ref([
   {id: 16, name: 'Pi', logo: 'https://www.gravatar.com/avatar/16?d=identicon&s=32'},
 ]);
 
-const tournamentState = ref(createTournamentState(selectedSize.value, defaultBestOf.value));
+const tournamentState = ref(getInitialTournamentState(selectedSize.value, defaultBestOf.value, tournamentFormat.value));
+
+function getInitialTournamentState(size, bestOf, format) {
+  if (format === 'swiss') {
+    return createSwissTournamentState(size, undefined, bestOf, teams.value);
+  }
+  if (format === 'round_robin') {
+    return createRoundRobinTournamentState(size, bestOf, teams.value);
+  }
+  return createTournamentState(size, bestOf);
+}
 
 const totalMatches = computed(() => {
   if (!tournamentState.value) return 0;
@@ -181,7 +193,7 @@ if (savedTheme) {
   isDark.value = savedTheme === 'dark';
 }
 
-watch([selectedSize, defaultBestOf], () => {
+watch([selectedSize, defaultBestOf, tournamentFormat], () => {
   clearState();
 });
 
@@ -198,7 +210,7 @@ const updateTournamentState = (newState) => {
 const clearState = () => {
   console.log('Clearing tournament state');
   localStorage.removeItem('tournamentState');
-  tournamentState.value = createTournamentState(selectedSize.value, defaultBestOf.value);
+  tournamentState.value = getInitialTournamentState(selectedSize.value, defaultBestOf.value, tournamentFormat.value);
 };
 
 // Load state on initialization
@@ -222,8 +234,7 @@ if (savedState) {
 
 const onMatchClick = (payload) => {
   // payload: { match, roundIndex, matchIndex, id }
-  alert(`Клік по матчу!\nРаунд: ${payload.roundIndex + 1}, Матч: ${payload.matchIndex + 1}\nКоманди: ${payload.match.teamOne.name} vs ${payload.match.teamTwo.name}\nID: ${payload.id}`);
-  // або можна робити щось інше з payload
+  alert(`Click\nRound: ${payload.roundIndex + 1}, Матч: ${payload.matchIndex + 1}\nКоманди: ${payload.match.teamOne.name} vs ${payload.match.teamTwo.name}\nID: ${payload.id}`);
 };
 </script>
 
