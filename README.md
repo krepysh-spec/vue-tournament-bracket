@@ -1,8 +1,20 @@
-# Bracket Vue Tool
+# 🏆 Tournament Vue Tool
 
-A Vue 3 component for creating and managing tournament brackets with support for both Single and Double Elimination formats.
+**Tournament Vue Tool** is a powerful and flexible Vue 3 component for building interactive tournament brackets. It supports both Single and Double Elimination formats, customizable match settings, responsive layout, dark mode, and state persistence — all with zero external dependencies.
 
-## Installation
+## 🔗 Live Demo (Storybook)
+
+🧪 [Check out the live demo](https://krepysh-spec.github.io/vue-tournament-bracket)
+
+## 📦 Zero Dependencies
+
+**Tournament Vue Tool** is built with modern Vue 3 and includes:
+
+- ❌ **No runtime dependencies**
+- 🎨 **Fully styled with Tailwind CSS**
+- ⚡ **Lightweight and framework-native**
+
+## 🚀 Installation
 
 ```bash
 npm install bracket-vue-tool

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import "../assets/css/style.css"
 import TournamentBracket from "../components/TournamentBracket.vue";
 import { createTournamentState } from '../utils/tournament';
+import {PERMISSIONS} from "../constants/tournament.js";
 
 const props = defineProps({
   size: {
@@ -20,7 +21,6 @@ const props = defineProps({
     // },
   },
 })
-
 
 const teams = ref([
   {id: 1, name: 'Alpha', logo: 'https://www.gravatar.com/avatar/1?d=identicon&s=32'},
@@ -41,8 +41,15 @@ const teams = ref([
   {id: 16, name: 'Pi', logo: 'https://www.gravatar.com/avatar/16?d=identicon&s=32'},
 ]);
 
+const permissions = ref({
+  [PERMISSIONS.CAN_SELECT_TEAM] : true,
+  [PERMISSIONS.CAN_EDIT_DATE]: true,
+  [PERMISSIONS.CAN_EDIT_SCOPE]: true,
+  [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,
+  [PERMISSIONS.CAN_EDIT_BEST_OF]: true
+});
 
-const tournamentState = ref(createTournamentState(props.size.value, props.defaultBestOf.value));
+const tournamentState = ref(createTournamentState(16, 1));
 
 </script>
 
@@ -51,7 +58,8 @@ const tournamentState = ref(createTournamentState(props.size.value, props.defaul
       :format="format"
       :default-best-of="3"
       :available-teams="teams"
-      :initial-state="tournamentState"/>
+      :initial-state="tournamentState"
+      :permissions="permissions"/>
 </template>
 
 <style scoped>
