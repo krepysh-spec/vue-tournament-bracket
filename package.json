@@ -5,8 +5,19 @@
   "files": [
     "dist"
   ],
+  "description": "A flexible Vue 3 component for creating interactive tournament brackets (single & double elimination) with zero runtime dependencies.",
+  "keywords": ["vue", "tournament", "bracket", "elimination", "vue-tournament", "double-elimination", "single-elimination"],
   "main": "./dist/bracket-vue-tool.umd.js",
   "module": "./dist/bracket-vue-tool.es.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krepysh-spec/vue-tournament-bracket.git"
+  },
+  "bugs": {
+    "url": "https://github.com/krepysh-spec/vue-tournament-bracket/issues"
+  },
+  "homepage": "https://krepysh-spec.github.io/vue-tournament-bracket",
   "exports": {
     ".": {
       "import": "./dist/bracket-vue-tool.es.js",
