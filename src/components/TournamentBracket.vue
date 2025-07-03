@@ -38,54 +38,7 @@
       @update:state="updateLowerState"
     />
 
-    <div v-if="format === TOURNAMENT_FORMAT.SWISS" class="mt-8">
-      <h2 class="text-lg font-bold mb-2">Standings</h2>
-      <table class="min-w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-xs">
-        <thead>
-          <tr>
-            <th class="border px-2 py-1">Place</th>
-            <th class="border px-2 py-1">Player</th>
-            <th class="border px-2 py-1">W-L-T</th>
-            <th class="border px-2 py-1">Points</th>
-            <th class="border px-2 py-1">Buchholz</th>
-            <th class="border px-2 py-1">Pts Diff</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="p in swissStandings" :key="p.id">
-            <td class="border px-2 py-1">{{p.place}}</td>
-            <td class="border px-2 py-1">{{p.name}}</td>
-            <td class="border px-2 py-1">{{p.wins}}-{{p.losses}}-{{p.ties}}</td>
-            <td class="border px-2 py-1">{{p.score}}</td>
-            <td class="border px-2 py-1">{{p.buchholz}}</td>
-            <td class="border px-2 py-1">{{p.ptsDiff}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div v-if="format === TOURNAMENT_FORMAT.ROUND_ROBIN" class="mt-8">
-      <h2 class="text-lg font-bold mb-2">Standings</h2>
-      <table class="min-w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-xs">
-        <thead>
-          <tr>
-            <th class="border px-2 py-1">Place</th>
-            <th class="border px-2 py-1">Player</th>
-            <th class="border px-2 py-1">W-L-T</th>
-            <th class="border px-2 py-1">Points</th>
-            <th class="border px-2 py-1">Pts Diff</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="p in roundRobinStandings" :key="p.id">
-            <td class="border px-2 py-1">{{p.place}}</td>
-            <td class="border px-2 py-1">{{p.name}}</td>
-            <td class="border px-2 py-1">{{p.wins}}-{{p.losses}}-{{p.ties}}</td>
-            <td class="border px-2 py-1">{{p.score}}</td>
-            <td class="border px-2 py-1">{{p.ptsDiff}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <StandingsTable :standings="standingsData" :format="format" :TOURNAMENT_FORMAT="TOURNAMENT_FORMAT" />
   </div>
 </template>
 
@@ -97,6 +50,7 @@ import BracketLower from './bracket/BracketLower.vue';
 import { createLowerBracketStructure } from '../utils/tournament';
 import { shuffleSwissPairs, getSwissStandings } from '../utils/tournament';
 import { TOURNAMENT_FORMAT, TBD, TEAM_POSITION, PERMISSIONS } from '../constants/tournament';
+import StandingsTable from './StandingsTable.vue';
 
 const emit = defineEmits(['update:state', 'click-match']);
 
@@ -198,6 +152,90 @@ const roundRobinStandings = computed(() => {
   );
   arr.forEach((p, i) => { p.place = i + 1; });
   return arr;
+});
+
+const eliminationStandings = computed(() => {
+  if (props.format === TOURNAMENT_FORMAT.SWISS || props.format === TOURNAMENT_FORMAT.ROUND_ROBIN) return [];
+  // Standings для Single/Double Elimination: рахуємо перемоги, поразки, різницю очок
+  const players = {};
+  upperColumns.value.forEach(round => {
+    round.matches.forEach(match => {
+      [TEAM_POSITION.ONE, TEAM_POSITION.TWO].forEach(pos => {
+        const t = match[pos];
+        if (!t || !t.id) return;
+        if (!players[t.id]) players[t.id] = { ...t, wins: 0, losses: 0, ties: 0, score: 0, ptsDiff: 0 };
+      });
+      const t1 = match[TEAM_POSITION.ONE];
+      const t2 = match[TEAM_POSITION.TWO];
+      if (t1 && t2 && t1.id && t2.id) {
+        const s1 = t1.score || 0;
+        const s2 = t2.score || 0;
+        if (match.winner === TEAM_POSITION.ONE) {
+          players[t1.id].wins++;
+          players[t1.id].score += 1;
+          players[t2.id].losses++;
+        } else if (match.winner === TEAM_POSITION.TWO) {
+          players[t2.id].wins++;
+          players[t2.id].score += 1;
+          players[t1.id].losses++;
+        } else if (match.winner === null && (s1 > 0 || s2 > 0)) {
+          players[t1.id].ties++;
+          players[t2.id].ties++;
+          players[t1.id].score += 0.5;
+          players[t2.id].score += 0.5;
+        }
+        players[t1.id].ptsDiff += s1 - s2;
+        players[t2.id].ptsDiff += s2 - s1;
+      }
+    });
+  });
+  // Якщо double elimination — враховуємо нижню сітку
+  if (props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION && lowerColumns.value) {
+    lowerColumns.value.forEach(round => {
+      round.matches.forEach(match => {
+        [TEAM_POSITION.ONE, TEAM_POSITION.TWO].forEach(pos => {
+          const t = match[pos];
+          if (!t || !t.id) return;
+          if (!players[t.id]) players[t.id] = { ...t, wins: 0, losses: 0, ties: 0, score: 0, ptsDiff: 0 };
+        });
+        const t1 = match[TEAM_POSITION.ONE];
+        const t2 = match[TEAM_POSITION.TWO];
+        if (t1 && t2 && t1.id && t2.id) {
+          const s1 = t1.score || 0;
+          const s2 = t2.score || 0;
+          if (match.winner === TEAM_POSITION.ONE) {
+            players[t1.id].wins++;
+            players[t1.id].score += 1;
+            players[t2.id].losses++;
+          } else if (match.winner === TEAM_POSITION.TWO) {
+            players[t2.id].wins++;
+            players[t2.id].score += 1;
+            players[t1.id].losses++;
+          } else if (match.winner === null && (s1 > 0 || s2 > 0)) {
+            players[t1.id].ties++;
+            players[t2.id].ties++;
+            players[t1.id].score += 0.5;
+            players[t2.id].score += 0.5;
+          }
+          players[t1.id].ptsDiff += s1 - s2;
+          players[t2.id].ptsDiff += s2 - s1;
+        }
+      });
+    });
+  }
+  const arr = Object.values(players).sort((a, b) =>
+    b.score - a.score ||
+    b.wins - a.wins ||
+    b.ptsDiff - a.ptsDiff
+  );
+  arr.forEach((p, i) => { p.place = i + 1; });
+  return arr;
+});
+
+const standingsData = computed(() => {
+  if (props.format === TOURNAMENT_FORMAT.SWISS) return swissStandings.value;
+  if (props.format === TOURNAMENT_FORMAT.ROUND_ROBIN) return roundRobinStandings.value;
+  return eliminationStandings.value;
 });
 
 const highlightTeam = (teamName) => {
