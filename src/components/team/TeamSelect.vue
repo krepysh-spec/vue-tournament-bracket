@@ -27,10 +27,10 @@
       >
         <option value="TBD">TBD</option>
         <option
-            v-for="teamOption in availableTeamsForSelection"
-            :key="teamOption.id"
-            :value="teamOption.name"
-            :disabled="isTeamSelected(teamOption.name)"
+          v-for="teamOption in availableTeamsForSelection"
+          :key="teamOption.id"
+          :value="teamOption.name"
+          :disabled="isTeamSelected(teamOption.name)"
         >
           {{ teamOption.name }}
         </option>
