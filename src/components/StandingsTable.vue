@@ -47,7 +47,7 @@
             <td class="px-6 py-4">
               {{ p.score }}
             </td>
-            <td v-if="format === TOURNAMENT_FORMAT.SWISS" class="px-6 py-4">
+            <td v-if="format === tournamentFormat.SWISS" class="px-6 py-4">
               {{ p.buchholz }}
             </td>
             <td class="px-6 py-4">

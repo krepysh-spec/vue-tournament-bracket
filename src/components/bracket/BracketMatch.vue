@@ -180,17 +180,15 @@ const updateScore = ({ position, score }) => {
   };
 
   // Determine the winner based on the score
-  if (
-    updatedMatch[TEAM_POSITION.ONE].score >
-    updatedMatch[TEAM_POSITION.TWO].score
-  ) {
+  const scoreOne = updatedMatch[TEAM_POSITION.ONE].score;
+  const scoreTwo = updatedMatch[TEAM_POSITION.TWO].score;
+  if (scoreOne > scoreTwo) {
     updatedMatch.winner = TEAM_POSITION.ONE;
-  } else if (
-    updatedMatch[TEAM_POSITION.TWO].score >
-    updatedMatch[TEAM_POSITION.ONE].score
-  ) {
+  }
+  if (scoreTwo > scoreOne) {
     updatedMatch.winner = TEAM_POSITION.TWO;
-  } else {
+  }
+  if (scoreOne === scoreTwo) {
     updatedMatch.winner = null;
   }
 

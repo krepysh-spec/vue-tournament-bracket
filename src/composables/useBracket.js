@@ -156,26 +156,30 @@ export function useBracket({
   }
 
   function initializeTournament() {
-    if (props.initialState) {
-      if (Array.isArray(props.initialState)) {
-        upperColumns.value = JSON.parse(JSON.stringify(props.initialState));
-        if (props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION) {
-          lowerColumns.value = createLowerBracketStructure(
-            upperColumns.value.length,
-            props.defaultBestOf,
-          );
-        } else if (props.format === TOURNAMENT_FORMAT.SWISS) {
-          lowerColumns.value = [];
-        }
-      } else {
-        upperColumns.value = JSON.parse(
-          JSON.stringify(props.initialState.upper || []),
+    if (!props.initialState) return;
+
+    if (Array.isArray(props.initialState)) {
+      upperColumns.value = JSON.parse(JSON.stringify(props.initialState));
+      if (props.format === TOURNAMENT_FORMAT.DOUBLE_ELIMINATION) {
+        lowerColumns.value = createLowerBracketStructure(
+          upperColumns.value.length,
+          props.defaultBestOf,
         );
-        lowerColumns.value = JSON.parse(
-          JSON.stringify(props.initialState.lower || []),
-        );
+        return;
       }
+      if (props.format === TOURNAMENT_FORMAT.SWISS) {
+        lowerColumns.value = [];
+        return;
+      }
+      return;
     }
+
+    upperColumns.value = JSON.parse(
+      JSON.stringify(props.initialState.upper || []),
+    );
+    lowerColumns.value = JSON.parse(
+      JSON.stringify(props.initialState.lower || []),
+    );
   }
 
   return {
