@@ -3,14 +3,18 @@
 [![npm version](https://img.shields.io/npm/v/bracket-vue-tool.svg?style=flat-square)](https://www.npmjs.com/package/bracket-vue-tool)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Downloads](https://img.shields.io/npm/dt/bracket-vue-tool.svg?style=flat-square)](https://www.npmjs.com/package/bracket-vue-tool)
-[![Storybook](https://img.shields.io/badge/storybook-online-ff4785?style=flat-square&logo=storybook)](https://krepysh-spec.github.io/vue-tournament-bracket)
+[![Storybook](https://img.shields.io/badge/storybook-online-ff4785?style=flat-square&logo=storybook)](https://krepysh-spec.github.io/vue-tournament-bracket/storybook)
+[![Docs](https://img.shields.io/badge/docs-available-blue?logo=gitbook)](https://krepysh-spec.github.io/vue-tournament-bracket/documentation/)
+[![Vue 3](https://img.shields.io/badge/vue-3.x-brightgreen.svg?logo=vue.js)](https://vuejs.org/)
+[![Code Style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://prettier.io/)
+[![CI](https://github.com/krepysh-spec/vue-tournament-bracket/actions/workflows/ci-release.yml/badge.svg)](https://github.com/krepysh-spec/vue-tournament-bracket/actions/workflows/ci-release.yml)
 
 **Tournament Vue Tool** is a powerful and flexible Vue 3 component for building interactive tournament brackets. It supports both Single and Double Elimination formats, customizable match settings, responsive layout, dark mode, and state persistence — all with zero external dependencies.
 
 ## 🔗 Useful links
 
 - [Life demo (Storybook)](https://krepysh-spec.github.io/vue-tournament-bracket/storybook) 
-- [Read documentation](https://krepysh-spec.github.io/vue-tournament-bracket/doc)
+- [Read documentation](https://krepysh-spec.github.io/vue-tournament-bracket/documentation)
 
 ## ⚡ Features
 

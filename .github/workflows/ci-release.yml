@@ -47,9 +47,9 @@ jobs:
 
       # Move to correct subfolders
       - run: |
-          mkdir -p deploy/doc
+          mkdir -p deploy/documentation
           mkdir -p deploy/storybook
-          cp -r docs/.vitepress/dist/* deploy/doc/
+          cp -r docs/.vitepress/dist/* deploy/documentation/
           cp -r storybook-static/* deploy/storybook/
 
       # Upload combined artifact
