@@ -7,6 +7,14 @@ import { resolve } from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue(), tailwindcss(), eslintPlugin()],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    coverage: {
+      reporter: ['text', 'lcov'],
+      reportsDirectory: './coverage',
+    },
+  },
   server: {
     host: "0.0.0.0",
     port: 5173,

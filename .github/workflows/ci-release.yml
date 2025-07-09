@@ -23,8 +23,19 @@ jobs:
       - run: npm i
       - run: npm run lint
 
+  tests:
+    runs-on: ubuntu-latest
+    name: Check ESLint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm i
+      - run: npm run test
+
   build-site:
-    needs: lint
+    needs: [lint, tests]
     name: Build docs and storybook
     runs-on: ubuntu-latest
     steps:

@@ -43,6 +43,9 @@
     "docs:dev": "vitepress dev docs --port 6007 --host 0.0.0.0",
     "docs:build": "vitepress build docs --output-dir storybook-static --base /storybook",
     "docs:preview": "vitepress preview docs",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint src --ext .js,.vue --fix",
     "format": "prettier src  --write"
   },
@@ -54,15 +57,18 @@
     "@storybook/vue3-vite": "^9.0.15",
     "@tailwindcss/vite": "^4.0.0",
     "@vitejs/plugin-vue": "^5.2.4",
+    "@vitest/coverage-v8": "^3.2.4",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.30.1",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-vue": "^10.3.0",
+    "jsdom": "^26.1.0",
     "prettier": "3.6.2",
     "storybook": "^9.0.15",
     "vite": "^6.3.5",
     "vite-plugin-eslint": "^1.8.1",
-    "vitepress": "^1.6.3"
+    "vitepress": "^1.6.3",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "daisyui": "^5.0.43"
