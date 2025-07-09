@@ -14,12 +14,12 @@ permissions:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    name: Check ESLint
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
       - run: npm ci
       - run: npm run lint
 
@@ -43,3 +43,13 @@ jobs:
           build_command: npm run build-storybook
           path: storybook-static
           checkout: false
+
+  doc:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm run docs:build
