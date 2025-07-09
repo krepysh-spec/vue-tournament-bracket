@@ -25,3 +25,5 @@ package-lock.json
 
 *storybook.log
 storybook-static
+
+docs/.vitepress/cache

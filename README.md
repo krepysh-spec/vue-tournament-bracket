@@ -2,7 +2,6 @@
 
 [![npm version](https://img.shields.io/npm/v/bracket-vue-tool.svg?style=flat-square)](https://www.npmjs.com/package/bracket-vue-tool)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Build Status](https://github.com/krepysh-spec/vue-tournament-bracket/actions/workflows/build.yml/badge.svg?style=flat-square)](https://github.com/krepysh-spec/vue-tournament-bracket/actions)
 [![Downloads](https://img.shields.io/npm/dt/bracket-vue-tool.svg?style=flat-square)](https://www.npmjs.com/package/bracket-vue-tool)
 [![Storybook](https://img.shields.io/badge/storybook-online-ff4785?style=flat-square&logo=storybook)](https://krepysh-spec.github.io/vue-tournament-bracket)
 
