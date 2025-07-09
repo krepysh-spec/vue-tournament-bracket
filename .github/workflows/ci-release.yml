@@ -23,76 +23,48 @@ jobs:
       - run: npm i
       - run: npm run lint
 
-  storybook:
+  build-site:
     needs: lint
-    name: Build storybook
+    name: Build docs and storybook
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Install dependencies
         run: npm i
-      - name: Build with VitePress
-        run: npm run build-storybook
-      - run: |
-          mkdir -p deploy/storybook
-          cp -r storybook-static/* deploy/storybook/
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: deploy
 
-  doc:
-    needs: lint
-    name: Build documentation
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Install dependencies
-        run: npm i
-      - name: Build with VitePress
+      # Build docs and storybook
+      - name: Build Docs
         run: npm run docs:build
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      # Move to correct subfolders
       - run: |
-          mkdir -p deploy/documentation
-          cp -r docs/.vitepress/dist/* deploy/documentation/
+          mkdir -p deploy/doc
+          mkdir -p deploy/storybook
+          cp -r docs/.vitepress/dist/* deploy/doc/
+          cp -r storybook-static/* deploy/storybook/
+
+      # Upload combined artifact
       - uses: actions/upload-pages-artifact@v3
         with:
           path: deploy
 
-  deployStorybook:
+  deploy:
+    needs: build-site
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
-    needs: storybook
-    runs-on: ubuntu-latest
-    name: Publish storybook to github pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    name: Deploy to GitHub Pages
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-  deployDoc:
-    environment:
-      name: github-pages
-    needs: doc
-    runs-on: ubuntu-latest
-    name: Publish documentation to github pages
-    steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
