@@ -63,15 +63,17 @@ jobs:
         run: npm i
       - name: Build with VitePress
         run: npm run docs:build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - run: |
+          mkdir -p deploy/doc
+          cp -r docs/.vitepress/dist/* deploy/doc/
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/.vitepress/dist
+          path: deploy
 
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}/doc
+      url: ${{ steps.deployment.outputs.page_url }}
     needs: doc
     runs-on: ubuntu-latest
     name: Deploy
