@@ -41,7 +41,7 @@
     "storybook": "storybook dev -p 6006 --host 0.0.0.0 --no-open",
     "build-storybook": "storybook build",
     "docs:dev": "vitepress dev docs --port 6007 --host 0.0.0.0",
-    "docs:build": "vitepress build docs",
+    "docs:build": "vitepress build docs --output-dir storybook-static --base /storybook",
     "docs:preview": "vitepress preview docs",
     "lint": "eslint src --ext .js,.vue --fix",
     "format": "prettier src  --write"
