@@ -77,7 +77,6 @@ import { TBD, TEAM_POSITION, PERMISSIONS } from "../../constants/tournament";
 const props = defineProps({
   match: {
     type: Object,
-    required: true,
     default: () => ({
       teamOne: { name: TBD, score: 0 },
       teamTwo: { name: TBD, score: 0 },
@@ -111,7 +110,6 @@ const props = defineProps({
   },
   permissions: {
     type: Object,
-    required: true,
     default: () => ({
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
       [PERMISSIONS.CAN_EDIT_DATE]: true,

@@ -19,7 +19,7 @@
             <th scope="col" class="px-6 py-3">W-L-T</th>
             <th scope="col" class="px-6 py-3">Points</th>
             <th
-              v-if="format === TOURNAMENT_FORMAT.SWISS"
+              v-if="format === tournamentFormat.SWISS"
               scope="col"
               class="px-6 py-3"
             >
@@ -70,7 +70,7 @@ defineProps({
     type: String,
     required: true,
   },
-  TOURNAMENT_FORMAT: {
+  tournamentFormat: {
     type: Object,
     required: true,
   },

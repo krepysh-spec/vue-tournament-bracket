@@ -4,6 +4,9 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import globals from "globals";
 
 export default defineConfig([
+  {
+    ignores: ['**/*.stories.*', 'src/stories/**'],
+  },
   ...pluginVue.configs['flat/recommended'],
   {
     rules: {

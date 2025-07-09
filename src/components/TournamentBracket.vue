@@ -43,7 +43,7 @@
     <StandingsTable
       :standings="standingsData"
       :format="format"
-      :TOURNAMENT_FORMAT="TOURNAMENT_FORMAT"
+      :tournament-format="TOURNAMENT_FORMAT"
     />
   </div>
 </template>
@@ -84,7 +84,6 @@ const props = defineProps({
   },
   permissions: {
     type: Object,
-    required: true,
     default: () => ({
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
       [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,

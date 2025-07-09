@@ -51,7 +51,6 @@ const props = defineProps({
   },
   permissions: {
     type: Object,
-    required: true,
     default: () => ({
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
     }),

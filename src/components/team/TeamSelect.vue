@@ -27,12 +27,12 @@
       >
         <option value="TBD">TBD</option>
         <option
-          v-for="team in availableTeamsForSelection"
-          :key="team.id"
-          :value="team.name"
-          :disabled="isTeamSelected(team.name)"
+            v-for="teamOption in availableTeamsForSelection"
+            :key="teamOption.id"
+            :value="teamOption.name"
+            :disabled="isTeamSelected(teamOption.name)"
         >
-          {{ team.name }}
+          {{ teamOption.name }}
         </option>
       </select>
     </div>
@@ -81,7 +81,6 @@ const props = defineProps({
   },
   permissions: {
     type: Object,
-    required: true,
     default: () => ({
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
     }),
