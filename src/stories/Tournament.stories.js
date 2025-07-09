@@ -82,35 +82,3 @@ export const DoubleElimination = {
     },
   },
 };
-
-export const Swiss = {
-  args: {
-    format: TOURNAMENT_FORMAT.SWISS,
-    size: 16,
-    defaultBestOf: 3,
-    theme: "lite",
-    permissions: {
-      [PERMISSIONS.CAN_SELECT_TEAM]: true,
-      [PERMISSIONS.CAN_EDIT_DATE]: true,
-      [PERMISSIONS.CAN_EDIT_SCOPE]: true,
-      [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,
-      [PERMISSIONS.CAN_EDIT_BEST_OF]: true,
-    },
-  },
-};
-
-export const RoundRobin = {
-  args: {
-    format: TOURNAMENT_FORMAT.ROUND_ROBIN,
-    size: 16,
-    defaultBestOf: 3,
-    theme: "lite",
-    permissions: {
-      [PERMISSIONS.CAN_SELECT_TEAM]: true,
-      [PERMISSIONS.CAN_EDIT_DATE]: true,
-      [PERMISSIONS.CAN_EDIT_SCOPE]: true,
-      [PERMISSIONS.CAN_EDIT_ROUND_NAME]: true,
-      [PERMISSIONS.CAN_EDIT_BEST_OF]: true,
-    },
-  },
-};
