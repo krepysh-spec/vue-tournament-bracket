@@ -1,37 +1,37 @@
-import { fn } from 'storybook/test';
+import { fn } from "storybook/test";
 
-import Tournament from './Tournament.vue';
-import {PERMISSIONS, TOURNAMENT_FORMAT} from '../constants/tournament';
+import Tournament from "./Tournament.vue";
+import { PERMISSIONS, TOURNAMENT_FORMAT } from "../constants/tournament";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 export default {
-  title: 'Tournament',
+  title: "Tournament",
   component: Tournament,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     theme: {
-      control: { type: 'select' },
-      options: ['dark', 'lite'],
+      control: { type: "select" },
+      options: ["dark", "lite"],
     },
     format: {
-      control: { type: 'select' },
+      control: { type: "select" },
       options: [
         TOURNAMENT_FORMAT.SINGLE_ELIMINATION,
         TOURNAMENT_FORMAT.DOUBLE_ELIMINATION,
         TOURNAMENT_FORMAT.SWISS,
-        TOURNAMENT_FORMAT.ROUND_ROBIN
+        TOURNAMENT_FORMAT.ROUND_ROBIN,
       ],
     },
     size: {
-      control: { type: 'select' },
+      control: { type: "select" },
       options: [2, 4, 8, 16, 32, 64],
     },
     defaultBestOf: {
-      control: { type: 'select' },
+      control: { type: "select" },
       options: [1, 3, 5, 7, 9],
     },
     permissions: {
-      control: 'object',
+      control: "object",
     },
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
@@ -39,7 +39,7 @@ export default {
     format: TOURNAMENT_FORMAT.SINGLE_ELIMINATION,
     size: 16,
     defaultBestOf: 3,
-    theme: 'lite',
+    theme: "lite",
     permissions: {
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
       [PERMISSIONS.CAN_EDIT_DATE]: true,
@@ -56,7 +56,7 @@ export const SingleElimination = {
     format: TOURNAMENT_FORMAT.SINGLE_ELIMINATION,
     size: 16,
     defaultBestOf: 3,
-    theme: 'lite',
+    theme: "lite",
     permissions: {
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
       [PERMISSIONS.CAN_EDIT_DATE]: true,
@@ -72,7 +72,7 @@ export const DoubleElimination = {
     format: TOURNAMENT_FORMAT.DOUBLE_ELIMINATION,
     size: 16,
     defaultBestOf: 3,
-    theme: 'lite',
+    theme: "lite",
     permissions: {
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
       [PERMISSIONS.CAN_EDIT_DATE]: true,
@@ -88,7 +88,7 @@ export const Swiss = {
     format: TOURNAMENT_FORMAT.SWISS,
     size: 16,
     defaultBestOf: 3,
-    theme: 'lite',
+    theme: "lite",
     permissions: {
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
       [PERMISSIONS.CAN_EDIT_DATE]: true,
@@ -104,7 +104,7 @@ export const RoundRobin = {
     format: TOURNAMENT_FORMAT.ROUND_ROBIN,
     size: 16,
     defaultBestOf: 3,
-    theme: 'lite',
+    theme: "lite",
     permissions: {
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
       [PERMISSIONS.CAN_EDIT_DATE]: true,

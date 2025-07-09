@@ -1,131 +1,142 @@
 <template>
-  <div 
+  <div
     class="flex-grow p-2.5 hover:bg-gray-200/30 dark:hover:bg-gray-950/20"
     :class="{
       'hover:bg-green-500/20 dark:hover:bg-green-500/20': isWinner,
       'hover:bg-red-500/20 dark:hover:bg-red-500/20': isLoser,
       'bg-green-500/20 dark:bg-green-500/20': shouldHighlight && isWinner,
-      'bg-red-500/20 dark:bg-red-500/20': shouldHighlight && isLoser
+      'bg-red-500/20 dark:bg-red-500/20': shouldHighlight && isLoser,
     }"
     @mouseenter="highlightTeam"
     @mouseleave="unhighlightTeam"
   >
-    <div v-if="canEdit && permissions[PERMISSIONS.CAN_SELECT_TEAM]" class="flex items-center gap-2">
-      <img 
+    <div
+      v-if="canEdit && permissions[PERMISSIONS.CAN_SELECT_TEAM]"
+      class="flex items-center gap-2"
+    >
+      <img
         v-if="selectedTeamLogo"
         :src="selectedTeamLogo"
         :alt="selectedTeam"
         class="w-6 h-6 rounded-full"
       />
-    <select 
-      v-model="selectedTeam"
+      <select
+        v-model="selectedTeam"
         class="select select-ghost w-full select-xs"
-      @change="updateTeam"
-    >
-      <option value="TBD">TBD</option>
-      <option 
-        v-for="team in availableTeamsForSelection" 
-        :key="team.id" 
-        :value="team.name"
-        :disabled="isTeamSelected(team.name)"
+        @change="updateTeam"
       >
-        {{ team.name }}
-      </option>
-    </select>
+        <option value="TBD">TBD</option>
+        <option
+          v-for="team in availableTeamsForSelection"
+          :key="team.id"
+          :value="team.name"
+          :disabled="isTeamSelected(team.name)"
+        >
+          {{ team.name }}
+        </option>
+      </select>
     </div>
     <template v-else>
       <div class="flex items-center gap-2">
-        <img 
-          v-if="team.logo" 
-          :src="team.logo" 
+        <img
+          v-if="team.logo"
+          :src="team.logo"
           :alt="team.name"
           class="w-6 h-6 rounded-full"
         />
-        <span class="text-gray-900 dark:text-white">{{team.name}}</span>
+        <span class="text-gray-900 dark:text-white">{{ team.name }}</span>
       </div>
     </template>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
-import { TBD, PERMISSIONS } from '../../constants/tournament';
+import { ref, computed, onMounted, watch } from "vue";
+import { TBD, PERMISSIONS } from "../../constants/tournament";
 
 const props = defineProps({
   team: {
     type: Object,
-    required: true
+    required: true,
   },
   teamPosition: {
     type: String,
-    required: true
+    required: true,
   },
   availableTeams: {
     type: Array,
-    required: true
+    required: true,
   },
   selectedTeams: {
     type: Array,
-    required: true
+    required: true,
   },
   canEdit: {
     type: Boolean,
-    required: true
+    required: true,
   },
   highlightedTeam: {
     type: Number,
-    default: null
+    default: null,
   },
   permissions: {
     type: Object,
     required: true,
     default: () => ({
-      [PERMISSIONS.CAN_SELECT_TEAM]: true
-    })
+      [PERMISSIONS.CAN_SELECT_TEAM]: true,
+    }),
   },
   isWinner: {
     type: Boolean,
-    default: false
+    default: false,
   },
   isLoser: {
     type: Boolean,
-    default: false
+    default: false,
   },
   shouldHighlight: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-const emit = defineEmits(['update:team', 'highlight-team', 'unhighlight-team']);
+const emit = defineEmits(["update:team", "highlight-team", "unhighlight-team"]);
 
 const selectedTeam = ref(props.team.name);
 const selectedTeamLogo = computed(() => {
   if (selectedTeam.value === TBD) return null;
-  return props.availableTeams.find(t => t.name === selectedTeam.value)?.logo || null;
+  return (
+    props.availableTeams.find((t) => t.name === selectedTeam.value)?.logo ||
+    null
+  );
 });
 
-watch(() => props.team, (newTeam) => {
-  selectedTeam.value = newTeam.name;
-}, { immediate: true });
+watch(
+  () => props.team,
+  (newTeam) => {
+    selectedTeam.value = newTeam.name;
+  },
+  { immediate: true },
+);
 
 onMounted(() => {
-  console.log('TeamSelect mounted:', {
+  console.log("TeamSelect mounted:", {
     team: props.team,
-    availableTeams: props.availableTeams
+    availableTeams: props.availableTeams,
   });
 });
 
 const isTeamSelected = (teamName) => {
   if (teamName === TBD) return false;
-  return (props.selectedTeams.includes(teamName) && 
-         teamName !== props.team.name) ||
-         (teamName === props.team.name && props.team.name !== TBD);
+  return (
+    (props.selectedTeams.includes(teamName) && teamName !== props.team.name) ||
+    (teamName === props.team.name && props.team.name !== TBD)
+  );
 };
 
 const availableTeamsForSelection = computed(() => {
   if (!props.availableTeams) return [];
-  return props.availableTeams.filter(team => {
+  return props.availableTeams.filter((team) => {
     if (team.name === TBD) return true;
     if (team.name === props.team.name) {
       return true;
@@ -136,25 +147,30 @@ const availableTeamsForSelection = computed(() => {
 
 const highlightTeam = () => {
   if (props.team.name !== TBD) {
-    emit('highlight-team', props.team.name);
+    emit("highlight-team", props.team.name);
   }
 };
 
 const unhighlightTeam = () => {
-  emit('unhighlight-team');
+  emit("unhighlight-team");
 };
 
 const updateTeam = () => {
-  const selectedTeamData = props.availableTeams.find(t => t.name === selectedTeam.value);
-  console.log('Updating team:', { selectedTeam: selectedTeam.value, selectedTeamData });
-  emit('update:team', {
+  const selectedTeamData = props.availableTeams.find(
+    (t) => t.name === selectedTeam.value,
+  );
+  console.log("Updating team:", {
+    selectedTeam: selectedTeam.value,
+    selectedTeamData,
+  });
+  emit("update:team", {
     position: props.teamPosition,
     team: {
       id: selectedTeamData?.id || null,
       name: selectedTeam.value,
       logo: selectedTeamData?.logo || null,
-      score: 0
-    }
+      score: 0,
+    },
   });
 };
-</script> 
+</script>

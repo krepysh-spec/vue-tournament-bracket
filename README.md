@@ -30,25 +30,25 @@ npm install bracket-vue-tool
 ### Global Registration
 
 ```javascript
-import { createApp } from 'vue'
-import { install } from 'bracket-vue-tool'
-import 'bracket-vue-tool/dist/style.css'
+import { createApp } from "vue";
+import { install } from "bracket-vue-tool";
+import "bracket-vue-tool/dist/style.css";
 
-const app = createApp(App)
-app.use({ install })
+const app = createApp(App);
+app.use({ install });
 ```
 
 ### Component Registration
 
 ```javascript
-import { TournamentBracket } from 'bracket-vue-tool'
-import 'bracket-vue-tool/dist/style.css'
+import { TournamentBracket } from "bracket-vue-tool";
+import "bracket-vue-tool/dist/style.css";
 
 export default {
   components: {
-    TournamentBracket
-  }
-}
+    TournamentBracket,
+  },
+};
 ```
 
 ### Basic Usage
@@ -66,29 +66,29 @@ export default {
 
 <script setup>
 const handleTeamsUpdate = (teams) => {
-  console.log('Teams updated:', teams)
-}
+  console.log("Teams updated:", teams);
+};
 
 const handleScoresUpdate = (scores) => {
-  console.log('Scores updated:', scores)
-}
+  console.log("Scores updated:", scores);
+};
 </script>
 ```
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| size | Number | 8 | Number of teams in the tournament (must be a power of 2) |
-| isDoubleElimination | Boolean | false | Whether to use Double Elimination format |
-| defaultBestOf | Number | 1 | Default number of games in a match (1, 3, 5, 7, or 9) |
+| Prop                | Type    | Default | Description                                              |
+| ------------------- | ------- | ------- | -------------------------------------------------------- |
+| size                | Number  | 8       | Number of teams in the tournament (must be a power of 2) |
+| isDoubleElimination | Boolean | false   | Whether to use Double Elimination format                 |
+| defaultBestOf       | Number  | 1       | Default number of games in a match (1, 3, 5, 7, or 9)    |
 
 ## Events
 
-| Event | Payload | Description |
-|-------|---------|-------------|
-| update:teams | Array | Emitted when teams are updated |
-| update:scores | Array | Emitted when scores are updated |
+| Event         | Payload | Description                     |
+| ------------- | ------- | ------------------------------- |
+| update:teams  | Array   | Emitted when teams are updated  |
+| update:scores | Array   | Emitted when scores are updated |
 
 ## Features
 
@@ -108,6 +108,7 @@ MIT
 ## ⚙ How It Works
 
 The `<TournamentBracket />` component accepts the following props:
+
 - **initial-state** — the initial tournament state (array of rounds and matches)
 - **available-teams** — array of available teams (`{id, name}`)
 - **default-best-of** — Best of value (e.g., `3` means Best of 3)
@@ -133,7 +134,7 @@ The `<TournamentBracket />` component accepts the following props:
         </option>
       </select>
 
-      <TournamentBracket 
+      <TournamentBracket
         :initial-state="tournamentState"
         :available-teams="teams"
         :default-best-of="defaultBestOf"
@@ -142,3 +143,4 @@ The `<TournamentBracket />` component accepts the following props:
     </div>
   </div>
 </template>
+```

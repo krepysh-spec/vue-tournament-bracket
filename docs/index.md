@@ -33,4 +33,3 @@ features:
   - title: SSR & Vite Friendly
     details: Fully compatible with Vite, Nuxt 3, and server-side rendering.
 ---
-

@@ -7,7 +7,6 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-      - /app/node_modules
     ports:
       - "3000:5173"
       - "6006:6006"

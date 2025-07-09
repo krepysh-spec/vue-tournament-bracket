@@ -27,64 +27,69 @@
 </template>
 
 <script setup>
-import TeamSelect from './TeamSelect.vue';
-import TeamScoreInput from './TeamScoreInput.vue';
-import { PERMISSIONS } from '../../constants/tournament';
+import TeamSelect from "./TeamSelect.vue";
+import TeamScoreInput from "./TeamScoreInput.vue";
+import { PERMISSIONS } from "../../constants/tournament";
 
 const props = defineProps({
   team: {
     type: Object,
-    required: true
+    required: true,
   },
   teamPosition: {
     type: String,
-    required: true
+    required: true,
   },
   availableTeams: {
     type: Array,
-    required: true
+    required: true,
   },
   selectedTeams: {
     type: Array,
-    required: true
+    required: true,
   },
   canEdit: {
     type: Boolean,
-    required: true
+    required: true,
   },
   canEditScore: {
     type: Boolean,
-    required: true
+    required: true,
   },
   isWinner: {
     type: Boolean,
-    default: false
+    default: false,
   },
   isLoser: {
     type: Boolean,
-    default: false
+    default: false,
   },
   shouldHighlight: {
     type: Boolean,
-    default: false
+    default: false,
   },
   isFirstTeam: {
     type: Boolean,
-    default: false
+    default: false,
   },
   highlightedTeam: {
     type: Number,
-    default: null
+    default: null,
   },
   permissions: {
     type: Object,
     required: true,
     default: () => ({
       [PERMISSIONS.CAN_SELECT_TEAM]: true,
-      [PERMISSIONS.CAN_EDIT_SCOPE]: true
-    })
-  }
+      [PERMISSIONS.CAN_EDIT_SCOPE]: true,
+    }),
+  },
 });
 
-defineEmits(['update:team', 'update:score', 'highlight-team', 'unhighlight-team']);
-</script> 
+defineEmits([
+  "update:team",
+  "update:score",
+  "highlight-team",
+  "unhighlight-team",
+]);
+</script>

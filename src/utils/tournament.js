@@ -1,11 +1,11 @@
-import { TBD, TEAM_POSITION } from '../constants/tournament';
+import { TBD, TEAM_POSITION } from "../constants/tournament";
 
 // Returns an empty team object
 export const createEmptyTeam = () => ({
   id: null,
   name: TBD,
   logo: null,
-  score: 0
+  score: 0,
 });
 
 // Returns an empty match object
@@ -15,7 +15,7 @@ export const createEmptyMatch = (number) => ({
   [TEAM_POSITION.ONE]: createEmptyTeam(),
   [TEAM_POSITION.TWO]: createEmptyTeam(),
   winner: null,
-  date: null
+  date: null,
 });
 
 // Generates single elimination bracket
@@ -34,7 +34,7 @@ export const createTournamentState = (teamCount, defaultBestOf = 3) => {
       id: `upper-round-${round + 1}`,
       name: `Round ${round + 1}`,
       matches: matches,
-      bestOf: defaultBestOf
+      bestOf: defaultBestOf,
     });
   }
   return columns;
@@ -62,7 +62,7 @@ export const createLowerBracketStructure = (upperRounds, defaultBestOf) => {
       id: `lower-round-${round + 1}`,
       name: `Lower Round ${round + 1}`,
       matches: matches,
-      bestOf: defaultBestOf
+      bestOf: defaultBestOf,
     });
   }
   return columns;
@@ -89,7 +89,12 @@ export const getLowerBracketRoundIndex = (upperRoundIndex) => {
 };
 
 // Swiss bracket generator (see above for details)
-export const createSwissTournamentState = (teamCount, roundsCount, defaultBestOf = 3, availableTeams = null) => {
+export const createSwissTournamentState = (
+  teamCount,
+  roundsCount,
+  defaultBestOf = 3,
+  availableTeams = null,
+) => {
   // If roundsCount is not set — use log2(teamCount)
   if (!roundsCount) {
     roundsCount = Math.ceil(Math.log2(teamCount));
@@ -97,14 +102,16 @@ export const createSwissTournamentState = (teamCount, roundsCount, defaultBestOf
   // Use availableTeams if provided, otherwise generate
   let teams;
   if (Array.isArray(availableTeams) && availableTeams.length >= teamCount) {
-    teams = [...availableTeams].slice(0, teamCount).map(t => ({ ...t, score: 0 }));
+    teams = [...availableTeams]
+      .slice(0, teamCount)
+      .map((t) => ({ ...t, score: 0 }));
     teams = teams.sort(() => Math.random() - 0.5);
   } else {
     teams = Array.from({ length: teamCount }, (_, i) => ({
       id: i + 1,
       name: `Team ${i + 1}`,
       logo: null,
-      score: 0
+      score: 0,
     }));
   }
 
@@ -115,18 +122,18 @@ export const createSwissTournamentState = (teamCount, roundsCount, defaultBestOf
   for (let i = 0; i < teamCount; i += 2) {
     firstRoundMatches.push({
       id: `swiss-match-1-${i / 2 + 1}`,
-      number: (i / 2) + 1,
+      number: i / 2 + 1,
       teamOne: { name: TBD },
       teamTwo: { name: TBD },
       winner: null,
-      date: null
+      date: null,
     });
   }
   columns.push({
     id: `swiss-round-1`,
     name: `Round 1`,
     matches: firstRoundMatches,
-    bestOf: defaultBestOf
+    bestOf: defaultBestOf,
   });
 
   // Next rounds — all matches are TBD
@@ -135,18 +142,18 @@ export const createSwissTournamentState = (teamCount, roundsCount, defaultBestOf
     for (let i = 0; i < teamCount; i += 2) {
       matches.push({
         id: `swiss-match-${round + 1}-${i / 2 + 1}`,
-        number: (i / 2) + 1,
+        number: i / 2 + 1,
         teamOne: { name: TBD },
         teamTwo: { name: TBD },
         winner: null,
-        date: null
+        date: null,
       });
     }
     columns.push({
       id: `swiss-round-${round + 1}`,
       name: `Round ${round + 1}`,
       matches,
-      bestOf: defaultBestOf
+      bestOf: defaultBestOf,
     });
   }
   return columns;
@@ -156,14 +163,16 @@ export const createSwissTournamentState = (teamCount, roundsCount, defaultBestOf
 export function shuffleSwissPairs(teams, previousPairs = []) {
   // Group by score
   const groups = {};
-  teams.forEach(t => {
+  teams.forEach((t) => {
     if (!groups[t.score]) groups[t.score] = [];
     groups[t.score].push(t);
   });
-  const scores = Object.keys(groups).map(Number).sort((a, b) => b - a);
+  const scores = Object.keys(groups)
+    .map(Number)
+    .sort((a, b) => b - a);
   const pairs = [];
   const used = new Set();
-  const allIds = teams.map(t => t.id);
+  const allIds = teams.map((t) => t.id);
   // Collect all previous pairs as a set for fast lookup
   const prevSet = new Set(previousPairs.map(([a, b]) => `${a}-${b}`));
 
@@ -176,7 +185,10 @@ export function shuffleSwissPairs(teams, previousPairs = []) {
       let found = false;
       for (let j = i + 1; j < arr.length; j++) {
         if (localUsed.has(arr[j].id)) continue;
-        if (!prevSet.has(`${arr[i].id}-${arr[j].id}`) && !prevSet.has(`${arr[j].id}-${arr[i].id}`)) {
+        if (
+          !prevSet.has(`${arr[i].id}-${arr[j].id}`) &&
+          !prevSet.has(`${arr[j].id}-${arr[i].id}`)
+        ) {
           localPairs.push([arr[i], arr[j]]);
           localUsed.add(arr[i].id);
           localUsed.add(arr[j].id);
@@ -192,7 +204,10 @@ export function shuffleSwissPairs(teams, previousPairs = []) {
           if (s2 === arr[i].score) continue;
           for (let t2 of groups[s2] || []) {
             if (used.has(t2.id)) continue;
-            if (!prevSet.has(`${arr[i].id}-${t2.id}`) && !prevSet.has(`${t2.id}-${arr[i].id}`)) {
+            if (
+              !prevSet.has(`${arr[i].id}-${t2.id}`) &&
+              !prevSet.has(`${t2.id}-${arr[i].id}`)
+            ) {
               localPairs.push([arr[i], t2]);
               localUsed.add(arr[i].id);
               localUsed.add(t2.id);
@@ -209,17 +224,21 @@ export function shuffleSwissPairs(teams, previousPairs = []) {
 
   // Main pairing by groups
   for (let score of scores) {
-    const group = groups[score].filter(t => !used.has(t.id));
+    const group = groups[score].filter((t) => !used.has(t.id));
     const groupPairs = pairGroup(group);
     pairs.push(...groupPairs);
     // If one player left in group — pair with next group or bye
-    const left = group.filter(t => !used.has(t.id));
+    const left = group.filter((t) => !used.has(t.id));
     if (left.length === 1) {
       let paired = false;
       for (let s2 of scores) {
         if (s2 === score) continue;
         for (let t2 of groups[s2] || []) {
-          if (!used.has(t2.id) && !prevSet.has(`${left[0].id}-${t2.id}`) && !prevSet.has(`${t2.id}-${left[0].id}`)) {
+          if (
+            !used.has(t2.id) &&
+            !prevSet.has(`${left[0].id}-${t2.id}`) &&
+            !prevSet.has(`${t2.id}-${left[0].id}`)
+          ) {
             pairs.push([left[0], t2]);
             used.add(left[0].id);
             used.add(t2.id);
@@ -237,9 +256,9 @@ export function shuffleSwissPairs(teams, previousPairs = []) {
     }
   }
   // If someone left without a pair (odd number) — bye
-  const unused = allIds.filter(id => !used.has(id));
+  const unused = allIds.filter((id) => !used.has(id));
   for (let id of unused) {
-    const t = teams.find(x => x.id === id);
+    const t = teams.find((x) => x.id === id);
     pairs.push([t, null]);
   }
   return pairs;
@@ -250,12 +269,21 @@ export function getSwissStandings(rounds) {
   // rounds — array of rounds (upperColumns)
   const players = {};
   const matchesByPlayer = {};
-  rounds.forEach(round => {
-    round.matches.forEach(match => {
-      ["teamOne", "teamTwo"].forEach(pos => {
+  rounds.forEach((round) => {
+    round.matches.forEach((match) => {
+      ["teamOne", "teamTwo"].forEach((pos) => {
         const t = match[pos];
         if (!t) return;
-        if (!players[t.id]) players[t.id] = { ...t, wins: 0, losses: 0, ties: 0, score: 0, ptsDiff: 0, buchholz: 0 };
+        if (!players[t.id])
+          players[t.id] = {
+            ...t,
+            wins: 0,
+            losses: 0,
+            ties: 0,
+            score: 0,
+            ptsDiff: 0,
+            buchholz: 0,
+          };
         if (!matchesByPlayer[t.id]) matchesByPlayer[t.id] = [];
       });
       if (match.teamOne && match.teamTwo) {
@@ -294,27 +322,37 @@ export function getSwissStandings(rounds) {
     });
   });
   // Buchholz: sum of opponents' points
-  Object.values(players).forEach(p => {
-    p.buchholz = (matchesByPlayer[p.id] || []).reduce((sum, oppId) => sum + (players[oppId]?.score || 0), 0);
+  Object.values(players).forEach((p) => {
+    p.buchholz = (matchesByPlayer[p.id] || []).reduce(
+      (sum, oppId) => sum + (players[oppId]?.score || 0),
+      0,
+    );
   });
   // TB: number of wins
   // Score: points
   // Pts Diff: point difference
   // Buchholz: sum of opponents' points
   // Sort
-  const arr = Object.values(players).sort((a, b) =>
-    b.score - a.score ||
-    b.wins - a.wins ||
-    b.buchholz - a.buchholz ||
-    b.ptsDiff - a.ptsDiff
+  const arr = Object.values(players).sort(
+    (a, b) =>
+      b.score - a.score ||
+      b.wins - a.wins ||
+      b.buchholz - a.buchholz ||
+      b.ptsDiff - a.ptsDiff,
   );
   // Add place
-  arr.forEach((p, i) => { p.place = i + 1; });
+  arr.forEach((p, i) => {
+    p.place = i + 1;
+  });
   return arr;
 }
 
 // Round Robin bracket generator
-export const createRoundRobinTournamentState = (teamCount, defaultBestOf = 3, availableTeams = null) => {
+export const createRoundRobinTournamentState = (
+  teamCount,
+  defaultBestOf = 3,
+  availableTeams = null,
+) => {
   // Use availableTeams if provided, otherwise generate
   let teams;
   if (Array.isArray(availableTeams) && availableTeams.length >= teamCount) {
@@ -323,7 +361,7 @@ export const createRoundRobinTournamentState = (teamCount, defaultBestOf = 3, av
     teams = Array.from({ length: teamCount }, (_, i) => ({
       id: i + 1,
       name: `Team ${i + 1}`,
-      logo: null
+      logo: null,
     }));
   }
 
@@ -355,7 +393,7 @@ export const createRoundRobinTournamentState = (teamCount, defaultBestOf = 3, av
           teamOne: { ...a },
           teamTwo: { ...b },
           winner: null,
-          date: null
+          date: null,
         });
         used.add(a.id);
         used.add(b.id);
@@ -368,8 +406,8 @@ export const createRoundRobinTournamentState = (teamCount, defaultBestOf = 3, av
       id: `rr-round-${round + 1}`,
       name: `Round ${round + 1}`,
       matches,
-      bestOf: defaultBestOf
+      bestOf: defaultBestOf,
     });
   }
   return columns;
-}; 
+};
