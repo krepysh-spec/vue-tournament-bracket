@@ -35,3 +35,4 @@ export const getLowerBracketRoundIndex = (upperRoundIndex) => {
 
 export { createSwissTournamentStateGen as createSwissTournamentState };
 export { createRoundRobinTournamentStateGen as createRoundRobinTournamentState };
+export { createTournamentState, createLowerBracketStructure };

@@ -1,25 +1,24 @@
-import { ref as q, computed as W, watch as F, onMounted as G, createElementBlock as S, openBlock as b, normalizeClass as K, unref as B, createCommentVNode as H, withDirectives as Q, createElementVNode as p, Fragment as R, renderList as j, toDisplayString as U, vModelSelect as le, vModelText as ee, createVNode as P, createBlock as V } from "vue";
-const I = {
+import { createElementBlock as y, openBlock as f, normalizeClass as H, createCommentVNode as q, withDirectives as J, createElementVNode as h, Fragment as U, renderList as W, toDisplayString as B, vModelSelect as oe, ref as D, computed as A, watch as M, onMounted as R, vModelText as Z, createVNode as L, createBlock as $ } from "vue";
+const j = {
   SINGLE_ELIMINATION: "single_elimination",
   DOUBLE_ELIMINATION: "double_elimination",
   SWISS: "swiss",
   ROUND_ROBIN: "round_robin"
-}, C = "TBD", l = {
+}, k = "TBD", O = {
   ONE: "teamOne",
   TWO: "teamTwo"
-}, $ = {
+}, E = {
   CAN_SELECT_TEAM: "can_select_team",
   CAN_EDIT_DATE: "can_edit_date",
   CAN_EDIT_SCOPE: "can_edit_scope",
   CAN_EDIT_ROUND_NAME: "can_edit_round_name",
   CAN_EDIT_BEST_OF: "can_edit_best_of"
+}, C = (i, a) => {
+  const t = i.__vccOpts || i;
+  for (const [e, s] of a)
+    t[e] = s;
+  return t;
 }, re = {
-  key: 0,
-  class: "flex items-center gap-2"
-}, ce = ["src", "alt"], ue = ["value", "disabled"], de = {
-  key: 1,
-  class: "flex items-center gap-2"
-}, me = ["src", "alt"], he = { class: "text-gray-900 dark:text-white" }, fe = {
   __name: "TeamSelect",
   props: {
     team: {
@@ -48,9 +47,8 @@ const I = {
     },
     permissions: {
       type: Object,
-      required: !0,
       default: () => ({
-        [$.CAN_SELECT_TEAM]: !0
+        [E.CAN_SELECT_TEAM]: !0
       })
     },
     isWinner: {
@@ -67,81 +65,132 @@ const I = {
     }
   },
   emits: ["update:team", "highlight-team", "unhighlight-team"],
-  setup(e, { emit: d }) {
-    const t = e, n = d, i = q(t.team.name), s = W(() => {
-      var u;
-      return i.value === C ? null : ((u = t.availableTeams.find((E) => E.name === i.value)) == null ? void 0 : u.logo) || null;
+  setup(i, { expose: a, emit: t }) {
+    a();
+    const e = i, s = t, n = D(e.team.name), o = A(() => {
+      var d;
+      return n.value === k ? null : ((d = e.availableTeams.find((b) => b.name === n.value)) == null ? void 0 : d.logo) || null;
     });
-    F(() => t.team, (u) => {
-      i.value = u.name;
-    }, { immediate: !0 }), G(() => {
+    M(
+      () => e.team,
+      (d) => {
+        n.value = d.name;
+      },
+      { immediate: !0 }
+    ), R(() => {
       console.log("TeamSelect mounted:", {
-        team: t.team,
-        availableTeams: t.availableTeams
+        team: e.team,
+        availableTeams: e.availableTeams
       });
     });
-    const g = (u) => u === C ? !1 : t.selectedTeams.includes(u) && u !== t.team.name || u === t.team.name && t.team.name !== C, r = W(() => t.availableTeams ? t.availableTeams.filter((u) => u.name === C || u.name === t.team.name ? !0 : !g(u.name)) : []), T = () => {
-      t.team.name !== C && n("highlight-team", t.team.name);
-    }, N = () => {
-      n("unhighlight-team");
-    }, o = () => {
-      const u = t.availableTeams.find((E) => E.name === i.value);
-      console.log("Updating team:", { selectedTeam: i.value, selectedTeamData: u }), n("update:team", {
-        position: t.teamPosition,
+    const r = (d) => d === k ? !1 : e.selectedTeams.includes(d) && d !== e.team.name || d === e.team.name && e.team.name !== k, c = A(() => e.availableTeams ? e.availableTeams.filter((d) => d.name === k || d.name === e.team.name ? !0 : !r(d.name)) : []), m = { props: e, emit: s, selectedTeam: n, selectedTeamLogo: o, isTeamSelected: r, availableTeamsForSelection: c, highlightTeam: () => {
+      e.team.name !== k && s("highlight-team", e.team.name);
+    }, unhighlightTeam: () => {
+      s("unhighlight-team");
+    }, updateTeam: () => {
+      const d = e.availableTeams.find(
+        (b) => b.name === n.value
+      );
+      console.log("Updating team:", {
+        selectedTeam: n.value,
+        selectedTeamData: d
+      }), s("update:team", {
+        position: e.teamPosition,
         team: {
-          id: (u == null ? void 0 : u.id) || null,
-          name: i.value,
-          logo: (u == null ? void 0 : u.logo) || null,
+          id: (d == null ? void 0 : d.id) || null,
+          name: n.value,
+          logo: (d == null ? void 0 : d.logo) || null,
           score: 0
         }
       });
-    };
-    return (u, E) => (b(), S("div", {
-      class: K(["flex-grow p-2.5 hover:bg-gray-200/30 dark:hover:bg-gray-950/20", {
-        "hover:bg-green-500/20 dark:hover:bg-green-500/20": e.isWinner,
-        "hover:bg-red-500/20 dark:hover:bg-red-500/20": e.isLoser,
-        "bg-green-500/20 dark:bg-green-500/20": e.shouldHighlight && e.isWinner,
-        "bg-red-500/20 dark:bg-red-500/20": e.shouldHighlight && e.isLoser
-      }]),
-      onMouseenter: T,
-      onMouseleave: N
-    }, [
-      e.canEdit && e.permissions[B($).CAN_SELECT_TEAM] ? (b(), S("div", re, [
-        s.value ? (b(), S("img", {
-          key: 0,
-          src: s.value,
-          alt: i.value,
-          class: "w-6 h-6 rounded-full"
-        }, null, 8, ce)) : H("", !0),
-        Q(p("select", {
-          "onUpdate:modelValue": E[0] || (E[0] = (c) => i.value = c),
-          class: "select select-ghost w-full select-xs",
-          onChange: o
-        }, [
-          E[1] || (E[1] = p("option", { value: "TBD" }, "TBD", -1)),
-          (b(!0), S(R, null, j(r.value, (c) => (b(), S("option", {
-            key: c.id,
-            value: c.name,
-            disabled: g(c.name)
-          }, U(c.name), 9, ue))), 128))
-        ], 544), [
-          [le, i.value]
-        ])
-      ])) : (b(), S("div", de, [
-        e.team.logo ? (b(), S("img", {
-          key: 0,
-          src: e.team.logo,
-          alt: e.team.name,
-          class: "w-6 h-6 rounded-full"
-        }, null, 8, me)) : H("", !0),
-        p("span", he, U(e.team.name), 1)
-      ]))
-    ], 34));
+    }, ref: D, computed: A, onMounted: R, watch: M, get TBD() {
+      return k;
+    }, get PERMISSIONS() {
+      return E;
+    } };
+    return Object.defineProperty(m, "__isScriptSetup", { enumerable: !1, value: !0 }), m;
   }
-}, ge = {
+}, le = {
+  key: 0,
+  class: "flex items-center gap-2"
+}, ce = ["src", "alt"], de = ["value", "disabled"], me = {
   key: 1,
-  class: "text-white"
-}, pe = {
+  class: "flex items-center gap-2"
+}, ue = ["src", "alt"], he = { class: "text-gray-900 dark:text-white" };
+function ge(i, a, t, e, s, n) {
+  return f(), y(
+    "div",
+    {
+      class: H(["flex-grow p-2.5 hover:bg-gray-200/30 dark:hover:bg-gray-950/20", {
+        "hover:bg-green-500/20 dark:hover:bg-green-500/20": t.isWinner,
+        "hover:bg-red-500/20 dark:hover:bg-red-500/20": t.isLoser,
+        "bg-green-500/20 dark:bg-green-500/20": t.shouldHighlight && t.isWinner,
+        "bg-red-500/20 dark:bg-red-500/20": t.shouldHighlight && t.isLoser
+      }]),
+      onMouseenter: e.highlightTeam,
+      onMouseleave: e.unhighlightTeam
+    },
+    [
+      t.canEdit && t.permissions[e.PERMISSIONS.CAN_SELECT_TEAM] ? (f(), y("div", le, [
+        e.selectedTeamLogo ? (f(), y("img", {
+          key: 0,
+          src: e.selectedTeamLogo,
+          alt: e.selectedTeam,
+          class: "w-6 h-6 rounded-full"
+        }, null, 8, ce)) : q("v-if", !0),
+        J(h(
+          "select",
+          {
+            "onUpdate:modelValue": a[0] || (a[0] = (o) => e.selectedTeam = o),
+            class: "select select-ghost w-full select-xs",
+            onChange: e.updateTeam
+          },
+          [
+            a[1] || (a[1] = h(
+              "option",
+              { value: "TBD" },
+              "TBD",
+              -1
+              /* CACHED */
+            )),
+            (f(!0), y(
+              U,
+              null,
+              W(e.availableTeamsForSelection, (o) => (f(), y("option", {
+                key: o.id,
+                value: o.name,
+                disabled: e.isTeamSelected(o.name)
+              }, B(o.name), 9, de))),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ],
+          544
+          /* NEED_HYDRATION, NEED_PATCH */
+        ), [
+          [oe, e.selectedTeam]
+        ])
+      ])) : (f(), y("div", me, [
+        t.team.logo ? (f(), y("img", {
+          key: 0,
+          src: t.team.logo,
+          alt: t.team.name,
+          class: "w-6 h-6 rounded-full"
+        }, null, 8, ue)) : q("v-if", !0),
+        h(
+          "span",
+          he,
+          B(t.team.name),
+          1
+          /* TEXT */
+        )
+      ]))
+    ],
+    34
+    /* CLASS, NEED_HYDRATION */
+  );
+}
+const fe = /* @__PURE__ */ C(re, [["render", ge], ["__file", "/app/src/components/team/TeamSelect.vue"]]), _e = {
   __name: "TeamScoreInput",
   props: {
     team: {
@@ -162,37 +211,71 @@ const I = {
     }
   },
   emits: ["update:score"],
-  setup(e, { emit: d }) {
-    const t = e, n = d, i = q(!1), s = q(t.team.score ?? 0), g = () => {
-      t.canEditScore && (i.value = !0);
-    }, r = () => {
-      const T = parseInt(s.value) || 0;
-      n("update:score", {
-        position: t.teamPosition,
-        score: T
+  setup(i, { expose: a, emit: t }) {
+    a();
+    const e = i, s = t, n = D(!1), o = D(e.team.score ?? 0), r = () => {
+      e.canEditScore && (n.value = !0);
+    }, c = () => {
+      const l = parseInt(o.value) || 0;
+      s("update:score", {
+        position: e.teamPosition,
+        score: l
       });
     };
-    return F(() => t.team, (T) => {
-      s.value = T.score ?? 0;
-    }, { deep: !0 }), (T, N) => (b(), S("div", {
-      class: K(["p-2.5 bg-orange-500 dark:bg-orange-600 cursor-pointer min-w-10 text-center", { "border-b border-orange-600 dark:border-orange-700": e.isFirstTeam }]),
-      onClick: g
-    }, [
-      i.value ? Q((b(), S("input", {
-        key: 0,
-        type: "number",
-        "onUpdate:modelValue": N[0] || (N[0] = (o) => s.value = o),
-        class: "input input-xs",
-        required: "",
-        min: "0",
-        onChange: r,
-        onBlur: N[1] || (N[1] = (o) => i.value = !1)
-      }, null, 544)), [
-        [ee, s.value]
-      ]) : (b(), S("span", ge, U(e.team.score), 1))
-    ], 2));
+    M(
+      () => e.team,
+      (l) => {
+        o.value = l.score ?? 0;
+      },
+      { deep: !0 }
+    );
+    const _ = { props: e, emit: s, isEditing: n, score: o, selectScore: r, updateScore: c, ref: D, watch: M };
+    return Object.defineProperty(_, "__isScriptSetup", { enumerable: !1, value: !0 }), _;
   }
-}, Te = { class: "flex" }, X = {
+}, Te = {
+  key: 1,
+  class: "text-white"
+};
+function pe(i, a, t, e, s, n) {
+  return f(), y(
+    "div",
+    {
+      class: H(["p-2.5 bg-orange-500 dark:bg-orange-600 cursor-pointer min-w-10 text-center", {
+        "border-b border-orange-600 dark:border-orange-700": t.isFirstTeam
+      }]),
+      onClick: e.selectScore
+    },
+    [
+      e.isEditing ? J((f(), y(
+        "input",
+        {
+          key: 0,
+          "onUpdate:modelValue": a[0] || (a[0] = (o) => e.score = o),
+          type: "number",
+          class: "input input-xs",
+          required: "",
+          min: "0",
+          onChange: e.updateScore,
+          onBlur: a[1] || (a[1] = (o) => e.isEditing = !1)
+        },
+        null,
+        544
+        /* NEED_HYDRATION, NEED_PATCH */
+      )), [
+        [Z, e.score]
+      ]) : (f(), y(
+        "span",
+        Te,
+        B(t.team.score),
+        1
+        /* TEXT */
+      ))
+    ],
+    2
+    /* CLASS */
+  );
+}
+const ye = /* @__PURE__ */ C(_e, [["render", pe], ["__file", "/app/src/components/team/TeamScoreInput.vue"]]), be = {
   __name: "TeamRow",
   props: {
     team: {
@@ -241,53 +324,61 @@ const I = {
     },
     permissions: {
       type: Object,
-      required: !0,
       default: () => ({
-        [$.CAN_SELECT_TEAM]: !0,
-        [$.CAN_EDIT_SCOPE]: !0
+        [E.CAN_SELECT_TEAM]: !0,
+        [E.CAN_EDIT_SCOPE]: !0
       })
     }
   },
-  emits: ["update:team", "update:score", "highlight-team", "unhighlight-team"],
-  setup(e) {
-    return (d, t) => (b(), S("div", Te, [
-      P(fe, {
-        team: e.team,
-        "team-position": e.teamPosition,
-        "available-teams": e.availableTeams,
-        "selected-teams": e.selectedTeams,
-        "highlighted-team": e.highlightedTeam,
-        permissions: e.permissions,
-        "can-edit": e.canEdit,
-        "is-winner": e.isWinner,
-        "is-loser": e.isLoser,
-        "should-highlight": e.shouldHighlight,
-        "is-first-team": e.isFirstTeam,
-        "onUpdate:team": t[0] || (t[0] = (n) => d.$emit("update:team", n)),
-        onHighlightTeam: t[1] || (t[1] = (n) => d.$emit("highlight-team", n)),
-        onUnhighlightTeam: t[2] || (t[2] = (n) => d.$emit("unhighlight-team"))
-      }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "highlighted-team", "permissions", "can-edit", "is-winner", "is-loser", "should-highlight", "is-first-team"]),
-      P(pe, {
-        team: e.team,
-        "team-position": e.teamPosition,
-        "can-edit-score": e.canEditScore,
-        "is-first-team": e.isFirstTeam,
-        "onUpdate:score": t[3] || (t[3] = (n) => d.$emit("update:score", n))
-      }, null, 8, ["team", "team-position", "can-edit-score", "is-first-team"])
-    ]));
+  emits: [
+    "update:team",
+    "update:score",
+    "highlight-team",
+    "unhighlight-team"
+  ],
+  setup(i, { expose: a }) {
+    a();
+    const e = { props: i, TeamSelect: fe, TeamScoreInput: ye, get PERMISSIONS() {
+      return E;
+    } };
+    return Object.defineProperty(e, "__isScriptSetup", { enumerable: !1, value: !0 }), e;
   }
-}, ve = { class: "flex flex-col w-full" }, Oe = { class: "px-3 py-1 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center" }, Ee = ["value", "disabled"], ye = {
-  key: 0,
-  class: "absolute top-1/2 left-full w-2.5 h-[calc(100%+10px)] border-2 border-gray-300 dark:border-gray-600 border-l-0 rounded-r flex items-center z-10 -mt-[-10px] ml-[15px] mx-2 transition-colors duration-200"
-}, we = {
+}, ve = { class: "flex" };
+function Se(i, a, t, e, s, n) {
+  return f(), y("div", ve, [
+    L(e.TeamSelect, {
+      team: t.team,
+      "team-position": t.teamPosition,
+      "available-teams": t.availableTeams,
+      "selected-teams": t.selectedTeams,
+      "highlighted-team": t.highlightedTeam,
+      permissions: t.permissions,
+      "can-edit": t.canEdit,
+      "is-winner": t.isWinner,
+      "is-loser": t.isLoser,
+      "should-highlight": t.shouldHighlight,
+      "is-first-team": t.isFirstTeam,
+      "onUpdate:team": a[0] || (a[0] = (o) => i.$emit("update:team", o)),
+      onHighlightTeam: a[1] || (a[1] = (o) => i.$emit("highlight-team", o)),
+      onUnhighlightTeam: a[2] || (a[2] = (o) => i.$emit("unhighlight-team"))
+    }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "highlighted-team", "permissions", "can-edit", "is-winner", "is-loser", "should-highlight", "is-first-team"]),
+    L(e.TeamScoreInput, {
+      team: t.team,
+      "team-position": t.teamPosition,
+      "can-edit-score": t.canEditScore,
+      "is-first-team": t.isFirstTeam,
+      "onUpdate:score": a[3] || (a[3] = (o) => i.$emit("update:score", o))
+    }, null, 8, ["team", "team-position", "can-edit-score", "is-first-team"])
+  ]);
+}
+const Ee = /* @__PURE__ */ C(be, [["render", Se], ["__file", "/app/src/components/team/TeamRow.vue"]]), we = {
   __name: "BracketMatch",
   props: {
     match: {
       type: Object,
-      required: !0,
       default: () => ({
-        teamOne: { name: C, score: 0 },
-        teamTwo: { name: C, score: 0 },
+        teamOne: { name: k, score: 0 },
+        teamTwo: { name: k, score: 0 },
         winner: null,
         date: (/* @__PURE__ */ new Date()).toISOString().split("T")[0]
         // Default to today's date
@@ -319,115 +410,149 @@ const I = {
     },
     permissions: {
       type: Object,
-      required: !0,
       default: () => ({
-        [$.CAN_SELECT_TEAM]: !0,
-        [$.CAN_EDIT_DATE]: !0,
-        [$.CAN_EDIT_SCOPE]: !0
+        [E.CAN_SELECT_TEAM]: !0,
+        [E.CAN_EDIT_DATE]: !0,
+        [E.CAN_EDIT_SCOPE]: !0
       })
     }
   },
-  emits: ["update:match", "highlight-team", "unhighlight-team", "click-match"],
-  setup(e, { emit: d }) {
-    const t = e, n = d, i = W(() => t.roundIndex === 0 && t.permissions[$.CAN_SELECT_TEAM]), s = W(() => t.match[l.ONE].name !== C && t.match[l.TWO].name !== C && t.permissions[$.CAN_EDIT_SCOPE]), g = (m) => t.match.winner === m, r = (m) => t.match.winner && t.match.winner !== m, T = (m) => {
-      const x = t.match[m].name;
-      return t.highlightedTeam === x;
-    }, N = (m) => {
-      n("highlight-team", m);
-    }, o = () => {
-      n("unhighlight-team");
-    }, u = ({ position: m, team: x }) => {
-      const M = {
-        ...t.match,
-        [m]: x
+  emits: [
+    "update:match",
+    "highlight-team",
+    "unhighlight-team",
+    "click-match"
+  ],
+  setup(i, { expose: a, emit: t }) {
+    a();
+    const e = i, s = t, n = A(() => e.roundIndex === 0 && e.permissions[E.CAN_SELECT_TEAM]), o = A(() => e.match[O.ONE].name !== k && e.match[O.TWO].name !== k && e.permissions[E.CAN_EDIT_SCOPE]), I = { props: e, emit: s, canEdit: n, canEditScore: o, isWinner: (g) => e.match.winner === g, isLoser: (g) => e.match.winner && e.match.winner !== g, shouldHighlight: (g) => {
+      const p = e.match[g].name;
+      return e.highlightedTeam === p;
+    }, highlightTeam: (g) => {
+      s("highlight-team", g);
+    }, unhighlightTeam: () => {
+      s("unhighlight-team");
+    }, updateTeam: ({ position: g, team: p }) => {
+      const N = {
+        ...e.match,
+        [g]: p
       };
-      n("update:match", M);
-    }, E = ({ position: m, score: x }) => {
-      const M = {
-        ...t.match,
-        [m]: {
-          ...t.match[m],
-          score: x
+      s("update:match", N);
+    }, updateScore: ({ position: g, score: p }) => {
+      const N = {
+        ...e.match,
+        [g]: {
+          ...e.match[g],
+          score: p
         }
+      }, S = N[O.ONE].score, w = N[O.TWO].score;
+      S > w && (N.winner = O.ONE), w > S && (N.winner = O.TWO), S === w && (N.winner = null), s("update:match", N);
+    }, formatDateTimeForInput: (g) => g ? new Date(g).toISOString().slice(0, 16) : "", updateDate: (g) => {
+      const p = {
+        ...e.match,
+        date: g.target.value
       };
-      M[l.ONE].score > M[l.TWO].score ? M.winner = l.ONE : M[l.TWO].score > M[l.ONE].score ? M.winner = l.TWO : M.winner = null, n("update:match", M);
-    }, c = (m) => m ? new Date(m).toISOString().slice(0, 16) : "", A = (m) => {
-      const x = {
-        ...t.match,
-        date: m.target.value
-      };
-      n("update:match", x);
-    }, w = (m) => {
-      const x = m.target.tagName.toLowerCase();
-      x === "input" || x === "select" || x === "option" || x === "button" || m.target.closest("input,select,option,button") || !(!t.permissions[$.CAN_SELECT_TEAM] && !t.permissions[$.CAN_EDIT_DATE] && !t.permissions[$.CAN_EDIT_SCOPE]) || n("click-match", {
-        match: t.match,
-        roundIndex: t.roundIndex,
-        matchIndex: t.index,
-        id: t.match.id ?? null
+      s("update:match", p);
+    }, formatDate: (g) => g ? new Date(g).toLocaleDateString("uk-UA", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    }) : "", onMatchClick: (g) => {
+      const p = g.target.tagName.toLowerCase();
+      p === "input" || p === "select" || p === "option" || p === "button" || g.target.closest("input,select,option,button") || !(!e.permissions[E.CAN_SELECT_TEAM] && !e.permissions[E.CAN_EDIT_DATE] && !e.permissions[E.CAN_EDIT_SCOPE]) || s("click-match", {
+        match: e.match,
+        roundIndex: e.roundIndex,
+        matchIndex: e.index,
+        id: e.match.id ?? null
       });
-    };
-    return (m, x) => (b(), S("div", {
-      class: K(["relative text-[0.8em] flex items-center", { group: e.index % 2 == 0 && e.totalMatches > 1 }])
-    }, [
-      p("div", ve, [
-        p("div", Oe, [
-          p("input", {
+    }, computed: A, TeamRow: Ee, get TBD() {
+      return k;
+    }, get TEAM_POSITION() {
+      return O;
+    }, get PERMISSIONS() {
+      return E;
+    } };
+    return Object.defineProperty(I, "__isScriptSetup", { enumerable: !1, value: !0 }), I;
+  }
+}, Oe = { class: "flex flex-col w-full" }, ke = { class: "px-3 py-1 text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center" }, xe = ["value", "disabled"], Ne = {
+  key: 0,
+  class: "absolute top-1/2 left-full w-2.5 h-[calc(100%+10px)] border-2 border-gray-300 dark:border-gray-600 border-l-0 rounded-r flex items-center z-10 -mt-[-10px] ml-[15px] mx-2 transition-colors duration-200"
+};
+function Be(i, a, t, e, s, n) {
+  return f(), y(
+    "div",
+    {
+      class: H(["relative text-[0.8em] flex items-center", { group: t.index % 2 == 0 && t.totalMatches > 1 }])
+    },
+    [
+      h("div", Oe, [
+        h("div", ke, [
+          h("input", {
             type: "datetime-local",
-            value: c(e.match.date),
-            onInput: A,
+            value: e.formatDateTimeForInput(t.match.date),
             class: "input input-ghost input-sm",
-            disabled: !e.permissions[B($).CAN_EDIT_DATE]
-          }, null, 40, Ee)
+            disabled: !t.permissions[e.PERMISSIONS.CAN_EDIT_DATE],
+            onInput: e.updateDate
+          }, null, 40, xe)
         ]),
-        p("div", {
+        h("div", {
           class: "my-1.5 ml-2.5 bg-white dark:bg-gray-900 rounded overflow-hidden w-full min-w-[200px] shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10",
-          onClick: w
+          onClick: e.onMatchClick
         }, [
-          P(X, {
-            team: e.match.teamOne,
-            "team-position": B(l).ONE,
-            "available-teams": e.availableTeams,
-            "selected-teams": e.selectedTeams,
-            "can-edit": i.value,
-            "can-edit-score": s.value,
-            "is-winner": g(B(l).ONE),
-            "is-loser": r(B(l).ONE),
-            "should-highlight": T(B(l).ONE),
+          L(e.TeamRow, {
+            team: t.match.teamOne,
+            "team-position": e.TEAM_POSITION.ONE,
+            "available-teams": t.availableTeams,
+            "selected-teams": t.selectedTeams,
+            "can-edit": e.canEdit,
+            "can-edit-score": e.canEditScore,
+            "is-winner": e.isWinner(e.TEAM_POSITION.ONE),
+            "is-loser": e.isLoser(e.TEAM_POSITION.ONE),
+            "should-highlight": e.shouldHighlight(e.TEAM_POSITION.ONE),
             "is-first-team": !0,
-            "can-select-team": m.canSelectTeam,
-            "highlighted-team": e.highlightedTeam,
-            permissions: e.permissions,
-            "onUpdate:team": u,
-            "onUpdate:score": E,
-            onHighlightTeam: N,
-            onUnhighlightTeam: o
+            "can-select-team": i.canSelectTeam,
+            "highlighted-team": t.highlightedTeam,
+            permissions: t.permissions,
+            "onUpdate:team": e.updateTeam,
+            "onUpdate:score": e.updateScore,
+            onHighlightTeam: e.highlightTeam,
+            onUnhighlightTeam: e.unhighlightTeam
           }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "can-edit-score", "is-winner", "is-loser", "should-highlight", "can-select-team", "highlighted-team", "permissions"]),
-          P(X, {
-            team: e.match.teamTwo,
-            "team-position": B(l).TWO,
-            "available-teams": e.availableTeams,
-            "selected-teams": e.selectedTeams,
-            "can-edit": i.value,
-            "can-edit-score": s.value,
-            "is-winner": g(B(l).TWO),
-            "is-loser": r(B(l).TWO),
-            "should-highlight": T(B(l).TWO),
-            "can-select-team": m.canSelectTeam,
-            "highlighted-team": e.highlightedTeam,
-            permissions: e.permissions,
-            "onUpdate:team": u,
-            "onUpdate:score": E,
-            onHighlightTeam: N,
-            onUnhighlightTeam: o
+          L(e.TeamRow, {
+            team: t.match.teamTwo,
+            "team-position": e.TEAM_POSITION.TWO,
+            "available-teams": t.availableTeams,
+            "selected-teams": t.selectedTeams,
+            "can-edit": e.canEdit,
+            "can-edit-score": e.canEditScore,
+            "is-winner": e.isWinner(e.TEAM_POSITION.TWO),
+            "is-loser": e.isLoser(e.TEAM_POSITION.TWO),
+            "should-highlight": e.shouldHighlight(e.TEAM_POSITION.TWO),
+            "can-select-team": i.canSelectTeam,
+            "highlighted-team": t.highlightedTeam,
+            permissions: t.permissions,
+            "onUpdate:team": e.updateTeam,
+            "onUpdate:score": e.updateScore,
+            onHighlightTeam: e.highlightTeam,
+            onUnhighlightTeam: e.unhighlightTeam
           }, null, 8, ["team", "team-position", "available-teams", "selected-teams", "can-edit", "can-edit-score", "is-winner", "is-loser", "should-highlight", "can-select-team", "highlighted-team", "permissions"])
         ])
       ]),
-      e.index % 2 == 0 && e.totalMatches > 1 ? (b(), S("div", ye, x[0] || (x[0] = [
-        p("span", { class: "w-2.5 h-0.5 bg-gray-300 dark:bg-gray-600 translate-x-full block" }, null, -1)
-      ]))) : H("", !0)
-    ], 2));
-  }
-}, be = { class: "flex-1 px-5 pb-2.5 grid grid-cols-[min-content_auto]" }, Ne = { class: "text-[0.7em] text-gray-900 dark:text-white flex justify-end items-center opacity-50 mt-[23px]" }, te = {
+      t.index % 2 == 0 && t.totalMatches > 1 ? (f(), y("div", Ne, a[0] || (a[0] = [
+        h(
+          "span",
+          { class: "w-2.5 h-0.5 bg-gray-300 dark:bg-gray-600 translate-x-full block" },
+          null,
+          -1
+          /* CACHED */
+        )
+      ]))) : q("v-if", !0)
+    ],
+    2
+    /* CLASS */
+  );
+}
+const Ie = /* @__PURE__ */ C(we, [["render", Be], ["__file", "/app/src/components/bracket/BracketMatch.vue"]]), De = {
   __name: "BracketColumn",
   props: {
     column: {
@@ -452,46 +577,75 @@ const I = {
     },
     permissions: {
       type: Object,
-      required: !0,
       default: () => ({
-        [$.CAN_SELECT_TEAM]: !0
+        [E.CAN_SELECT_TEAM]: !0
       })
     }
   },
-  emits: ["update:match", "highlight-team", "unhighlight-team", "click-match"],
-  setup(e, { emit: d }) {
-    const t = e, n = d, i = (g, r) => {
-      n("update:match", t.columnIndex, g, r);
-    }, s = (g, r) => {
-      n("click-match", {
-        ...r,
-        roundIndex: t.columnIndex,
-        matchIndex: g
+  emits: [
+    "update:match",
+    "highlight-team",
+    "unhighlight-team",
+    "click-match"
+  ],
+  setup(i, { expose: a, emit: t }) {
+    a();
+    const e = i, s = t, r = { props: e, emit: s, updateMatch: (c, _) => {
+      s("update:match", e.columnIndex, c, _);
+    }, onClickMatch: (c, _) => {
+      s("click-match", {
+        ..._,
+        roundIndex: e.columnIndex,
+        matchIndex: c
       });
-    };
-    return (g, r) => (b(), S("div", be, [
-      (b(!0), S(R, null, j(e.column.matches, (T, N) => (b(), S(R, {
-        key: T.id
-      }, [
-        p("div", Ne, U(T.number), 1),
-        P(we, {
-          match: T,
-          index: N,
-          "total-matches": e.column.matches.length,
-          "round-index": e.columnIndex,
-          "available-teams": e.availableTeams,
-          "selected-teams": e.selectedTeams,
-          "highlighted-team": e.highlightedTeam,
-          permissions: e.permissions,
-          "onUpdate:match": (o) => i(N, o),
-          onHighlightTeam: r[0] || (r[0] = (o) => g.$emit("highlight-team", o)),
-          onUnhighlightTeam: r[1] || (r[1] = (o) => g.$emit("unhighlight-team")),
-          onClickMatch: (o) => s(N, o)
-        }, null, 8, ["match", "index", "total-matches", "round-index", "available-teams", "selected-teams", "highlighted-team", "permissions", "onUpdate:match", "onClickMatch"])
-      ], 64))), 128))
-    ]));
+    }, BracketMatch: Ie, get PERMISSIONS() {
+      return E;
+    } };
+    return Object.defineProperty(r, "__isScriptSetup", { enumerable: !1, value: !0 }), r;
   }
-}, Se = { class: "flex justify-between px-5" }, xe = { class: "flex flex-col items-center gap-2" }, Ae = { class: "mt-2" }, ke = { class: "flex items-center rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600" }, $e = { class: "join" }, De = ["onBlur", "disabled", "onUpdate:modelValue"], Ie = ["value", "onChange", "disabled"], Ce = ["value"], se = {
+}, Ae = { class: "flex-1 px-5 pb-2.5 grid grid-cols-[min-content_auto]" }, Me = { class: "text-[0.7em] text-gray-900 dark:text-white flex justify-end items-center opacity-50 mt-[23px]" };
+function Ce(i, a, t, e, s, n) {
+  return f(), y("div", Ae, [
+    (f(!0), y(
+      U,
+      null,
+      W(t.column.matches, (o, r) => (f(), y(
+        U,
+        {
+          key: o.id
+        },
+        [
+          h(
+            "div",
+            Me,
+            B(o.number),
+            1
+            /* TEXT */
+          ),
+          L(e.BracketMatch, {
+            match: o,
+            index: r,
+            "total-matches": t.column.matches.length,
+            "round-index": t.columnIndex,
+            "available-teams": t.availableTeams,
+            "selected-teams": t.selectedTeams,
+            "highlighted-team": t.highlightedTeam,
+            permissions: t.permissions,
+            "onUpdate:match": (c) => e.updateMatch(r, c),
+            onHighlightTeam: a[0] || (a[0] = (c) => i.$emit("highlight-team", c)),
+            onUnhighlightTeam: a[1] || (a[1] = (c) => i.$emit("unhighlight-team")),
+            onClickMatch: (c) => e.onClickMatch(r, c)
+          }, null, 8, ["match", "index", "total-matches", "round-index", "available-teams", "selected-teams", "highlighted-team", "permissions", "onUpdate:match", "onClickMatch"])
+        ],
+        64
+        /* STABLE_FRAGMENT */
+      ))),
+      128
+      /* KEYED_FRAGMENT */
+    ))
+  ]);
+}
+const ee = /* @__PURE__ */ C(De, [["render", Ce], ["__file", "/app/src/components/bracket/BracketColumn.vue"]]), Le = {
   __name: "BracketRoundHeaders",
   props: {
     columns: {
@@ -504,65 +658,92 @@ const I = {
     }
   },
   emits: ["update:columns"],
-  setup(e, { emit: d }) {
-    const t = e, n = d, i = [1, 3, 5, 7, 9], s = q(t.columns.map((T) => T.name));
-    F(() => t.columns, (T) => {
-      s.value = T.map((N) => N.name);
-    }, { deep: !0 });
-    const g = (T, N) => {
-      s.value[T] = N;
-      const o = [...t.columns];
-      o[T] = {
-        ...o[T],
-        name: N
-      }, n("update:columns", o);
-    }, r = (T, N) => {
-      const o = [...t.columns];
-      o[T] = {
-        ...o[T],
-        bestOf: Number(N)
-      }, n("update:columns", o);
-    };
-    return (T, N) => (b(), S("div", Se, [
-      (b(!0), S(R, null, j(e.columns, (o, u) => (b(), S("div", {
+  setup(i, { expose: a, emit: t }) {
+    a();
+    const e = i, s = t, n = [1, 3, 5, 7, 9], o = D(e.columns.map((l) => l.name));
+    M(
+      () => e.columns,
+      (l) => {
+        o.value = l.map((u) => u.name);
+      },
+      { deep: !0 }
+    );
+    const _ = { props: e, emit: s, bestOfValues: n, localColumnNames: o, updateColumnName: (l, u) => {
+      o.value[l] = u;
+      const m = [...e.columns];
+      m[l] = {
+        ...m[l],
+        name: u
+      }, s("update:columns", m);
+    }, updateColumnBestOf: (l, u) => {
+      const m = [...e.columns];
+      m[l] = {
+        ...m[l],
+        bestOf: Number(u)
+      }, s("update:columns", m);
+    }, ref: D, watch: M, get PERMISSIONS() {
+      return E;
+    } };
+    return Object.defineProperty(_, "__isScriptSetup", { enumerable: !1, value: !0 }), _;
+  }
+}, Ue = { class: "flex justify-between px-5" }, qe = { class: "flex flex-col items-center gap-2" }, We = { class: "mt-2" }, je = { class: "flex items-center rounded-md bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600" }, Pe = { class: "join" }, Re = ["onUpdate:modelValue", "disabled", "onBlur"], He = ["value", "disabled", "onChange"], Fe = ["value"];
+function ze(i, a, t, e, s, n) {
+  return f(), y("div", Ue, [
+    (f(!0), y(
+      U,
+      null,
+      W(t.columns, (o, r) => (f(), y("div", {
         key: o.name,
         class: "flex-1 text-center text-sm text-gray-400 py-2 rounded overflow-hidden"
       }, [
-        p("div", xe, [
-          p("div", Ae, [
-            p("div", ke, [
-              p("div", $e, [
-                Q(p("input", {
-                  onBlur: (E) => g(u, E.target.value),
-                  disabled: !e.permissions[B($).CAN_EDIT_ROUND_NAME],
-                  "onUpdate:modelValue": (E) => s.value[u] = E,
+        h("div", qe, [
+          h("div", We, [
+            h("div", je, [
+              h("div", Pe, [
+                J(h("input", {
+                  "onUpdate:modelValue": (c) => e.localColumnNames[r] = c,
+                  disabled: !t.permissions[e.PERMISSIONS.CAN_EDIT_ROUND_NAME],
                   type: "text",
-                  class: "input input-bordered join-item"
-                }, null, 40, De), [
-                  [ee, s.value[u]]
+                  class: "input input-bordered join-item",
+                  onBlur: (c) => e.updateColumnName(r, c.target.value)
+                }, null, 40, Re), [
+                  [Z, e.localColumnNames[r]]
                 ]),
-                p("select", {
+                h("select", {
                   value: o.bestOf,
-                  onChange: (E) => r(u, E.target.value),
-                  disabled: !e.permissions[B($).CAN_EDIT_BEST_OF],
-                  class: "select select-bordered join-item"
+                  disabled: !t.permissions[e.PERMISSIONS.CAN_EDIT_BEST_OF],
+                  class: "select select-bordered join-item",
+                  onChange: (c) => e.updateColumnBestOf(r, c.target.value)
                 }, [
-                  (b(), S(R, null, j(i, (E) => p("option", {
-                    key: E,
-                    value: E
-                  }, " Best of " + U(E), 9, Ce)), 64))
-                ], 40, Ie)
+                  (f(), y(
+                    U,
+                    null,
+                    W(e.bestOfValues, (c) => h("option", {
+                      key: c,
+                      value: c
+                    }, " Best of " + B(c), 9, Fe)),
+                    64
+                    /* STABLE_FRAGMENT */
+                  ))
+                ], 40, He)
               ])
             ])
           ])
         ])
-      ]))), 128))
-    ]));
-  }
-}, Me = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8" }, _e = { class: "flex flex-col" }, Be = { class: "overflow-x-auto" }, Ue = { class: "min-w-max" }, Le = { class: "flex flex-1 p-5" }, We = {
-  __name: "BracketLower",
+      ]))),
+      128
+      /* KEYED_FRAGMENT */
+    ))
+  ]);
+}
+const te = /* @__PURE__ */ C(Le, [["render", ze], ["__file", "/app/src/components/bracket/BracketRoundHeaders.vue"]]), Ve = {
+  __name: "BracketSection",
   props: {
-    initialState: {
+    title: {
+      type: String,
+      required: !0
+    },
+    columns: {
       type: Array,
       required: !0
     },
@@ -570,227 +751,151 @@ const I = {
       type: Array,
       required: !0
     },
-    defaultBestOf: {
-      type: Number,
-      default: 3,
-      validator: (e) => [1, 3, 5, 7, 9].includes(e)
+    selectedTeams: {
+      type: Array,
+      required: !0
+    },
+    highlightedTeam: {
+      type: String,
+      default: null
     },
     permissions: {
       type: Object,
-      required: !0,
-      default: () => ({
-        [$.CAN_SELECT_TEAM]: !0,
-        [$.CAN_EDIT_DATE]: !0,
-        [$.CAN_EDIT_SCOPE]: !0,
-        [$.CAN_EDIT_ROUND_NAME]: !0,
-        [$.CAN_EDIT_BEST_OF]: !0
-      })
+      required: !0
+    },
+    bordered: {
+      type: Boolean,
+      default: !1
+    },
+    onMatchUpdate: {
+      type: Function,
+      required: !0
+    },
+    onColumnsUpdate: {
+      type: Function,
+      required: !0
+    },
+    onHighlight: {
+      type: Function,
+      required: !0
+    },
+    onUnhighlight: {
+      type: Function,
+      required: !0
+    },
+    onClickMatch: {
+      type: Function,
+      required: !1,
+      default: () => {
+      }
     }
   },
-  emits: ["update:state"],
-  setup(e, { emit: d }) {
-    const t = d, n = e, i = q([]), s = q(null), g = W(() => {
-      const c = /* @__PURE__ */ new Set();
-      return i.value.forEach((A) => {
-        A.matches.forEach((w) => {
-          w[l.ONE].name !== C && c.add(w[l.ONE].name), w[l.TWO].name !== C && c.add(w[l.TWO].name);
-        });
-      }), Array.from(c);
-    }), r = (c) => {
-      s.value = c;
-    }, T = () => {
-      s.value = null;
-    }, N = (c, A, w) => {
-      if (console.log("Updating lower match:", { roundIndex: c, matchIndex: A, updatedMatch: w }), i.value[c] && i.value[c].matches) {
-        if (i.value[c].matches[A] = w, w.winner && c < i.value.length - 1) {
-          const m = c + 1, x = Math.floor(A / 2);
-          if (i.value[m] && i.value[m].matches[x]) {
-            const M = i.value[m].matches[x], J = A % 2 === 0 ? l.ONE : l.TWO, a = w[w.winner];
-            i.value[m].matches[x] = {
-              ...M,
-              [J]: {
-                id: a.id,
-                name: a.name,
-                logo: a.logo,
-                score: 0
-              }
-            };
-          }
-        }
-        u();
-      }
-    }, o = (c) => {
-      console.log("Updating lower columns:", c), i.value = c, u();
-    }, u = () => {
-      console.log("Emitting lower tournament state:", i.value), t("update:state", i.value);
-    }, E = () => {
-      console.log("Initializing lower tournament with state:", n.initialState), n.initialState && n.initialState.length > 0 && (i.value = JSON.parse(JSON.stringify(n.initialState)));
-    };
-    return F(() => n.initialState, () => {
-      E();
-    }, { deep: !0 }), G(() => {
-      E();
-    }), (c, A) => (b(), S("div", Me, [
-      A[0] || (A[0] = p("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4" }, "Lower Bracket", -1)),
-      p("div", _e, [
-        p("div", Be, [
-          p("div", Ue, [
-            P(se, {
-              columns: i.value,
-              "onUpdate:columns": o,
-              permissions: e.permissions
-            }, null, 8, ["columns", "permissions"]),
-            p("div", Le, [
-              (b(!0), S(R, null, j(i.value, (w, m) => (b(), V(te, {
-                key: w.id,
-                column: w,
-                "column-index": m,
-                "available-teams": e.availableTeams,
-                "selected-teams": g.value,
-                "highlighted-team": s.value,
-                permissions: e.permissions,
-                "onUpdate:match": N,
-                onHighlightTeam: r,
-                onUnhighlightTeam: T
-              }, null, 8, ["column", "column-index", "available-teams", "selected-teams", "highlighted-team", "permissions"]))), 128))
+  setup(i, { expose: a }) {
+    a();
+    const e = { props: i, BracketColumn: ee, BracketRoundHeaders: te };
+    return Object.defineProperty(e, "__isScriptSetup", { enumerable: !1, value: !0 }), e;
+  }
+}, Je = { class: "text-xl font-bold text-gray-800 dark:text-white mb-4" }, Ge = { class: "flex flex-col" }, Ke = { class: "overflow-x-auto" }, Ye = { class: "min-w-max" }, Qe = { class: "flex flex-1 p-5" };
+function Xe(i, a, t, e, s, n) {
+  return f(), y(
+    "div",
+    {
+      class: H(["flex flex-col mt-8", {
+        "border-t-2 border-gray-300 dark:border-gray-600 pt-8": t.bordered
+      }])
+    },
+    [
+      h(
+        "div",
+        Je,
+        B(t.title),
+        1
+        /* TEXT */
+      ),
+      h("div", Ge, [
+        h("div", Ke, [
+          h("div", Ye, [
+            L(e.BracketRoundHeaders, {
+              columns: t.columns,
+              permissions: t.permissions,
+              "onUpdate:columns": t.onColumnsUpdate
+            }, null, 8, ["columns", "permissions", "onUpdate:columns"]),
+            h("div", Qe, [
+              (f(!0), y(
+                U,
+                null,
+                W(t.columns, (o, r) => (f(), $(e.BracketColumn, {
+                  key: o.id,
+                  column: o,
+                  "column-index": r,
+                  "available-teams": t.availableTeams,
+                  "selected-teams": t.selectedTeams,
+                  "highlighted-team": t.highlightedTeam,
+                  permissions: t.permissions,
+                  "onUpdate:match": t.onMatchUpdate,
+                  onHighlightTeam: t.onHighlight,
+                  onUnhighlightTeam: t.onUnhighlight,
+                  onClickMatch: t.onClickMatch
+                }, null, 8, ["column", "column-index", "available-teams", "selected-teams", "highlighted-team", "permissions", "onUpdate:match", "onHighlightTeam", "onUnhighlightTeam", "onClickMatch"]))),
+                128
+                /* KEYED_FRAGMENT */
+              ))
             ])
           ])
         ])
       ])
-    ]));
-  }
-}, Y = () => ({
+    ],
+    2
+    /* CLASS */
+  );
+}
+const Ze = /* @__PURE__ */ C(Ve, [["render", Xe], ["__file", "/app/src/components/bracket/BracketSection.vue"]]), G = () => ({
   id: null,
-  name: C,
+  name: k,
   logo: null,
   score: 0
-}), ie = (e) => ({
-  id: `match-${e}`,
-  number: e,
-  [l.ONE]: Y(),
-  [l.TWO]: Y(),
+}), ae = (i) => ({
+  id: `match-${i}`,
+  number: i,
+  [O.ONE]: G(),
+  [O.TWO]: G(),
   winner: null,
   date: null
-}), ot = (e, d = 3) => {
-  const t = [], n = Math.log2(e);
-  let i = 1;
-  for (let s = 0; s < n; s++) {
-    const g = Math.pow(2, n - s - 1), r = [];
-    for (let T = 0; T < g; T++)
-      r.push(ie(i++));
-    t.push({
-      id: `upper-round-${s + 1}`,
-      name: `Round ${s + 1}`,
-      matches: r,
-      bestOf: d
-    });
-  }
-  return t;
-}, Z = (e, d) => {
-  const t = [];
-  let n = 1;
-  const i = e - 1;
-  for (let s = 0; s < i; s++) {
-    const g = Math.pow(2, e - s - 2), r = [];
-    for (let T = 0; T < g; T++)
-      r.push(ie(n++));
-    t.push({
-      id: `lower-round-${s + 1}`,
-      name: `Lower Round ${s + 1}`,
-      matches: r,
-      bestOf: d
-    });
-  }
-  return t;
-};
-function qe(e, d = []) {
-  const t = {};
-  e.forEach((o) => {
-    t[o.score] || (t[o.score] = []), t[o.score].push(o);
-  });
-  const n = Object.keys(t).map(Number).sort((o, u) => u - o), i = [], s = /* @__PURE__ */ new Set(), g = e.map((o) => o.id), r = new Set(d.map(([o, u]) => `${o}-${u}`));
-  function T(o) {
-    const u = [], E = /* @__PURE__ */ new Set();
-    for (let c = 0; c < o.length; c++) {
-      if (E.has(o[c].id)) continue;
-      let A = !1;
-      for (let w = c + 1; w < o.length; w++)
-        if (!E.has(o[w].id) && !r.has(`${o[c].id}-${o[w].id}`) && !r.has(`${o[w].id}-${o[c].id}`)) {
-          u.push([o[c], o[w]]), E.add(o[c].id), E.add(o[w].id), s.add(o[c].id), s.add(o[w].id), A = !0;
-          break;
-        }
-      if (!A) {
-        for (let w of n)
-          if (w !== o[c].score) {
-            for (let m of t[w] || [])
-              if (!s.has(m.id) && !r.has(`${o[c].id}-${m.id}`) && !r.has(`${m.id}-${o[c].id}`))
-                return u.push([o[c], m]), E.add(o[c].id), E.add(m.id), s.add(o[c].id), s.add(m.id), u;
-          }
-      }
-    }
-    return u;
-  }
-  for (let o of n) {
-    const u = t[o].filter((A) => !s.has(A.id)), E = T(u);
-    i.push(...E);
-    const c = u.filter((A) => !s.has(A.id));
-    if (c.length === 1) {
-      let A = !1;
-      for (let w of n)
-        if (w !== o) {
-          for (let m of t[w] || [])
-            if (!s.has(m.id) && !r.has(`${c[0].id}-${m.id}`) && !r.has(`${m.id}-${c[0].id}`)) {
-              i.push([c[0], m]), s.add(c[0].id), s.add(m.id), A = !0;
-              break;
-            }
-          if (A) break;
-        }
-      A || (i.push([c[0], null]), s.add(c[0].id));
-    }
-  }
-  const N = g.filter((o) => !s.has(o));
-  for (let o of N) {
-    const u = e.find((E) => E.id === o);
-    i.push([u, null]);
-  }
-  return i;
+});
+function ne(i, a) {
+  return Array.from({ length: i }, (t, e) => a(e));
 }
-function Re(e) {
-  const d = {}, t = {};
-  e.forEach((i) => {
-    i.matches.forEach((s) => {
-      if (["teamOne", "teamTwo"].forEach((g) => {
-        const r = s[g];
-        r && (d[r.id] || (d[r.id] = { ...r, wins: 0, losses: 0, ties: 0, score: 0, ptsDiff: 0, buchholz: 0 }), t[r.id] || (t[r.id] = []));
-      }), s.teamOne && s.teamTwo) {
-        const g = s.teamOne, r = s.teamTwo, T = g.score || 0, N = r.score || 0;
-        s.winner === "teamOne" ? (d[g.id].wins++, d[g.id].score += 1, d[r.id].losses++) : s.winner === "teamTwo" ? (d[r.id].wins++, d[r.id].score += 1, d[g.id].losses++) : s.winner === null && (T > 0 || N > 0) && (d[g.id].ties++, d[r.id].ties++, d[g.id].score += 0.5, d[r.id].score += 0.5), d[g.id].ptsDiff += T - N, d[r.id].ptsDiff += N - T, t[g.id].push(r.id), t[r.id].push(g.id);
-      } else s.teamOne && !s.teamTwo ? (d[s.teamOne.id].wins++, d[s.teamOne.id].score += 1) : !s.teamOne && s.teamTwo && (d[s.teamTwo.id].wins++, d[s.teamTwo.id].score += 1);
-    });
-  }), Object.values(d).forEach((i) => {
-    i.buchholz = (t[i.id] || []).reduce((s, g) => {
-      var r;
-      return s + (((r = d[g]) == null ? void 0 : r.score) || 0);
-    }, 0);
+const wt = (i, a = 3) => {
+  const t = Math.log2(i);
+  let e = 1;
+  return Array.from({ length: t }, (s, n) => {
+    const o = Math.pow(2, t - n - 1), r = ne(
+      o,
+      () => ae(e++)
+    );
+    return {
+      id: `upper-round-${n + 1}`,
+      name: `Round ${n + 1}`,
+      matches: r,
+      bestOf: a
+    };
   });
-  const n = Object.values(d).sort(
-    (i, s) => s.score - i.score || s.wins - i.wins || s.buchholz - i.buchholz || s.ptsDiff - i.ptsDiff
-  );
-  return n.forEach((i, s) => {
-    i.place = s + 1;
-  }), n;
-}
-const Pe = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8" }, je = { class: "relative overflow-x-auto shadow-md sm:rounded-lg mt-8" }, Fe = { class: "w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" }, He = { class: "text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400" }, ze = {
-  key: 0,
-  scope: "col",
-  class: "px-6 py-3"
-}, Je = {
-  scope: "row",
-  class: "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-}, Ve = { class: "px-6 py-4" }, Ge = { class: "px-6 py-4" }, Ke = { class: "px-6 py-4" }, Qe = {
-  key: 0,
-  class: "px-6 py-4"
-}, Xe = { class: "px-6 py-4" }, Ye = {
+}, z = (i, a) => {
+  const t = i - 1;
+  let e = 1;
+  return Array.from({ length: t }, (s, n) => {
+    const o = Math.pow(2, i - n - 2), r = ne(
+      o,
+      () => ae(e++)
+    );
+    return {
+      id: `lower-round-${n + 1}`,
+      name: `Lower Round ${n + 1}`,
+      matches: r,
+      bestOf: a
+    };
+  });
+}, $e = {
   __name: "StandingsTable",
   props: {
     standings: {
@@ -801,59 +906,564 @@ const Pe = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-g
       type: String,
       required: !0
     },
-    TOURNAMENT_FORMAT: {
+    tournamentFormat: {
       type: Object,
       required: !0
     }
   },
-  setup(e) {
-    return (d, t) => (b(), S("div", Pe, [
-      t[5] || (t[5] = p("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4" }, "Standings", -1)),
-      p("div", je, [
-        p("table", Fe, [
-          p("thead", He, [
-            p("tr", null, [
-              t[0] || (t[0] = p("th", {
+  setup(i, { expose: a }) {
+    a();
+    const t = {};
+    return Object.defineProperty(t, "__isScriptSetup", { enumerable: !1, value: !0 }), t;
+  }
+}, et = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-gray-600 pt-8" }, tt = { class: "relative overflow-x-auto shadow-md sm:rounded-lg mt-8" }, at = { class: "w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" }, nt = { class: "text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400" }, it = {
+  key: 0,
+  scope: "col",
+  class: "px-6 py-3"
+}, st = {
+  scope: "row",
+  class: "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+}, ot = { class: "px-6 py-4" }, rt = { class: "px-6 py-4" }, lt = { class: "px-6 py-4" }, ct = {
+  key: 0,
+  class: "px-6 py-4"
+}, dt = { class: "px-6 py-4" };
+function mt(i, a, t, e, s, n) {
+  return f(), y("div", et, [
+    a[5] || (a[5] = h(
+      "div",
+      { class: "text-xl font-bold text-gray-800 dark:text-white mb-4" },
+      " Standings ",
+      -1
+      /* CACHED */
+    )),
+    h("div", tt, [
+      h("table", at, [
+        h("thead", nt, [
+          h("tr", null, [
+            a[0] || (a[0] = h(
+              "th",
+              {
                 scope: "col",
                 class: "px-6 py-3"
-              }, "Place", -1)),
-              t[1] || (t[1] = p("th", {
+              },
+              "Place",
+              -1
+              /* CACHED */
+            )),
+            a[1] || (a[1] = h(
+              "th",
+              {
                 scope: "col",
                 class: "px-6 py-3"
-              }, "Team", -1)),
-              t[2] || (t[2] = p("th", {
+              },
+              "Team",
+              -1
+              /* CACHED */
+            )),
+            a[2] || (a[2] = h(
+              "th",
+              {
                 scope: "col",
                 class: "px-6 py-3"
-              }, "W-L-T", -1)),
-              t[3] || (t[3] = p("th", {
+              },
+              "W-L-T",
+              -1
+              /* CACHED */
+            )),
+            a[3] || (a[3] = h(
+              "th",
+              {
                 scope: "col",
                 class: "px-6 py-3"
-              }, "Points", -1)),
-              e.format === e.TOURNAMENT_FORMAT.SWISS ? (b(), S("th", ze, "Buchholz")) : H("", !0),
-              t[4] || (t[4] = p("th", {
+              },
+              "Points",
+              -1
+              /* CACHED */
+            )),
+            t.format === t.tournamentFormat.SWISS ? (f(), y("th", it, " Buchholz ")) : q("v-if", !0),
+            a[4] || (a[4] = h(
+              "th",
+              {
                 scope: "col",
                 class: "px-6 py-3"
-              }, "Pts Diff", -1))
-            ])
-          ]),
-          p("tbody", null, [
-            (b(!0), S(R, null, j(e.standings, (n) => (b(), S("tr", {
-              key: n.id,
+              },
+              "Pts Diff",
+              -1
+              /* CACHED */
+            ))
+          ])
+        ]),
+        h("tbody", null, [
+          (f(!0), y(
+            U,
+            null,
+            W(t.standings, (o) => (f(), y("tr", {
+              key: o.id,
               class: "bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
             }, [
-              p("th", Je, U(n.place), 1),
-              p("td", Ve, U(n.name), 1),
-              p("td", Ge, U(n.wins) + "-" + U(n.losses) + "-" + U(n.ties), 1),
-              p("td", Ke, U(n.score), 1),
-              e.format === e.TOURNAMENT_FORMAT.SWISS ? (b(), S("td", Qe, U(n.buchholz), 1)) : H("", !0),
-              p("td", Xe, U(n.ptsDiff), 1)
-            ]))), 128))
-          ])
+              h(
+                "th",
+                st,
+                B(o.place),
+                1
+                /* TEXT */
+              ),
+              h(
+                "td",
+                ot,
+                B(o.name),
+                1
+                /* TEXT */
+              ),
+              h(
+                "td",
+                rt,
+                B(o.wins) + "-" + B(o.losses) + "-" + B(o.ties),
+                1
+                /* TEXT */
+              ),
+              h(
+                "td",
+                lt,
+                B(o.score),
+                1
+                /* TEXT */
+              ),
+              t.format === t.tournamentFormat.SWISS ? (f(), y(
+                "td",
+                ct,
+                B(o.buchholz),
+                1
+                /* TEXT */
+              )) : q("v-if", !0),
+              h(
+                "td",
+                dt,
+                B(o.ptsDiff),
+                1
+                /* TEXT */
+              )
+            ]))),
+            128
+            /* KEYED_FRAGMENT */
+          ))
         ])
       ])
-    ]));
+    ])
+  ]);
+}
+const ut = /* @__PURE__ */ C($e, [["render", mt], ["__file", "/app/src/components/StandingsTable.vue"]]);
+function ht(i) {
+  const a = {}, t = {};
+  i.forEach((s) => {
+    s.matches.forEach((n) => {
+      if (["teamOne", "teamTwo"].forEach((o) => {
+        const r = n[o];
+        r && (a[r.id] || (a[r.id] = {
+          ...r,
+          wins: 0,
+          losses: 0,
+          ties: 0,
+          score: 0,
+          ptsDiff: 0,
+          buchholz: 0
+        }), t[r.id] || (t[r.id] = []));
+      }), n.teamOne && n.teamTwo) {
+        const o = n.teamOne, r = n.teamTwo, c = o.score || 0, _ = r.score || 0;
+        n.winner === "teamOne" ? (a[o.id].wins++, a[o.id].score += 1, a[r.id].losses++) : n.winner === "teamTwo" ? (a[r.id].wins++, a[r.id].score += 1, a[o.id].losses++) : n.winner === null && (c > 0 || _ > 0) && (a[o.id].ties++, a[r.id].ties++, a[o.id].score += 0.5, a[r.id].score += 0.5), a[o.id].ptsDiff += c - _, a[r.id].ptsDiff += _ - c, t[o.id].push(r.id), t[r.id].push(o.id);
+      } else n.teamOne && !n.teamTwo ? (a[n.teamOne.id].wins++, a[n.teamOne.id].score += 1) : !n.teamOne && n.teamTwo && (a[n.teamTwo.id].wins++, a[n.teamTwo.id].score += 1);
+    });
+  }), Object.values(a).forEach((s) => {
+    s.buchholz = (t[s.id] || []).reduce(
+      (n, o) => {
+        var r;
+        return n + (((r = a[o]) == null ? void 0 : r.score) || 0);
+      },
+      0
+    );
+  });
+  const e = Object.values(a).sort(
+    (s, n) => n.score - s.score || n.wins - s.wins || n.buchholz - s.buchholz || n.ptsDiff - s.ptsDiff
+  );
+  return e.forEach((s, n) => {
+    s.place = n + 1;
+  }), e;
+}
+function F(i, a) {
+  return i.filter((t) => !!t.id && t.name !== a);
+}
+function V(i, a, t, e, s, n) {
+  const o = a.score || 0, r = t.score || 0;
+  e === s ? (i[a.id].wins++, i[a.id].score += 1, i[t.id].losses++) : e === n ? (i[t.id].wins++, i[t.id].score += 1, i[a.id].losses++) : e === null && (o > 0 || r > 0) && (i[a.id].ties++, i[t.id].ties++, i[a.id].score += 0.5, i[t.id].score += 0.5), i[a.id].ptsDiff += o - r, i[t.id].ptsDiff += r - o;
+}
+function K({
+  upperColumns: i,
+  lowerColumns: a,
+  format: t,
+  TOURNAMENT_FORMAT: e,
+  TEAM_POSITION: s,
+  TBD: n
+}) {
+  switch (t) {
+    case e.SWISS:
+      return F(gt(i), n);
+    case e.ROUND_ROBIN:
+      return F(
+        ft(i, s),
+        n
+      );
+    case e.SINGLE_ELIMINATION:
+    case e.DOUBLE_ELIMINATION:
+    default:
+      return F(
+        _t(
+          i,
+          a,
+          t,
+          e,
+          s
+        ),
+        n
+      );
   }
-}, Ze = { class: "flex flex-col" }, et = { class: "flex flex-col" }, tt = { class: "overflow-x-auto" }, st = { class: "min-w-max" }, it = { class: "flex flex-1 p-5" }, at = {
+}
+function gt(i) {
+  return ht(i);
+}
+function ft(i, a) {
+  const t = {};
+  for (const e of i)
+    for (const s of e.matches) {
+      for (const r of [a.ONE, a.TWO]) {
+        const c = s[r];
+        !c || !c.id || t[c.id] || (t[c.id] = {
+          ...c,
+          wins: 0,
+          losses: 0,
+          ties: 0,
+          score: 0,
+          ptsDiff: 0
+        });
+      }
+      const n = s[a.ONE], o = s[a.TWO];
+      n && o && n.id && o.id && V(
+        t,
+        n,
+        o,
+        s.winner,
+        a.ONE,
+        a.TWO
+      );
+    }
+  return ie(t, ["score", "wins", "ptsDiff"]);
+}
+function _t(i, a, t, e, s) {
+  const n = {};
+  for (const o of i)
+    for (const r of o.matches) {
+      for (const l of [s.ONE, s.TWO]) {
+        const u = r[l];
+        !u || !u.id || n[u.id] || (n[u.id] = {
+          ...u,
+          wins: 0,
+          losses: 0,
+          ties: 0,
+          score: 0,
+          ptsDiff: 0
+        });
+      }
+      const c = r[s.ONE], _ = r[s.TWO];
+      c && _ && c.id && _.id && V(
+        n,
+        c,
+        _,
+        r.winner,
+        s.ONE,
+        s.TWO
+      );
+    }
+  if (t === e.DOUBLE_ELIMINATION && a)
+    for (const o of a)
+      for (const r of o.matches) {
+        for (const l of [s.ONE, s.TWO]) {
+          const u = r[l];
+          !u || !u.id || n[u.id] || (n[u.id] = {
+            ...u,
+            wins: 0,
+            losses: 0,
+            ties: 0,
+            score: 0,
+            ptsDiff: 0
+          });
+        }
+        const c = r[s.ONE], _ = r[s.TWO];
+        c && _ && c.id && _.id && V(
+          n,
+          c,
+          _,
+          r.winner,
+          s.ONE,
+          s.TWO
+        );
+      }
+  return ie(n, ["score", "wins", "ptsDiff"]);
+}
+function ie(i, a) {
+  const t = Object.values(i).sort((e, s) => {
+    for (const n of a)
+      if (s[n] !== e[n]) return s[n] - e[n];
+    return 0;
+  });
+  return t.forEach((e, s) => {
+    e.place = s + 1;
+  }), t;
+}
+function Tt(i, a = []) {
+  const t = {};
+  i.forEach((l) => {
+    t[l.score] || (t[l.score] = []), t[l.score].push(l);
+  });
+  const e = Object.keys(t).map(Number).sort((l, u) => u - l), s = [], n = /* @__PURE__ */ new Set(), o = i.map((l) => l.id), r = new Set(a.map(([l, u]) => `${l}-${u}`));
+  function c(l) {
+    const u = [], m = /* @__PURE__ */ new Set();
+    for (let d = 0; d < l.length; d++) {
+      if (m.has(l[d].id)) continue;
+      let b = !1;
+      for (let T = d + 1; T < l.length; T++)
+        if (!m.has(l[T].id) && !r.has(`${l[d].id}-${l[T].id}`) && !r.has(`${l[T].id}-${l[d].id}`)) {
+          u.push([l[d], l[T]]), m.add(l[d].id), m.add(l[T].id), n.add(l[d].id), n.add(l[T].id), b = !0;
+          break;
+        }
+      if (!b) {
+        for (let T of e)
+          if (T !== l[d].score) {
+            for (let v of t[T] || [])
+              if (!n.has(v.id) && !r.has(`${l[d].id}-${v.id}`) && !r.has(`${v.id}-${l[d].id}`))
+                return u.push([l[d], v]), m.add(l[d].id), m.add(v.id), n.add(l[d].id), n.add(v.id), u;
+          }
+      }
+    }
+    return u;
+  }
+  for (let l of e) {
+    const u = t[l].filter((b) => !n.has(b.id)), m = c(u);
+    s.push(...m);
+    const d = u.filter((b) => !n.has(b.id));
+    if (d.length === 1) {
+      let b = !1;
+      for (let T of e)
+        if (T !== l) {
+          for (let v of t[T] || [])
+            if (!n.has(v.id) && !r.has(`${d[0].id}-${v.id}`) && !r.has(`${v.id}-${d[0].id}`)) {
+              s.push([d[0], v]), n.add(d[0].id), n.add(v.id), b = !0;
+              break;
+            }
+          if (b) break;
+        }
+      b || (s.push([d[0], null]), n.add(d[0].id));
+    }
+  }
+  const _ = o.filter((l) => !n.has(l));
+  for (let l of _) {
+    const u = i.find((m) => m.id === l);
+    s.push([u, null]);
+  }
+  return s;
+}
+function Y({
+  upperColumns: i,
+  lowerColumns: a,
+  props: t,
+  emit: e,
+  TOURNAMENT_FORMAT: s,
+  TEAM_POSITION: n,
+  TBD: o
+}) {
+  function r(m, d, b) {
+    if (i.value[m] && i.value[m].matches) {
+      if (i.value[m].matches[d] = b, b.winner && m < i.value.length - 1) {
+        const T = m + 1, v = Math.floor(d / 2);
+        if (i.value[T] && i.value[T].matches[v]) {
+          const x = i.value[T].matches[v], I = d % 2 === 0 ? n.ONE : n.TWO, g = b[b.winner];
+          i.value[T].matches[v] = {
+            ...x,
+            [I]: {
+              id: g.id,
+              name: g.name,
+              logo: g.logo,
+              score: 0
+            }
+          };
+        }
+      }
+      if (t.format === s.DOUBLE_ELIMINATION && b.winner) {
+        const T = b[b.winner === n.ONE ? n.TWO : n.ONE];
+        if (T.name !== o) {
+          const v = Math.floor(m / 2), x = Math.floor(d / 2);
+          if (a.value[v] && a.value[v].matches[x]) {
+            const I = a.value[v].matches[x], g = d % 2 === 0 ? n.ONE : n.TWO;
+            a.value[v].matches[x] = {
+              ...I,
+              [g]: {
+                id: T.id,
+                name: T.name,
+                logo: T.logo,
+                score: 0
+              }
+            };
+          }
+        }
+      }
+      l();
+    }
+    if (t.format === s.SWISS && i.value[m].matches.every((x) => x.winner) && m < i.value.length - 1) {
+      const x = {};
+      for (let S = 0; S <= m; S++)
+        i.value[S].matches.forEach((w) => {
+          ["teamOne", "teamTwo"].forEach((se) => {
+            const P = w[se];
+            P && (x[P.id] || (x[P.id] = { ...P, score: 0 }));
+          }), w.winner && w.teamOne && w.teamTwo && (w.winner === "teamOne" && (x[w.teamOne.id].score += 1), w.winner === "teamTwo" && (x[w.teamTwo.id].score += 1));
+        });
+      const I = [];
+      for (let S = 0; S <= m; S++)
+        i.value[S].matches.forEach((w) => {
+          w.teamOne && w.teamTwo && I.push([w.teamOne.id, w.teamTwo.id]);
+        });
+      const g = Object.values(x), p = Tt(g, I), N = i.value[m + 1];
+      N.matches = p.map((S, w) => ({
+        id: `swiss-match-${m + 2}-${w + 1}`,
+        number: w + 1,
+        teamOne: S[0],
+        teamTwo: S[1],
+        winner: null,
+        date: null
+      }));
+    }
+  }
+  function c(m) {
+    i.value = m, l();
+  }
+  function _(m) {
+    a.value = m, l();
+  }
+  function l() {
+    e("update:state", {
+      upper: i.value,
+      lower: t.format === s.DOUBLE_ELIMINATION ? a.value : null
+    });
+  }
+  function u() {
+    if (t.initialState) {
+      if (Array.isArray(t.initialState)) {
+        if (i.value = JSON.parse(JSON.stringify(t.initialState)), t.format === s.DOUBLE_ELIMINATION) {
+          a.value = z(
+            i.value.length,
+            t.defaultBestOf
+          );
+          return;
+        }
+        if (t.format === s.SWISS) {
+          a.value = [];
+          return;
+        }
+        return;
+      }
+      i.value = JSON.parse(
+        JSON.stringify(t.initialState.upper || [])
+      ), a.value = JSON.parse(
+        JSON.stringify(t.initialState.lower || [])
+      );
+    }
+  }
+  return {
+    updateUpperMatch: r,
+    updateUpperColumns: c,
+    updateLowerState: _,
+    emitTournamentState: l,
+    initializeTournament: u
+  };
+}
+class pt {
+  /**
+   * @param {string} id
+   * @returns {Promise<Tournament>}
+   */
+  async getTournament(a) {
+    throw new Error("Not implemented");
+  }
+  /**
+   * @param {Tournament} data
+   * @returns {Promise<void>}
+   */
+  async saveTournament(a) {
+    throw new Error("Not implemented");
+  }
+  /**
+   * @param {string} tournamentId
+   * @param {string} matchId
+   * @param {Match} matchData
+   * @returns {Promise<void>}
+   */
+  async updateMatch(a, t, e) {
+    throw new Error("Not implemented");
+  }
+  /**
+   * @returns {Promise<TournamentSummary[]>}
+   */
+  async listTournaments() {
+    throw new Error("Not implemented");
+  }
+  /**
+   * @param {string} id
+   * @returns {Promise<void>}
+   */
+  async deleteTournament(a) {
+    throw new Error("Not implemented");
+  }
+}
+const Q = "tournaments";
+class X extends pt {
+  /** @returns {Object} */
+  _getAll() {
+    return JSON.parse(localStorage.getItem(Q) || "{}");
+  }
+  /** @param {Object} all */
+  _setAll(a) {
+    localStorage.setItem(Q, JSON.stringify(a));
+  }
+  /** @param {string} id */
+  async getTournament(a) {
+    return this._getAll()[a] || null;
+  }
+  /** @param {Tournament} data */
+  async saveTournament(a) {
+    const t = this._getAll();
+    t[a.id] = a, this._setAll(t);
+  }
+  /** @param {string} tournamentId, @param {string} matchId, @param {Match} matchData */
+  async updateMatch(a, t, e) {
+    const s = this._getAll(), n = s[a];
+    if (!n) throw new Error("Tournament not found");
+    let o = !1;
+    for (const r of n.rounds)
+      for (let c = 0; c < r.matches.length; c++)
+        r.matches[c].id === t && (r.matches[c] = { ...r.matches[c], ...e }, o = !0);
+    if (!o) throw new Error("Match not found");
+    s[a] = n, this._setAll(s);
+  }
+  /** @returns {Promise<TournamentSummary[]>} */
+  async listTournaments() {
+    const a = this._getAll();
+    return Object.values(a).map((t) => ({ id: t.id, name: t.name }));
+  }
+  /** @param {string} id */
+  async deleteTournament(a) {
+    const t = this._getAll();
+    delete t[a], this._setAll(t);
+  }
+}
+const yt = {
   __name: "TournamentBracket",
   props: {
     initialState: {
@@ -874,223 +1484,135 @@ const Pe = { class: "flex flex-col mt-8 border-t-2 border-gray-300 dark:border-g
     },
     permissions: {
       type: Object,
-      required: !0,
       default: () => ({
-        [$.CAN_SELECT_TEAM]: !0,
-        [$.CAN_EDIT_ROUND_NAME]: !0,
-        [$.CAN_EDIT_BEST_OF]: !0
+        [E.CAN_SELECT_TEAM]: !0,
+        [E.CAN_EDIT_ROUND_NAME]: !0,
+        [E.CAN_EDIT_BEST_OF]: !0
       })
     }
   },
   emits: ["update:state", "click-match"],
-  setup(e, { emit: d }) {
-    const t = d, n = e, i = q([]), s = q([]), g = q(null), r = W(() => {
-      const a = /* @__PURE__ */ new Set();
-      return i.value.forEach((D) => {
-        D.matches.forEach((v) => {
-          v[l.ONE].name !== C && a.add(v[l.ONE].name), v[l.TWO].name !== C && a.add(v[l.TWO].name);
+  setup(i, { expose: a, emit: t }) {
+    a();
+    const e = t, s = i, n = D([]), o = D([]), r = D(null), c = A(() => {
+      const p = /* @__PURE__ */ new Set();
+      return n.value.forEach((N) => {
+        N.matches.forEach((S) => {
+          S[O.ONE].name !== k && p.add(S[O.ONE].name), S[O.TWO].name !== k && p.add(S[O.TWO].name);
         });
-      }), n.format === I.DOUBLE_ELIMINATION && s.value.forEach((D) => {
-        D.matches.forEach((v) => {
-          v[l.ONE].name !== C && a.add(v[l.ONE].name), v[l.TWO].name !== C && a.add(v[l.TWO].name);
+      }), s.format === j.DOUBLE_ELIMINATION && o.value.forEach((N) => {
+        N.matches.forEach((S) => {
+          S[O.ONE].name !== k && p.add(S[O.ONE].name), S[O.TWO].name !== k && p.add(S[O.TWO].name);
         });
-      }), Array.from(a);
-    }), T = W(() => n.format !== I.SWISS ? [] : Re(i.value)), N = W(() => {
-      if (n.format !== I.ROUND_ROBIN) return [];
-      const a = {};
-      i.value.forEach((v) => {
-        v.matches.forEach((h) => {
-          [l.ONE, l.TWO].forEach((k) => {
-            const y = h[k];
-            !y || !y.id || a[y.id] || (a[y.id] = { ...y, wins: 0, losses: 0, ties: 0, score: 0, ptsDiff: 0 });
-          });
-          const O = h[l.ONE], f = h[l.TWO];
-          if (O && f && O.id && f.id) {
-            const k = O.score || 0, y = f.score || 0;
-            h.winner === l.ONE ? (a[O.id].wins++, a[O.id].score += 1, a[f.id].losses++) : h.winner === l.TWO ? (a[f.id].wins++, a[f.id].score += 1, a[O.id].losses++) : h.winner === null && (k > 0 || y > 0) && (a[O.id].ties++, a[f.id].ties++, a[O.id].score += 0.5, a[f.id].score += 0.5), a[O.id].ptsDiff += k - y, a[f.id].ptsDiff += y - k;
-          }
-        });
-      });
-      const D = Object.values(a).sort(
-        (v, h) => h.score - v.score || h.wins - v.wins || h.ptsDiff - v.ptsDiff
-      );
-      return D.forEach((v, h) => {
-        v.place = h + 1;
-      }), D;
-    }), o = W(() => {
-      if (n.format === I.SWISS || n.format === I.ROUND_ROBIN) return [];
-      const a = {};
-      i.value.forEach((v) => {
-        v.matches.forEach((h) => {
-          [l.ONE, l.TWO].forEach((k) => {
-            const y = h[k];
-            !y || !y.id || a[y.id] || (a[y.id] = { ...y, wins: 0, losses: 0, ties: 0, score: 0, ptsDiff: 0 });
-          });
-          const O = h[l.ONE], f = h[l.TWO];
-          if (O && f && O.id && f.id) {
-            const k = O.score || 0, y = f.score || 0;
-            h.winner === l.ONE ? (a[O.id].wins++, a[O.id].score += 1, a[f.id].losses++) : h.winner === l.TWO ? (a[f.id].wins++, a[f.id].score += 1, a[O.id].losses++) : h.winner === null && (k > 0 || y > 0) && (a[O.id].ties++, a[f.id].ties++, a[O.id].score += 0.5, a[f.id].score += 0.5), a[O.id].ptsDiff += k - y, a[f.id].ptsDiff += y - k;
-          }
-        });
-      }), n.format === I.DOUBLE_ELIMINATION && s.value && s.value.forEach((v) => {
-        v.matches.forEach((h) => {
-          [l.ONE, l.TWO].forEach((k) => {
-            const y = h[k];
-            !y || !y.id || a[y.id] || (a[y.id] = { ...y, wins: 0, losses: 0, ties: 0, score: 0, ptsDiff: 0 });
-          });
-          const O = h[l.ONE], f = h[l.TWO];
-          if (O && f && O.id && f.id) {
-            const k = O.score || 0, y = f.score || 0;
-            h.winner === l.ONE ? (a[O.id].wins++, a[O.id].score += 1, a[f.id].losses++) : h.winner === l.TWO ? (a[f.id].wins++, a[f.id].score += 1, a[O.id].losses++) : h.winner === null && (k > 0 || y > 0) && (a[O.id].ties++, a[f.id].ties++, a[O.id].score += 0.5, a[f.id].score += 0.5), a[O.id].ptsDiff += k - y, a[f.id].ptsDiff += y - k;
-          }
-        });
-      });
-      const D = Object.values(a).sort(
-        (v, h) => h.score - v.score || h.wins - v.wins || h.ptsDiff - v.ptsDiff
-      );
-      return D.forEach((v, h) => {
-        v.place = h + 1;
-      }), D;
-    }), u = W(() => n.format === I.SWISS ? T.value : n.format === I.ROUND_ROBIN ? N.value : o.value), E = (a) => {
-      g.value = a;
-    }, c = () => {
-      g.value = null;
-    }, A = (a, D, v) => {
-      if (console.log("Updating upper match:", { roundIndex: a, matchIndex: D, updatedMatch: v }), i.value[a] && i.value[a].matches) {
-        if (i.value[a].matches[D] = v, v.winner && a < i.value.length - 1) {
-          const h = a + 1, O = Math.floor(D / 2);
-          if (i.value[h] && i.value[h].matches[O]) {
-            const f = i.value[h].matches[O], k = D % 2 === 0 ? l.ONE : l.TWO, y = v[v.winner];
-            i.value[h].matches[O] = {
-              ...f,
-              [k]: {
-                id: y.id,
-                name: y.name,
-                logo: y.logo,
-                score: 0
-              }
-            };
-          }
-        }
-        if (n.format === I.DOUBLE_ELIMINATION && v.winner) {
-          const h = v[v.winner === l.ONE ? l.TWO : l.ONE];
-          if (h.name !== C) {
-            const O = Math.floor(a / 2), f = Math.floor(D / 2);
-            if (s.value[O] && s.value[O].matches[f]) {
-              const k = s.value[O].matches[f], y = D % 2 === 0 ? l.ONE : l.TWO;
-              s.value[O].matches[f] = {
-                ...k,
-                [y]: {
-                  id: h.id,
-                  name: h.name,
-                  logo: h.logo,
-                  score: 0
-                }
-              };
-            }
-          }
-        }
-        x();
-      }
-      if (n.format === I.SWISS && i.value[a].matches.every((f) => f.winner) && a < i.value.length - 1) {
-        const f = {};
-        for (let L = 0; L <= a; L++)
-          i.value[L].matches.forEach((_) => {
-            ["teamOne", "teamTwo"].forEach((oe) => {
-              const z = _[oe];
-              z && (f[z.id] || (f[z.id] = { ...z, score: 0 }));
-            }), _.winner && _.teamOne && _.teamTwo && (_.winner === "teamOne" && (f[_.teamOne.id].score += 1), _.winner === "teamTwo" && (f[_.teamTwo.id].score += 1));
-          });
-        const k = [];
-        for (let L = 0; L <= a; L++)
-          i.value[L].matches.forEach((_) => {
-            _.teamOne && _.teamTwo && k.push([_.teamOne.id, _.teamTwo.id]);
-          });
-        const y = Object.values(f), ae = qe(y, k), ne = i.value[a + 1];
-        ne.matches = ae.map((L, _) => ({
-          id: `swiss-match-${a + 2}-${_ + 1}`,
-          number: _ + 1,
-          teamOne: L[0],
-          teamTwo: L[1],
-          winner: null,
-          date: null
-        }));
-      }
-    }, w = (a) => {
-      console.log("Updating upper columns:", a), i.value = a, x();
-    }, m = (a) => {
-      console.log("Updating lower state:", a), s.value = a, x();
-    }, x = () => {
-      console.log("Emitting tournament state:", {
-        upper: i.value,
-        lower: n.format === I.DOUBLE_ELIMINATION ? s.value : null
-      }), t("update:state", {
-        upper: i.value,
-        lower: n.format === I.DOUBLE_ELIMINATION ? s.value : null
-      });
-    }, M = () => {
-      console.log("Initializing tournament with state:", n.initialState), n.initialState && (Array.isArray(n.initialState) ? (i.value = JSON.parse(JSON.stringify(n.initialState)), n.format === I.DOUBLE_ELIMINATION ? s.value = Z(i.value.length, n.defaultBestOf) : n.format === I.SWISS && (s.value = [])) : (i.value = JSON.parse(JSON.stringify(n.initialState.upper || [])), s.value = JSON.parse(JSON.stringify(n.initialState.lower || []))));
-    };
-    F(() => n.initialState, () => {
-      M();
-    }, { deep: !0 }), F(() => n.format, (a) => {
-      a === I.DOUBLE_ELIMINATION && (!s.value || s.value.length === 0) && (s.value = Z(i.value.length, n.defaultBestOf), x());
+      }), Array.from(p);
+    }), _ = A(() => K({
+      upperColumns: n.value,
+      lowerColumns: o.value,
+      format: s.format,
+      TOURNAMENT_FORMAT: j,
+      TEAM_POSITION: O,
+      TBD: k
+    })), l = (p) => {
+      r.value = p;
+    }, u = () => {
+      r.value = null;
+    }, m = (p) => {
+      e("click-match", p);
+    }, d = new X(), {
+      updateUpperMatch: b,
+      updateUpperColumns: T,
+      updateLowerState: v,
+      emitTournamentState: x,
+      initializeTournament: I
+    } = Y({
+      upperColumns: n,
+      lowerColumns: o,
+      props: s,
+      emit: e,
+      TOURNAMENT_FORMAT: j,
+      TEAM_POSITION: O,
+      TBD: k
     });
-    const J = (a) => {
-      t("click-match", a);
-    };
-    return G(() => {
-      M();
-    }), (a, D) => (b(), S("div", Ze, [
-      D[0] || (D[0] = p("div", { class: "text-xl font-bold text-gray-800 dark:text-white mb-4" }, "Upper Bracket", -1)),
-      p("div", et, [
-        p("div", tt, [
-          p("div", st, [
-            P(se, {
-              columns: i.value,
-              "onUpdate:columns": w,
-              permissions: e.permissions
-            }, null, 8, ["columns", "permissions"]),
-            p("div", it, [
-              (b(!0), S(R, null, j(i.value, (v, h) => (b(), V(te, {
-                key: v.id,
-                column: v,
-                "column-index": h,
-                "available-teams": e.availableTeams,
-                "selected-teams": r.value,
-                "highlighted-team": g.value,
-                permissions: e.permissions,
-                "onUpdate:match": A,
-                onHighlightTeam: E,
-                onUnhighlightTeam: c,
-                onClickMatch: J
-              }, null, 8, ["column", "column-index", "available-teams", "selected-teams", "highlighted-team", "permissions"]))), 128))
-            ])
-          ])
-        ])
-      ]),
-      e.format === B(I).DOUBLE_ELIMINATION ? (b(), V(We, {
-        key: 0,
-        "initial-state": s.value,
-        "available-teams": e.availableTeams,
-        "default-best-of": e.defaultBestOf,
-        permissions: e.permissions,
-        "onUpdate:state": m
-      }, null, 8, ["initial-state", "available-teams", "default-best-of", "permissions"])) : H("", !0),
-      P(Ye, {
-        standings: u.value,
-        format: e.format,
-        TOURNAMENT_FORMAT: B(I)
-      }, null, 8, ["standings", "format", "TOURNAMENT_FORMAT"])
-    ]));
+    M(
+      () => s.initialState,
+      () => {
+        I();
+      },
+      { deep: !0 }
+    ), M(
+      () => s.format,
+      (p) => {
+        p === j.DOUBLE_ELIMINATION && (!o.value || o.value.length === 0) && (o.value = z(
+          n.value.length,
+          s.defaultBestOf
+        ), x());
+      }
+    ), R(() => {
+      I();
+    });
+    const g = { emit: e, props: s, upperColumns: n, lowerColumns: o, highlightedTeam: r, selectedTeams: c, standingsData: _, highlightTeam: l, unhighlightTeam: u, onMatchClick: m, storage: d, updateUpperMatch: b, updateUpperColumns: T, updateLowerState: v, emitTournamentState: x, initializeTournament: I, ref: D, onMounted: R, watch: M, computed: A, BracketColumn: ee, BracketRoundHeaders: te, BracketSection: Ze, get createLowerBracketStructure() {
+      return z;
+    }, get TOURNAMENT_FORMAT() {
+      return j;
+    }, get TBD() {
+      return k;
+    }, get TEAM_POSITION() {
+      return O;
+    }, get PERMISSIONS() {
+      return E;
+    }, StandingsTable: ut, get useStandings() {
+      return K;
+    }, get useBracket() {
+      return Y;
+    }, get LocalStorageTournament() {
+      return X;
+    } };
+    return Object.defineProperty(g, "__isScriptSetup", { enumerable: !1, value: !0 }), g;
   }
-}, lt = (e) => {
-  e.component("TournamentBracket", at);
+}, bt = { class: "flex flex-col" };
+function vt(i, a, t, e, s, n) {
+  return f(), y("div", bt, [
+    L(e.BracketSection, {
+      title: "Upper Bracket",
+      columns: e.upperColumns,
+      "available-teams": t.availableTeams,
+      "selected-teams": e.selectedTeams,
+      "highlighted-team": e.highlightedTeam,
+      permissions: t.permissions,
+      "on-match-update": e.updateUpperMatch,
+      "on-columns-update": e.updateUpperColumns,
+      "on-highlight": e.highlightTeam,
+      "on-unhighlight": e.unhighlightTeam,
+      "on-click-match": e.onMatchClick
+    }, null, 8, ["columns", "available-teams", "selected-teams", "highlighted-team", "permissions", "on-match-update", "on-columns-update"]),
+    t.format === e.TOURNAMENT_FORMAT.DOUBLE_ELIMINATION ? (f(), $(e.BracketSection, {
+      key: 0,
+      title: "Lower Bracket",
+      columns: e.lowerColumns,
+      "available-teams": t.availableTeams,
+      "selected-teams": e.selectedTeams,
+      "highlighted-team": e.highlightedTeam,
+      permissions: t.permissions,
+      bordered: "",
+      "on-match-update": e.updateLowerState,
+      "on-columns-update": e.updateLowerState,
+      "on-highlight": e.highlightTeam,
+      "on-unhighlight": e.unhighlightTeam
+    }, null, 8, ["columns", "available-teams", "selected-teams", "highlighted-team", "permissions", "on-match-update", "on-columns-update"])) : q("v-if", !0),
+    L(e.StandingsTable, {
+      standings: e.standingsData,
+      format: t.format,
+      "tournament-format": e.TOURNAMENT_FORMAT
+    }, null, 8, ["standings", "format", "tournament-format"])
+  ]);
+}
+const St = /* @__PURE__ */ C(yt, [["render", vt], ["__file", "/app/src/components/TournamentBracket.vue"]]), Ot = (i) => {
+  i.component("TournamentBracket", St);
 };
 export {
-  $ as PERMISSIONS,
-  at as TournamentBracket,
-  Z as createLowerBracketStructure,
-  ot as createTournamentState,
-  lt as install
+  E as PERMISSIONS,
+  St as TournamentBracket,
+  z as createLowerBracketStructure,
+  wt as createTournamentState,
+  Ot as install
 };
