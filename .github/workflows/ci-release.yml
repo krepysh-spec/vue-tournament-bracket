@@ -50,15 +50,22 @@ jobs:
     needs: lint
     name: Build documentation
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          node-version: 20
-      - run: npm i
-      - run: npm run docs:build
-      - run: mkdir -p deploy/doc
-      - run: cp -r doc/* deploy/doc/
-      - uses: actions/upload-pages-artifact@v1
-        with:
-          path: deploy
-      - uses: actions/deploy-pages@v1
+          fetch-depth: 0
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                node-version: 22
+                cache: npm # or pnpm / yarn
+            - name: Setup Pages
+              uses: actions/configure-pages@v4
+            - name: Install dependencies
+              run: npm ci # or pnpm install / yarn install / bun install
+            - name: Build with VitePress
+              run: npm run docs:build # or pnpm docs:build / yarn docs:build / bun run docs:build
+            - name: Upload artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                path: docs/.vitepress/dist
