@@ -54,4 +54,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - run: npm i
       - run: npm run docs:build
+      - run: mkdir -p deploy/doc
+      - run: cp -r doc/* deploy/doc/
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: deploy
+      - uses: actions/deploy-pages@v1

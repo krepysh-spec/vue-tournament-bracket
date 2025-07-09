@@ -7,9 +7,42 @@
 
 **Tournament Vue Tool** is a powerful and flexible Vue 3 component for building interactive tournament brackets. It supports both Single and Double Elimination formats, customizable match settings, responsive layout, dark mode, and state persistence — all with zero external dependencies.
 
-## 🔗 Live Demo (Storybook)
+## 🔗 Useful links
 
-🧪 [Check out the live demo](https://krepysh-spec.github.io/vue-tournament-bracket)
+- [Life demo (Storybook)](https://krepysh-spec.github.io/vue-tournament-bracket/storybook) 
+- [Read documentation](https://krepysh-spec.github.io/vue-tournament-bracket/doc)
+
+## ⚡ Features
+
+- Supported Tournament Formats
+- Customizable number of games per match
+- Team selection and score management
+- Responsive design
+- Dark mode support
+- State persistence
+- Permissions System
+
+## 🧩 Supported Tournament Formats
+bracket-vue-tool supports multiple bracket formats out of the box:
+```JS
+export const TOURNAMENT_FORMAT = {
+  SINGLE_ELIMINATION: 'single_elimination',
+  DOUBLE_ELIMINATION: 'double_elimination',
+  SWISS: 'swiss',
+  ROUND_ROBIN: 'round_robin',
+};
+```
+## 🔐 Permissions System
+You can control user actions in the bracket using a flexible permission system:
+```JS
+export const PERMISSIONS = {
+    CAN_SELECT_TEAM: 'can_select_team',
+    CAN_EDIT_DATE: 'can_edit_date',
+    CAN_EDIT_SCOPE: 'can_edit_scope',
+    CAN_EDIT_ROUND_NAME: 'can_edit_round_name',
+    CAN_EDIT_BEST_OF: 'can_edit_best_of',
+};
+```
 
 ## 📦 Zero Dependencies
 
@@ -42,7 +75,7 @@ app.use({ install });
 
 ```javascript
 import { TournamentBracket } from "bracket-vue-tool";
-import "bracket-vue-tool/dist/style.css";
+import "bracket-vue-tool/style.css";
 
 export default {
   components: {
@@ -90,14 +123,6 @@ const handleScoresUpdate = (scores) => {
 | update:teams  | Array   | Emitted when teams are updated  |
 | update:scores | Array   | Emitted when scores are updated |
 
-## Features
-
-- Single and Double Elimination formats
-- Customizable number of games per match
-- Team selection and score management
-- Responsive design
-- Dark mode support
-- State persistence
 
 ## License
 
