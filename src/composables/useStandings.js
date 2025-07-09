@@ -1,7 +1,7 @@
 // useStandings.js
 // Standings calculation logic for different tournament formats
 
-import { getSwissStandings as getSwissStandingsUtil } from "../utils/tournament";
+import { getSwissStandings as getSwissStandingsUtil } from "../utils/standings";
 
 /**
  * @param {Array} upperColumns - rounds of upper bracket

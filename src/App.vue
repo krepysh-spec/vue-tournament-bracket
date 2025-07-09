@@ -222,7 +222,7 @@ import {
   createTournamentState,
   createSwissTournamentState,
   createRoundRobinTournamentState,
-} from "./utils/tournament";
+} from "./utils/bracketGenerators";
 import { PERMISSIONS } from "./constants/tournament";
 
 const sizes = [2, 4, 8, 16, 32, 64];

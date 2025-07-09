@@ -42,8 +42,7 @@ import { ref, onMounted, watch, computed } from "vue";
 import BracketColumn from "./bracket/BracketColumn.vue";
 import BracketRoundHeaders from "./bracket/BracketRoundHeaders.vue";
 import BracketSection from "./bracket/BracketSection.vue";
-import { createLowerBracketStructure } from "../utils/tournament";
-import { shuffleSwissPairs, getSwissStandings } from "../utils/tournament";
+import { createLowerBracketStructure } from "../utils/bracketGenerators";
 import {
   TOURNAMENT_FORMAT,
   TBD,
@@ -53,6 +52,7 @@ import {
 import StandingsTable from "./StandingsTable.vue";
 import { useStandings } from "../composables/useStandings";
 import { useBracket } from "../composables/useBracket";
+import LocalStorageTournament from "../storage/LocalStorageTournament";
 
 const emit = defineEmits(["update:state", "click-match"]);
 
@@ -132,6 +132,8 @@ const unhighlightTeam = () => {
 const onMatchClick = (payload) => {
   emit("click-match", payload);
 };
+
+const storage = new LocalStorageTournament();
 
 const {
   updateUpperMatch,

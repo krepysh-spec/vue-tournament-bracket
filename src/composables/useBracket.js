@@ -1,10 +1,8 @@
 // useBracket.js
 // Logic for working with upper/lower brackets, updating matches, generating next rounds, Swiss pairing
 
-import {
-  createLowerBracketStructure,
-  shuffleSwissPairs,
-} from "../utils/tournament";
+import { createLowerBracketStructure } from "../utils/bracketGenerators";
+import { shuffleSwissPairs } from "../utils/pairing";
 
 export function useBracket({
   upperColumns,
