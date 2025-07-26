@@ -86,21 +86,11 @@ jobs:
     name: Publish to npm
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: 'https://registry.npmjs.org'
       - run: npm i
-
-      - name: Bump version and push tag
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          npm version patch -m "ci: bump version to %s [skip ci]"
-          git push --follow-tags
-
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
