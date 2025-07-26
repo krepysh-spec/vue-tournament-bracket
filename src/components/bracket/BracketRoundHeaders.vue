@@ -21,7 +21,7 @@
               <select
                 :value="column.bestOf"
                 :disabled="!permissions[PERMISSIONS.CAN_EDIT_BEST_OF]"
-                class="select select-bordered join-item"
+                class="select rounded-md border-transparent focus:border-gray-500 focus:bg-white join-item"
                 @change="updateColumnBestOf(index, $event.target.value)"
               >
                 <option

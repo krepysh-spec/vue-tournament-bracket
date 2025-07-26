@@ -10,7 +10,7 @@
       v-if="isEditing"
       v-model="score"
       type="number"
-      class="input input-xs"
+      class="form-input"
       required
       min="0"
       @change="updateScore"
