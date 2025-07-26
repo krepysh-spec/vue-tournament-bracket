@@ -7,6 +7,7 @@ services:
     working_dir: /app
     volumes:
       - .:/app
+      - ~/.ssh:/root/.ssh:ro
     ports:
       - "3000:5173"
       - "6006:6006"

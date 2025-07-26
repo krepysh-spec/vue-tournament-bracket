@@ -15,13 +15,13 @@
                 v-model="localColumnNames[index]"
                 :disabled="!permissions[PERMISSIONS.CAN_EDIT_ROUND_NAME]"
                 type="text"
-                class="input input-bordered join-item"
+                class="input rounded-md border-transparent focus:border-gray-500 focus:bg-white join-item text-sm text-gray-700 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 @blur="updateColumnName(index, $event.target.value)"
               />
               <select
                 :value="column.bestOf"
                 :disabled="!permissions[PERMISSIONS.CAN_EDIT_BEST_OF]"
-                class="select rounded-md border-transparent focus:border-gray-500 focus:bg-white join-item"
+                class="select rounded-md border-transparent focus:border-gray-500 focus:bg-white join-item text-sm text-gray-700 dark:bg-gray-900 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 @change="updateColumnBestOf(index, $event.target.value)"
               >
                 <option
